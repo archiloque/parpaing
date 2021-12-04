@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+# 30055 Fence Spindled 1 x 4 x 2
 require 'set'
 
 class Color
@@ -14,9 +15,10 @@ class Color
 
   BLUE = Color.new(name: 'blue', code: 1)
   RED = Color.new(name: 'red', code: 4)
+  LIGHT_GRAY = Color.new(name: 'light gray', code: 7)
   YELLOW = Color.new(name: 'yellow', code: 14)
   WHITE = Color.new(name: 'white', code: 15)
-
+  DARK_BLUISH_GRAY = Color.new(name: 'Dark Bluish Gray', code: 72)
 end
 
 class Part
@@ -164,6 +166,54 @@ class WINDOW_1_X_4_X_3 < Part
   end
 end
 
+class BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS < Part
+  def initialize()
+    super(
+      x: 32,
+      y: 1,
+      z: 32,
+    )
+  end
+
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part_name: 'Baseplate 32 x 32 with 6-Stud Crossroads with White Dashed Lines and Crosswalks Print',
+        part_code: '44343p03',
+        color: Color::DARK_BLUISH_GRAY,
+        orientation: Orientation::DEFAULT,
+        x: (x + 14.5) * BRICK_WIDTH,
+        y: y,
+        z: (z + 14.5) * BRICK_WIDTH,
+      ),
+    ]
+  end
+end
+
+class BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN < Part
+  def initialize()
+    super(
+      x: 32,
+      y: 1,
+      z: 32,
+    )
+  end
+
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
+        part_code: '44336p04',
+        color: Color::DARK_BLUISH_GRAY,
+        orientation: Orientation::Z_90,
+        x: (x + 15.5) * BRICK_WIDTH,
+        y: y,
+        z: (z + 14.5) * BRICK_WIDTH,
+      ),
+    ]
+  end
+end
+
 class Orientation
   attr_reader :name, :code
 
@@ -206,6 +256,7 @@ class House
     Color::RED,
     Color::YELLOW,
     Color::WHITE,
+    Color::LIGHT_GRAY,
   ].freeze
 
   # @param [Integer] x_origin
@@ -335,7 +386,7 @@ class House
               window_part: window_part,
               window_x_position: column
             )
-            available_columns -= (column .. (column + window_part.x - 1)).to_a
+            available_columns -= (column..(column + window_part.x - 1)).to_a
             found = true
           end
         end
@@ -415,15 +466,76 @@ class House
   end
 end
 
+# @param [Integer] blocks_in_house_blocks
+# @param [Integer] width_between_houses
+# @param [Integer] min_house_width
+# @param [Integer] max_house_width
+# @return [Array<Integer>, nil]
+def find_houses_list(blocks_in_house_blocks:, width_between_houses:, min_house_width:, max_house_width:)
+  houses_list = []
+  current_houses_width = 0
+  while true
+    if (blocks_in_house_blocks - current_houses_width) < min_house_width
+      return nil
+    elsif (blocks_in_house_blocks - current_houses_width) <= max_house_width
+      houses_list << (blocks_in_house_blocks - current_houses_width)
+      return houses_list
+    else
+      house_width = (min_house_width..max_house_width).to_a.sample
+      houses_list << house_width
+      current_houses_width += house_width + width_between_houses
+    end
+  end
+end
+
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   current_x = 0
+  roads_in_house_blocks = 5
+  blocks_in_house_blocks = (3 * 2) + (32 * roads_in_house_blocks)
+  BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS
+    .new
+    .create(color: Color::DARK_BLUISH_GRAY, x: -(32 - 3), y: 0, z: -(32 - 3))
+    .each do |l|
+    result << l
+  end
+  1.upto(roads_in_house_blocks) do |index|
+    BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN
+      .new
+      .create(
+        color: Color::DARK_BLUISH_GRAY,
+        x: -30 + (index * BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN.new.x),
+        y: 0,
+        z: -(32 - 3)
+      )
+      .each do |l|
+      result << l
+    end
+  end
+  BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS
+    .new
+    .create(color: Color::DARK_BLUISH_GRAY, x: 32 * roads_in_house_blocks + 3, y: 0, z: -(32 - 3))
+    .each do |l|
+    result << l
+  end
+
+  houses_list = nil
+  until houses_list
+    houses_list = find_houses_list(
+      blocks_in_house_blocks: blocks_in_house_blocks,
+      min_house_width: 6,
+      max_house_width: 30,
+      width_between_houses: 5
+    )
+  end
+
   #20.upto(20) do |x_width|
-    6.upto(30) do |x_width|
-    House.new(x_origin: current_x, z_origin: 0, x_width: x_width, z_width: 10, height: 6).create().each do |line|
+  current_x = 0
+  houses_list.shuffle.each do |house_width|
+    House.new(x_origin: current_x, z_origin: 0, x_width: house_width, z_width: 10, height: 6).create().each do |line|
       result << line
     end
     result << "\n"
-    current_x += x_width + 1
+    current_x += house_width + 5
   end
 end
