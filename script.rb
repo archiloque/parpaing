@@ -233,7 +233,10 @@ class House
     #@type [Integer]
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
 
+    available_columns = (0..@x_width - 1).to_a
+
     door_x_position.upto(door_x_position + door_part.x - 1) do |x|
+      available_columns.delete(x)
       0.upto(door_part.y - 1) do |y|
         not_occupied?(
           x: x,
@@ -254,17 +257,12 @@ class House
 
     window_part = WINDOW_1_X_4_X_3.new
     window_color = (POSSIBLE_COLORS - [walls_color, door_color]).sample
-
-    # Window before the door
-    if door_x_position > (window_part.x + 1)
-      window_x_position = (1..(door_x_position - window_part.x - 1)).to_a.sample
-      create_window(door_part: door_part, window_color: window_color, window_part: window_part, window_x_position: window_x_position)
-    end
-    # Window after the door
-    if (door_x_position + door_part.x + window_part.x + 1) < @x_width
-      window_x_position = ((door_x_position + door_part.x + 1)..(@x_width - window_part.x - 1)).to_a.sample
-      create_window(door_part: door_part, window_color: window_color, window_part: window_part, window_x_position: window_x_position)
-    end
+    create_windows(
+      door_part: door_part,
+      window_color: window_color,
+      window_part: window_part,
+      available_columns: available_columns
+    )
 
     0.downto(-@height) do |row|
       @result << Emitter.comment("Row #{row}")
@@ -318,6 +316,35 @@ class House
   end
 
   private
+
+  # @param [Part] door_part
+  # @param [Color] window_color
+  # @param [Part] window_part
+  # @param [Array<Integer>] available_columns
+  # @return [void]
+  def create_windows(door_part:, window_color:, window_part:, available_columns:)
+    while true
+      found = false
+      available_columns.shuffle.each do |column|
+        unless found
+          if ((column - 1..(column + window_part.x)).to_a - available_columns) == []
+            # Enough space to create the window
+            create_window(
+              door_part: door_part,
+              window_color: window_color,
+              window_part: window_part,
+              window_x_position: column
+            )
+            available_columns -= (column .. (column + window_part.x - 1)).to_a
+            found = true
+          end
+        end
+      end
+      unless found
+        return
+      end
+    end
+  end
 
   # @param [Part] door_part
   # @param [Color] window_color
@@ -391,8 +418,8 @@ end
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   current_x = 0
-  20.upto(20) do |x_width|
-    #6.upto(30) do |x_width|
+  #20.upto(20) do |x_width|
+    6.upto(30) do |x_width|
     House.new(x_origin: current_x, z_origin: 0, x_width: x_width, z_width: 10, height: 6).create().each do |line|
       result << line
     end
