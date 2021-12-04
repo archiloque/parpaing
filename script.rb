@@ -25,87 +25,143 @@ class Part
   PLATE_HEIGHT = 8
   STUD_HEIGHT = 4
 
-  attr_reader :name, :code, :y, :x, :z
+  attr_reader :name, :code, :x, :y, :z
 
   # @param [String] name
   # @param [String] code
   # @param [Integer] x
   # @param [Integer] y
-  # @param [Integer] stacking_y
   # @param [Integer] z
-  # @param [Orientation] orientation
-  def initialize(name:, code:, x:, y:, stacking_y:, z:, orientation:)
-    @name = name
-    @code = code
+  def initialize(x:, y:, z:)
     @x = x
     @y = y
-    @stacking_y = stacking_y
     @z = z
-    @orientation = orientation
   end
 
-  def x_in_bricks
-    @x / BRICK_WIDTH
+  # @param [Color] color
+  # @param [Integer] x
+  # @param [Integer] y
+  # @param [Integer] z
+  # @return [Array<String>]
+  def create(color:, x:, y:, z:)
+    raise NotImplementedError
+  end
+end
+
+class BRICK_1_X_1 < Part
+  def initialize()
+    super(
+      x: 1,
+      y: 1,
+      z: 1,
+    )
   end
 
-  def y_in_bricks
-    (@y - STUD_HEIGHT) / BRICK_HEIGHT
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part_name: 'Brick 1 x 1',
+        part_code: '3005',
+        color: color,
+        orientation: Orientation::DEFAULT,
+        x: (x - 1) * BRICK_WIDTH,
+        y: ((y - 1) * BRICK_HEIGHT) - STUD_HEIGHT,
+        z: z * BRICK_WIDTH,
+      ),
+    ]
+  end
+end
+
+class DOOR_1_X_4_X_5_WITH_4_PANES < Part
+  def initialize()
+    super(
+      x: 4,
+      y: 5,
+      z: 1,
+    )
   end
 
-  def z_in_bricks
-    @z / BRICK_WIDTH
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part_name: 'Door 1 x 4 x 5 with 4 Panes',
+        part_code: '3861',
+        color: color,
+        orientation: Orientation::Z_90,
+        x: (x + @x - 2) * BRICK_WIDTH,
+        y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
+        z: z,
+      ),
+    ]
+  end
+end
+
+class PLATE_1_X_10 < Part
+  def initialize()
+    super(
+      x: 1,
+      y: 1,
+      z: 10,
+    )
   end
 
-  BRICK_1_X_1 = Part.new(
-    name: 'Brick 1 x 1',
-    code: '3005',
-    x: BRICK_WIDTH,
-    y: BRICK_HEIGHT + STUD_HEIGHT,
-    stacking_y: BRICK_HEIGHT,
-    z: BRICK_WIDTH,
-    orientation: Orientation::DEFAULT,
-    )
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part_name: 'Plate 1 x 10',
+        part_code: '4477',
+        color: color,
+        orientation: Orientation::Z_90,
+        x: (x - 1) * BRICK_WIDTH,
+        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
+        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
+      ),
+    ]
+  end
+end
 
-  PLATE_1_X_10 = Part.new(
-    name: 'Plate 1 x 10',
-    code: '4477',
-    x: BRICK_WIDTH * 10,
-    y: PLATE_HEIGHT + STUD_HEIGHT,
-    stacking_y: PLATE_HEIGHT,
-    z: BRICK_WIDTH,
-    orientation: Orientation::DEFAULT,
+class WINDOW_1_X_4_X_3 < Part
+  def initialize()
+    super(
+      x: 4,
+      y: 3,
+      z: 1,
     )
+  end
 
-  DOOR_1_X_4_X_5_WITH_4_PANES = Part.new(
-    name: 'Door 1 x 4 x 5 with 4 Panes',
-    code: '3861',
-    x: BRICK_WIDTH,
-    y: (BRICK_HEIGHT * 5) + STUD_HEIGHT,
-    stacking_y: BRICK_HEIGHT * 5,
-    z: BRICK_WIDTH * 4,
-    orientation: Orientation::DEFAULT,
-    )
-
-  WINDOW_1_X_4_X_3 = Part.new(
-    name: 'Window 1 x 4 x 3',
-    code: '3853',
-    x: BRICK_WIDTH * 4,
-    y: (BRICK_HEIGHT * 3) + STUD_HEIGHT,
-    stacking_y: BRICK_HEIGHT * 3,
-    z: BRICK_WIDTH,
-    orientation: Orientation::DEFAULT,
-    )
-
-  WINDOW_1_X_2_X_3_PANE_WITH_THICK_CORNER_TABS = Part.new(
-    name: 'Window 1 x 2 x 3 Pane with Thick Corner Tabs',
-    code: '60608',
-    x: BRICK_WIDTH,
-    y: (BRICK_HEIGHT * 2.5),
-    stacking_y: (BRICK_HEIGHT * 2.5),
-    z: BRICK_WIDTH * 2,
-    orientation: Orientation::DEFAULT,
-    )
-
+  def create(color:, x:, y:, z:)
+    pane_z = (z * BRICK_WIDTH) - 8
+    pane_y = (y - @y) * BRICK_HEIGHT - STUD_HEIGHT + 4
+    [
+      Emitter.emit(
+        part_name: 'Window 1 x 4 x 3',
+        part_code: '3853',
+        color: color,
+        orientation: Orientation::DEFAULT,
+        x: (x + 0.5) * BRICK_WIDTH,
+        y: (y - @y) * BRICK_HEIGHT - STUD_HEIGHT,
+        z: z * BRICK_WIDTH,
+      ),
+      Emitter.emit(
+        part_name: 'Window 1 x 2 x 3 Pane with Thick Corner Tabs',
+        part_code: '60608',
+        color: color,
+        orientation: Orientation::Z_90,
+        x: (x - 1) * BRICK_WIDTH - 2,
+        y: pane_y,
+        z: pane_z,
+      ),
+      Emitter.emit(
+        part_name: 'Window 1 x 2 x 3 Pane with Thick Corner Tabs',
+        part_code: '60608',
+        color: color,
+        orientation: Orientation::Z_270,
+        x: (x + 2) * BRICK_WIDTH + 2,
+        y: pane_y,
+        z: pane_z,
+      ),
+    ]
+  end
 end
 
 class Orientation
@@ -124,16 +180,17 @@ class Orientation
 end
 
 class Emitter
+  # @param [String] part_name
+  # @param [String] part_code
   # @param [Color] color
-  # @param [Part] part
   # @param [Orientation] orientation
   # @param [Integer] x
   # @param [Integer] y
   # @param [Integer] z
   # @return [String]
-  def self.emit(color:, part:, orientation:, x:, y:, z:)
-    comment("#{part.name}, color: #{color.name}, position: (#{x}, #{y}, #{z}), orientation: #{orientation.name}") +
-      "1 #{color.code} #{x} #{y} #{z} #{orientation.code} #{part.code}.dat\n"
+  def self.emit(part_name:, part_code:, color:, orientation:, x:, y:, z:)
+    comment("#{part_name}, color: #{color.name}, position: (#{x}, #{y}, #{z}), orientation: #{orientation.name}") +
+      "1 #{color.code} #{x} #{y} #{z} #{orientation.code} #{part_code}.dat\n"
   end
 
   # @return [String]
@@ -168,103 +225,93 @@ class House
 
   # @return [Array<String>]
   def create()
+    @result << Emitter.comment('')
+    @result << Emitter.comment('New house')
     walls_color = POSSIBLE_COLORS.sample
 
-    door_part = Part::DOOR_1_X_4_X_5_WITH_4_PANES
-    door_x_position = (1..(@x_width - 1 - (door_part.z_in_bricks))).to_a.sample
-    door_x_position.upto(door_x_position + door_part.z_in_bricks - 1) do |x|
-      0.upto(door_part.y_in_bricks - 1) do |y|
+    door_part = DOOR_1_X_4_X_5_WITH_4_PANES.new
+    #@type [Integer]
+    door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
+
+    door_x_position.upto(door_x_position + door_part.x - 1) do |x|
+      0.upto(door_part.y - 1) do |y|
         not_occupied?(
-          x: x * Part::BRICK_WIDTH,
-          y: -((Part::BRICK_HEIGHT + Part::STUD_HEIGHT) + (y * Part::BRICK_HEIGHT)),
+          x: x,
+          y: -y,
           z: 0,
-          )
+        )
       end
     end
+
     door_color = (POSSIBLE_COLORS - [walls_color]).sample
     add_part(
-      color: door_color,
       part: door_part,
-      orientation: Orientation::Z_90,
-      x: (door_x_position + door_part.z_in_bricks - 1) * Part::BRICK_WIDTH,
-      y: -door_part.y,
+      color: door_color,
+      x: door_x_position,
+      y: 0,
       z: 0,
-      )
+    )
 
-    window_part = Part::WINDOW_1_X_4_X_3
+    window_part = WINDOW_1_X_4_X_3.new
     window_color = (POSSIBLE_COLORS - [walls_color, door_color]).sample
 
     # Window before the door
-    if door_x_position > (window_part.x_in_bricks + 1)
-      window_x_position = (1..(door_x_position - window_part.x_in_bricks - 1)).to_a.sample
+    if door_x_position > (window_part.x + 1)
+      window_x_position = (1..(door_x_position - window_part.x - 1)).to_a.sample
       create_window(door_part: door_part, window_color: window_color, window_part: window_part, window_x_position: window_x_position)
     end
     # Window after the door
-    if (door_x_position + door_part.z_in_bricks + window_part.x_in_bricks + 1) < @x_width
-      window_x_position = ((door_x_position + door_part.z_in_bricks + 1)..(@x_width - window_part.x_in_bricks - 1)).to_a.sample
+    if (door_x_position + door_part.x + window_part.x + 1) < @x_width
+      window_x_position = ((door_x_position + door_part.x + 1)..(@x_width - window_part.x - 1)).to_a.sample
       create_window(door_part: door_part, window_color: window_color, window_part: window_part, window_x_position: window_x_position)
     end
 
-    y = -(Part::BRICK_HEIGHT + Part::STUD_HEIGHT)
-    0.upto(@height) do |row|
+    0.downto(-@height) do |row|
       @result << Emitter.comment("Row #{row}")
-
-      x = 0
-      @x_width.times do
+      0.upto(@x_width - 1) do |column|
         add_1_x_1_brick_if_not_occupied(
           color: walls_color,
-          x: x,
-          y: y,
+          x: column,
+          y: row,
           z: 0,
-          )
-        x += Part::BRICK_WIDTH
+        )
       end
 
-      x = 0
-      @x_width.times do
+      0.upto(@x_width - 1) do |column|
         add_1_x_1_brick_if_not_occupied(
           color: walls_color,
-          x: x,
-          y: y,
-          z: ((@z_width - 1) * Part::BRICK_WIDTH),
-          )
-        x += Part::BRICK_WIDTH
+          x: column,
+          y: row,
+          z: (@z_width - 1),
+        )
       end
 
-      z = Part::BRICK_WIDTH
-      (@z_width - 2).times do
+      1.upto(@z_width - 2) do |z|
         add_1_x_1_brick_if_not_occupied(
           color: walls_color,
           x: 0,
-          y: y,
+          y: row,
           z: z,
-          )
-        z += Part::BRICK_WIDTH
+        )
       end
-      z = Part::BRICK_WIDTH
-      (@z_width - 2).times do
+      1.upto(@z_width - 2) do |z|
         add_1_x_1_brick_if_not_occupied(
           color: walls_color,
-          x: ((@x_width - 1) * Part::BRICK_WIDTH),
-          y: y,
+          x: (@x_width - 1),
+          y: row,
           z: z,
-          )
-        z += Part::BRICK_WIDTH
+        )
       end
-      y -= Part::BRICK_HEIGHT
     end
 
-    x = 0
-    @x_width.times do
+    0.upto(@x_width - 1) do |column|
       add_part(
-        x: x,
-        y: -((Part::BRICK_HEIGHT * (@height + 1)) + Part::STUD_HEIGHT + Part::PLATE_HEIGHT),
-        z: ((@z_width / 2) - 0.5) * Part::BRICK_WIDTH,
-        part: Part::PLATE_1_X_10,
-        color: walls_color,
-        orientation: Orientation::Z_90
+        x: column,
+        y: -@height - 1,
+        z: 0,
+        part: PLATE_1_X_10.new,
+        color: walls_color
       )
-      x += Part::BRICK_WIDTH
     end
 
     @result
@@ -278,41 +325,23 @@ class House
   # @param [Integer] window_x_position
   # @return [void]
   def create_window(door_part:, window_color:, window_part:, window_x_position:)
-    window_pane_part = Part::WINDOW_1_X_2_X_3_PANE_WITH_THICK_CORNER_TABS
-    window_x_position.upto(window_x_position + window_part.x_in_bricks - 1) do |x|
-      (door_part.y_in_bricks - window_part.y_in_bricks).upto(door_part.y_in_bricks - 1) do |y|
+    window_x_position.upto(window_x_position + window_part.x - 1) do |x|
+      (-door_part.y + window_part.y).downto(-door_part.y + 1) do |y|
         not_occupied?(
-          x: x * Part::BRICK_WIDTH,
-          y: -((Part::BRICK_HEIGHT + Part::STUD_HEIGHT) + (y * Part::BRICK_HEIGHT)),
+          x: x,
+          y: y,
           z: 0,
-          )
+        )
       end
     end
 
     add_part(
       color: window_color,
       part: window_part,
-      orientation: Orientation::DEFAULT,
-      x: ((window_x_position + window_part.x_in_bricks / 2) - 0.5) * Part::BRICK_WIDTH,
-      y: -door_part.y,
+      x: window_x_position,
+      y: -door_part.y + window_part.y,
       z: 0,
-      )
-    add_part(
-      color: window_color,
-      part: window_pane_part,
-      orientation: Orientation::Z_90,
-      x: (window_x_position) * Part::BRICK_WIDTH - 2,
-      y: -door_part.y + 4,
-      z: -8,
-      )
-    add_part(
-      color: window_color,
-      part: window_pane_part,
-      orientation: Orientation::Z_270,
-      x: (window_x_position + 3) * Part::BRICK_WIDTH + 2,
-      y: -door_part.y + 4,
-      z: -8,
-      )
+    )
   end
 
   # @param [Integer] x
@@ -335,9 +364,8 @@ class House
         x: x,
         y: y,
         z: z,
-        part: Part::BRICK_1_X_1,
+        part: BRICK_1_X_1.new,
         color: color,
-        orientation: Orientation::DEFAULT
       )
     end
   end
@@ -347,29 +375,28 @@ class House
   # @param [Integer] z
   # @param [Color] color
   # @param [Part] part
-  # @param [Orientation] orientation
   # @return [void]
-  def add_part(x:, y:, z:, part:, color:, orientation:)
-    @result << Emitter.emit(
-      color: color,
-      part: part,
-      orientation: orientation,
-      x: x + @x_origin,
-      y: y,
-      z: z + @z_origin,
+  def add_part(x:, y:, z:, part:, color:)
+    @result.concat(
+      part.create(
+        color: color,
+        x: @x_origin + x,
+        y: y,
+        z: @z_origin + z,
       )
+    )
   end
 end
 
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   current_x = 0
-  #11.upto(11) do |x_width|
-  6.upto(30) do |x_width|
+  20.upto(20) do |x_width|
+    #6.upto(30) do |x_width|
     House.new(x_origin: current_x, z_origin: 0, x_width: x_width, z_width: 10, height: 6).create().each do |line|
       result << line
     end
     result << "\n"
-    current_x += (x_width + 2) * Part::BRICK_WIDTH
+    current_x += x_width + 1
   end
 end
