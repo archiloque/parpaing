@@ -14,6 +14,7 @@ class House
     Color::YELLOW,
     Color::WHITE,
     Color::LIGHT_GRAY,
+    Color::DARK_TURQUOISE,
   ].freeze
 
   # @param [Integer] x_origin
@@ -72,58 +73,113 @@ class House
       available_columns: available_columns
     )
 
-    0.downto(-@height) do |row|
-      @result << Emitter.comment("Row #{row}")
-      0.upto(@x_width - 1) do |column|
-        add_1_x_1_brick_if_not_occupied(
-          color: walls_color,
-          x: column,
-          y: row,
-          z: 0,
-        )
-      end
+    create_walls(walls_color)
 
-      0.upto(@x_width - 1) do |column|
-        add_1_x_1_brick_if_not_occupied(
-          color: walls_color,
-          x: column,
-          y: row,
-          z: (@z_width - 1),
-        )
-      end
-
-      1.upto(@z_width - 2) do |z|
-        add_1_x_1_brick_if_not_occupied(
-          color: walls_color,
-          x: 0,
-          y: row,
-          z: z,
-        )
-      end
-      1.upto(@z_width - 2) do |z|
-        add_1_x_1_brick_if_not_occupied(
-          color: walls_color,
-          x: (@x_width - 1),
-          y: row,
-          z: z,
-        )
-      end
-    end
-
-    0.upto(@x_width - 1) do |column|
-      add_part(
-        x: column,
-        y: -@height - 1,
-        z: 0,
-        part: Plate1X10.new,
-        color: walls_color
-      )
-    end
+    create_roof(walls_color)
 
     @result
   end
 
   private
+
+  def create_walls(walls_color)
+    0.downto(-@height) do |row|
+      @result << Emitter.comment("Row #{row}")
+      if row % 2 == 0
+        # Front wall
+        0.upto(@x_width - 1) do |column|
+          add_1_x_1_brick_if_not_occupied(
+            color: walls_color,
+            x: column,
+            y: row,
+            z: 0,
+          )
+        end
+
+        # Back wall
+        0.upto(@x_width - 1) do |column|
+          add_1_x_1_brick_if_not_occupied(
+            color: walls_color,
+            x: column,
+            y: row,
+            z: (@z_width - 1),
+          )
+        end
+
+        # Left wall
+        add_part(
+          x: 0,
+          y: row,
+          z: 1,
+          part: Brick1X8Z.new,
+          color: walls_color,
+        )
+
+        # Right wall
+        add_part(
+          x: (@x_width - 1),
+          y: row,
+          z: 1,
+          part: Brick1X8Z.new,
+          color: walls_color,
+        )
+      else
+        # Front wall
+        1.upto(@x_width - 2) do |column|
+          add_1_x_1_brick_if_not_occupied(
+            color: walls_color,
+            x: column,
+            y: row,
+            z: 0,
+          )
+        end
+
+        # Back wall
+        1.upto(@x_width - 2) do |column|
+          add_1_x_1_brick_if_not_occupied(
+            color: walls_color,
+            x: column,
+            y: row,
+            z: (@z_width - 1),
+          )
+        end
+
+        # Left wall
+        add_part(
+          x: 0,
+          y: row,
+          z: 0,
+          part: Brick1X10Z.new,
+          color: walls_color,
+        )
+
+        # Right wall
+        add_part(
+          x: (@x_width - 1),
+          y: row,
+          z: 0,
+          part: Brick1X10Z.new,
+          color: walls_color,
+        )
+      end
+    end
+  end
+
+  def create_roof(walls_color)
+    roof_parts_classes = Part.calculate_fit(@x_width, Plate::BY_SIZE)
+    current_x = 0
+    roof_parts_classes.each do |roof_part_class|
+      roof_part = roof_part_class.new
+      add_part(
+        x: current_x,
+        y: -@height - 1,
+        z: 0,
+        part: roof_part,
+        color: walls_color
+      )
+      current_x += roof_part.x
+    end
+  end
 
   # @param [Part] door_part
   # @param [Color] window_color
@@ -199,7 +255,7 @@ class House
         x: x,
         y: y,
         z: z,
-        part: SingleBrick.new,
+        part: Brick1X1.new,
         color: color,
       )
     end
@@ -392,7 +448,7 @@ File.open('result.ldr', 'w') do |result|
       z: (Part::BASEPLATE_WIDTH / 2) + 2,
       from_x: fence_from_x,
       to_x: fence_to_x,
-      )
+    )
   )
   add_lines(
     result,
@@ -400,7 +456,7 @@ File.open('result.ldr', 'w') do |result|
       z: (Part::BASEPLATE_WIDTH / 2) + 3,
       from_x: fence_from_x,
       to_x: fence_to_x,
-      )
+    )
   )
 
   add_lines(
@@ -409,7 +465,7 @@ File.open('result.ldr', 'w') do |result|
       x: 0,
       from_z: (Part::BASEPLATE_WIDTH / 2) + 1,
       to_z: 0,
-      )
+    )
   )
 
   houses_list = nil
@@ -443,12 +499,11 @@ File.open('result.ldr', 'w') do |result|
         x: current_x,
         from_z: (Part::BASEPLATE_WIDTH / 2) + 1,
         to_z: 0,
-        )
+      )
     )
     current_x += space_between_house_and_fence + fence_width
     result << "\n"
 
   end
-
 
 end

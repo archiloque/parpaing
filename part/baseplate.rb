@@ -17,7 +17,7 @@ class GreenBasePlate < BasePlate
         color: Color::GREEN,
         orientation: Orientation::DEFAULT,
         x: (x + 14.5) * BRICK_WIDTH,
-        y: y,
+        y: (y * BRICK_HEIGHT) - STUD_HEIGHT,
         z: (z + 15.5) * BRICK_WIDTH,
         ),
     ]
@@ -33,7 +33,7 @@ class Crossroads < BasePlate
         color: Color::DARK_BLUISH_GRAY,
         orientation: Orientation::DEFAULT,
         x: (x + 14.5) * BRICK_WIDTH,
-        y: y,
+        y: (y * BRICK_HEIGHT) - STUD_HEIGHT,
         z: (z + 15.5) * BRICK_WIDTH,
         ),
     ]
@@ -49,7 +49,7 @@ class RoadTowardX < BasePlate
         color: Color::DARK_BLUISH_GRAY,
         orientation: Orientation::Z_90,
         x: (x + 14.5) * BRICK_WIDTH,
-        y: y,
+        y: (y * BRICK_HEIGHT) - STUD_HEIGHT,
         z: (z + 15.5) * BRICK_WIDTH,
         ),
     ]
@@ -65,7 +65,7 @@ class RoadTowardZ < BasePlate
         color: Color::DARK_BLUISH_GRAY,
         orientation: Orientation::DEFAULT,
         x: (x + 14.5) * BRICK_WIDTH,
-        y: y,
+        y: (y * BRICK_HEIGHT) - STUD_HEIGHT,
         z: (z + 15.5) * BRICK_WIDTH,
         ),
     ]
