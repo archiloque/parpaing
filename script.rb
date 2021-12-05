@@ -2,53 +2,10 @@
 
 # 30055 Fence Spindled 1 x 4 x 2
 require 'set'
-
-class Color
-  attr_reader :name, :code
-
-  # @param [String] name
-  # @param [Integer] code
-  def initialize(name:, code:)
-    @name = name
-    @code = code
-  end
-
-  BLUE = Color.new(name: 'blue', code: 1)
-  RED = Color.new(name: 'red', code: 4)
-  LIGHT_GRAY = Color.new(name: 'light gray', code: 7)
-  YELLOW = Color.new(name: 'yellow', code: 14)
-  WHITE = Color.new(name: 'white', code: 15)
-  DARK_BLUISH_GRAY = Color.new(name: 'Dark Bluish Gray', code: 72)
-end
-
-class Part
-  BRICK_WIDTH = 20
-  BRICK_HEIGHT = 24
-  PLATE_HEIGHT = 8
-  STUD_HEIGHT = 4
-
-  attr_reader :name, :code, :x, :y, :z
-
-  # @param [String] name
-  # @param [String] code
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
-  def initialize(x:, y:, z:)
-    @x = x
-    @y = y
-    @z = z
-  end
-
-  # @param [Color] color
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
-  # @return [Array<String>]
-  def create(color:, x:, y:, z:)
-    raise NotImplementedError
-  end
-end
+require_relative 'color'
+require_relative 'orientation'
+require_relative 'emitter'
+require_relative 'part'
 
 class BRICK_1_X_1 < Part
   def initialize()
@@ -211,42 +168,6 @@ class BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AN
         z: (z + 14.5) * BRICK_WIDTH,
       ),
     ]
-  end
-end
-
-class Orientation
-  attr_reader :name, :code
-
-  # @param [String] name
-  # @param [String] code
-  def initialize(name:, code:)
-    @name = name
-    @code = code
-  end
-
-  DEFAULT = Orientation.new(name: 'Default', code: ' 1 0 0 0 1 0 0 0 1')
-  Z_90 = Orientation.new(name: 'Z 90°', code: '0 0 -1 0 1 0 1 0 0')
-  Z_270 = Orientation.new(name: 'Z 270°', code: '0 0 1 0 1 0 -1 0 0')
-end
-
-class Emitter
-  # @param [String] part_name
-  # @param [String] part_code
-  # @param [Color] color
-  # @param [Orientation] orientation
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
-  # @return [String]
-  def self.emit(part_name:, part_code:, color:, orientation:, x:, y:, z:)
-    comment("#{part_name}, color: #{color.name}, position: (#{x}, #{y}, #{z}), orientation: #{orientation.name}") +
-      "1 #{color.code} #{x} #{y} #{z} #{orientation.code} #{part_code}.dat\n"
-  end
-
-  # @return [String]
-  # @param [String] content
-  def self.comment(content)
-    "0 \\\\ #{content}\n"
   end
 end
 
