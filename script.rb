@@ -5,171 +5,7 @@ require 'set'
 require_relative 'color'
 require_relative 'orientation'
 require_relative 'emitter'
-require_relative 'part'
-
-class BRICK_1_X_1 < Part
-  def initialize()
-    super(
-      x: 1,
-      y: 1,
-      z: 1,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    [
-      Emitter.emit(
-        part_name: 'Brick 1 x 1',
-        part_code: '3005',
-        color: color,
-        orientation: Orientation::DEFAULT,
-        x: (x - 1) * BRICK_WIDTH,
-        y: ((y - 1) * BRICK_HEIGHT) - STUD_HEIGHT,
-        z: z * BRICK_WIDTH,
-      ),
-    ]
-  end
-end
-
-class DOOR_1_X_4_X_5_WITH_4_PANES < Part
-  def initialize()
-    super(
-      x: 4,
-      y: 5,
-      z: 1,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    [
-      Emitter.emit(
-        part_name: 'Door 1 x 4 x 5 with 4 Panes',
-        part_code: '3861',
-        color: color,
-        orientation: Orientation::Z_90,
-        x: (x + @x - 2) * BRICK_WIDTH,
-        y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
-        z: z,
-      ),
-    ]
-  end
-end
-
-class PLATE_1_X_10 < Part
-  def initialize()
-    super(
-      x: 1,
-      y: 1,
-      z: 10,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    [
-      Emitter.emit(
-        part_name: 'Plate 1 x 10',
-        part_code: '4477',
-        color: color,
-        orientation: Orientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
-        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
-      ),
-    ]
-  end
-end
-
-class WINDOW_1_X_4_X_3 < Part
-  def initialize()
-    super(
-      x: 4,
-      y: 3,
-      z: 1,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    pane_z = (z * BRICK_WIDTH) - 8
-    pane_y = (y - @y) * BRICK_HEIGHT - STUD_HEIGHT + 4
-    [
-      Emitter.emit(
-        part_name: 'Window 1 x 4 x 3',
-        part_code: '3853',
-        color: color,
-        orientation: Orientation::DEFAULT,
-        x: (x + 0.5) * BRICK_WIDTH,
-        y: (y - @y) * BRICK_HEIGHT - STUD_HEIGHT,
-        z: z * BRICK_WIDTH,
-      ),
-      Emitter.emit(
-        part_name: 'Window 1 x 2 x 3 Pane with Thick Corner Tabs',
-        part_code: '60608',
-        color: color,
-        orientation: Orientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH - 2,
-        y: pane_y,
-        z: pane_z,
-      ),
-      Emitter.emit(
-        part_name: 'Window 1 x 2 x 3 Pane with Thick Corner Tabs',
-        part_code: '60608',
-        color: color,
-        orientation: Orientation::Z_270,
-        x: (x + 2) * BRICK_WIDTH + 2,
-        y: pane_y,
-        z: pane_z,
-      ),
-    ]
-  end
-end
-
-class BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS < Part
-  def initialize()
-    super(
-      x: 32,
-      y: 1,
-      z: 32,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    [
-      Emitter.emit(
-        part_name: 'Baseplate 32 x 32 with 6-Stud Crossroads with White Dashed Lines and Crosswalks Print',
-        part_code: '44343p03',
-        color: Color::DARK_BLUISH_GRAY,
-        orientation: Orientation::DEFAULT,
-        x: (x + 14.5) * BRICK_WIDTH,
-        y: y,
-        z: (z + 14.5) * BRICK_WIDTH,
-      ),
-    ]
-  end
-end
-
-class BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN < Part
-  def initialize()
-    super(
-      x: 32,
-      y: 1,
-      z: 32,
-    )
-  end
-
-  def create(color:, x:, y:, z:)
-    [
-      Emitter.emit(
-        part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
-        part_code: '44336p04',
-        color: Color::DARK_BLUISH_GRAY,
-        orientation: Orientation::Z_90,
-        x: (x + 15.5) * BRICK_WIDTH,
-        y: y,
-        z: (z + 14.5) * BRICK_WIDTH,
-      ),
-    ]
-  end
-end
+require_relative 'part/part'
 
 class House
   POSSIBLE_COLORS = [
@@ -201,7 +37,7 @@ class House
     @result << Emitter.comment('New house')
     walls_color = POSSIBLE_COLORS.sample
 
-    door_part = DOOR_1_X_4_X_5_WITH_4_PANES.new
+    door_part = Door.new
     #@type [Integer]
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
 
@@ -227,7 +63,7 @@ class House
       z: 0,
     )
 
-    window_part = WINDOW_1_X_4_X_3.new
+    window_part = Windows.new
     window_color = (POSSIBLE_COLORS - [walls_color, door_color]).sample
     create_windows(
       door_part: door_part,
@@ -279,7 +115,7 @@ class House
         x: column,
         y: -@height - 1,
         z: 0,
-        part: PLATE_1_X_10.new,
+        part: Plate1X10.new,
         color: walls_color
       )
     end
@@ -363,7 +199,7 @@ class House
         x: x,
         y: y,
         z: z,
-        part: BRICK_1_X_1.new,
+        part: SingleBrick.new,
         color: color,
       )
     end
@@ -411,31 +247,39 @@ end
 
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
-  current_x = 0
-  roads_in_house_blocks = 5
-  blocks_in_house_blocks = (3 * 2) + (32 * roads_in_house_blocks)
-  BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS
+  space_between_house_and_fence = 2
+  fence_width = 1
+  usable_blocks_in_cross_baseplates = 3
+
+  straight_baseplates_in_houses_group = 5
+  blocks_in_house_blocks = ((usable_blocks_in_cross_baseplates - space_between_house_and_fence - fence_width) * 2) + (Part::BASEPLATE_WIDTH * straight_baseplates_in_houses_group)
+  Crossroads
     .new
-    .create(color: Color::DARK_BLUISH_GRAY, x: -(32 - 3), y: 0, z: -(32 - 3))
+    .create(color: Color::DARK_BLUISH_GRAY, x: -(Part::BASEPLATE_WIDTH - 3), y: 0, z: -(Part::BASEPLATE_WIDTH - 3))
     .each do |l|
     result << l
   end
-  1.upto(roads_in_house_blocks) do |index|
-    BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN
+  1.upto(straight_baseplates_in_houses_group) do |index|
+    RoadTowardX
       .new
       .create(
         color: Color::DARK_BLUISH_GRAY,
-        x: -30 + (index * BASEPLATE_32_X_32_WITH_6_STUD_STRAIGHT_AND_ROAD_WITH_WHITE_DASHED_LINES_AND_STORM_DRAIN.new.x),
+        x: -30 + (index * RoadTowardX.new.x),
         y: 0,
-        z: -(32 - 3)
+        z: -(Part::BASEPLATE_WIDTH - 3)
       )
       .each do |l|
       result << l
     end
   end
-  BASEPLATE_32_X_32_WITH_6_STUD_CROSSROADS_WITH_WHITE_DASHED_LINES_AND_CROSSWALKS
+  Crossroads
     .new
-    .create(color: Color::DARK_BLUISH_GRAY, x: 32 * roads_in_house_blocks + 3, y: 0, z: -(32 - 3))
+    .create(
+      color: Color::DARK_BLUISH_GRAY, 
+      x: Part::BASEPLATE_WIDTH * straight_baseplates_in_houses_group + 3, 
+      y: 0, 
+      z: -(Part::BASEPLATE_WIDTH - 3),
+      )
     .each do |l|
     result << l
   end
@@ -446,14 +290,20 @@ File.open('result.ldr', 'w') do |result|
       blocks_in_house_blocks: blocks_in_house_blocks,
       min_house_width: 6,
       max_house_width: 30,
-      width_between_houses: 5
+      width_between_houses: fence_width + (space_between_house_and_fence * 2)
     )
   end
 
   #20.upto(20) do |x_width|
-  current_x = 0
+  current_x = fence_width + space_between_house_and_fence
   houses_list.shuffle.each do |house_width|
-    House.new(x_origin: current_x, z_origin: 0, x_width: house_width, z_width: 10, height: 6).create().each do |line|
+    House.new(
+      x_origin: current_x, 
+      z_origin: 0, 
+      x_width: house_width, 
+      z_width: 10, 
+      height: 6
+    ).create().each do |line|
       result << line
     end
     result << "\n"

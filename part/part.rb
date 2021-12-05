@@ -3,6 +3,7 @@ class Part
   BRICK_HEIGHT = 24
   PLATE_HEIGHT = 8
   STUD_HEIGHT = 4
+  BASEPLATE_WIDTH = 32
 
   attr_reader :name, :code, :x, :y, :z
 
@@ -26,3 +27,10 @@ class Part
     raise NotImplementedError
   end
 end
+
+require_relative 'crossroads'
+require_relative 'door'
+require_relative 'plate1_x10'
+require_relative 'road'
+require_relative 'single_brick'
+require_relative 'windows'
