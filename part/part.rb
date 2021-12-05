@@ -28,9 +28,9 @@ class Part
   end
 end
 
-require_relative 'crossroads'
+require_relative 'baseplate'
 require_relative 'door'
+require_relative 'fence_toward_x'
 require_relative 'plate1_x10'
-require_relative 'road'
 require_relative 'single_brick'
 require_relative 'windows'
