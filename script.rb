@@ -245,6 +245,15 @@ def find_houses_list(blocks_in_house_blocks:, width_between_houses:, min_house_w
   end
 end
 
+# @param [File] file
+# @param [Array<String>] lines
+# @return [void]
+def add_lines(file, lines)
+  lines.each do |line|
+    file << line
+  end
+end
+
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   space_between_house_and_fence = 2
@@ -253,36 +262,36 @@ File.open('result.ldr', 'w') do |result|
 
   straight_baseplates_in_houses_group = 5
   blocks_in_house_blocks = ((usable_blocks_in_cross_baseplates - space_between_house_and_fence - fence_width) * 2) + (Part::BASEPLATE_WIDTH * straight_baseplates_in_houses_group)
-  Crossroads
-    .new
-    .create(color: Color::DARK_BLUISH_GRAY, x: -(Part::BASEPLATE_WIDTH - 3), y: 0, z: -(Part::BASEPLATE_WIDTH - 3))
-    .each do |l|
-    result << l
-  end
+  add_lines(
+    result,
+    Crossroads
+      .new
+      .create(color: Color::DARK_BLUISH_GRAY, x: -(Part::BASEPLATE_WIDTH - 3), y: 0, z: -(Part::BASEPLATE_WIDTH - 3))
+  )
   1.upto(straight_baseplates_in_houses_group) do |index|
-    RoadTowardX
+    add_lines(
+      result,
+      RoadTowardX
+        .new
+        .create(
+          color: Color::DARK_BLUISH_GRAY,
+          x: -30 + (index * RoadTowardX.new.x),
+          y: 0,
+          z: -(Part::BASEPLATE_WIDTH - 3)
+        )
+    )
+  end
+  add_lines(
+    result,
+    Crossroads
       .new
       .create(
         color: Color::DARK_BLUISH_GRAY,
-        x: -30 + (index * RoadTowardX.new.x),
+        x: Part::BASEPLATE_WIDTH * straight_baseplates_in_houses_group + 3,
         y: 0,
-        z: -(Part::BASEPLATE_WIDTH - 3)
+        z: -(Part::BASEPLATE_WIDTH - 3),
       )
-      .each do |l|
-      result << l
-    end
-  end
-  Crossroads
-    .new
-    .create(
-      color: Color::DARK_BLUISH_GRAY, 
-      x: Part::BASEPLATE_WIDTH * straight_baseplates_in_houses_group + 3, 
-      y: 0, 
-      z: -(Part::BASEPLATE_WIDTH - 3),
-      )
-    .each do |l|
-    result << l
-  end
+  )
 
   houses_list = nil
   until houses_list
@@ -297,15 +306,16 @@ File.open('result.ldr', 'w') do |result|
   #20.upto(20) do |x_width|
   current_x = fence_width + space_between_house_and_fence
   houses_list.shuffle.each do |house_width|
-    House.new(
-      x_origin: current_x, 
-      z_origin: 0, 
-      x_width: house_width, 
-      z_width: 10, 
-      height: 6
-    ).create().each do |line|
-      result << line
-    end
+    add_lines(
+      result,
+      House.new(
+        x_origin: current_x,
+        z_origin: 0,
+        x_width: house_width,
+        z_width: 10,
+        height: 6
+      ).create()
+    )
     result << "\n"
     current_x += house_width + 5
   end
