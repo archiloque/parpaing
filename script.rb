@@ -82,6 +82,32 @@ class House
 
   private
 
+  # @param [Integer] y
+  # @param [Integer] z
+  # @param [Integer] from_x
+  # @param [Integer] to_x
+  # @param [Color] walls_color
+  # @return [void]
+  def create_wall_along_x(y:, z:, from_x:, to_x:, walls_color:)
+    length = to_x - from_x + 1
+    part_classes = Part.calculate_fit(length, Brick::BY_SIZE_X)
+    if y % 2 == 1
+      part_classes = part_classes.reverse
+    end
+    current_x = from_x
+    part_classes.each do |part_classes|
+      part = part_classes.new
+      add_part(
+        x: current_x,
+        y: y,
+        z: z,
+        part: part,
+        color: walls_color
+      )
+      current_x += part.x
+    end
+  end
+
   def create_walls(walls_color)
     0.downto(-@height) do |row|
       @result << Emitter.comment("Row #{row}")
@@ -97,14 +123,13 @@ class House
         end
 
         # Back wall
-        0.upto(@x_width - 1) do |column|
-          add_1_x_1_brick_if_not_occupied(
-            color: walls_color,
-            x: column,
-            y: row,
-            z: (@z_width - 1),
-          )
-        end
+        create_wall_along_x(
+          y: row,
+          from_x: 0,
+          to_x: @x_width - 1,
+          z: (@z_width - 1),
+          walls_color: walls_color,
+        )
 
         # Left wall
         add_part(
@@ -135,14 +160,13 @@ class House
         end
 
         # Back wall
-        1.upto(@x_width - 2) do |column|
-          add_1_x_1_brick_if_not_occupied(
-            color: walls_color,
-            x: column,
-            y: row,
-            z: (@z_width - 1),
-          )
-        end
+        create_wall_along_x(
+          y: row,
+          from_x: 1,
+          to_x: @x_width - 2,
+          z: (@z_width - 1),
+          walls_color: walls_color,
+        )
 
         # Left wall
         add_part(

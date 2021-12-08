@@ -1,4 +1,13 @@
+module Plate
+  # @param [Integer] y
+  # @return [Integer]
+  def create_y(y)
+    (y * Part::BRICK_HEIGHT) - (Part::STUD_HEIGHT * 3)
+  end
+
+end
 class Plate1X10 < Part
+  include Plate
   def initialize()
     super(
       x: 1,
@@ -15,7 +24,7 @@ class Plate1X10 < Part
         color: color,
         orientation: Orientation::Z_90,
         x: (x - 1) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
+        y: create_y(y),
         z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
       ),
     ]
@@ -23,6 +32,7 @@ class Plate1X10 < Part
 end
 
 class Plate2X10 < Part
+  include Plate
   def initialize()
     super(
       x: 2,
@@ -39,7 +49,7 @@ class Plate2X10 < Part
         color: color,
         orientation: Orientation::Z_90,
         x: (x - 0.5) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
+        y: create_y(y),
         z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
       ),
     ]
@@ -47,6 +57,7 @@ class Plate2X10 < Part
 end
 
 class Plate4X10 < Part
+  include Plate
   def initialize()
     super(
       x: 4,
@@ -63,7 +74,7 @@ class Plate4X10 < Part
         color: color,
         orientation: Orientation::Z_90,
         x: (x + 0.5) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
+        y: create_y(y),
         z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
       ),
     ]
@@ -71,6 +82,7 @@ class Plate4X10 < Part
 end
 
 class Plate6X10 < Part
+  include Plate
   def initialize()
     super(
       x: 6,
@@ -87,7 +99,7 @@ class Plate6X10 < Part
         color: color,
         orientation: Orientation::Z_90,
         x: (x + 1.5) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (STUD_HEIGHT * 2),
+        y: create_y(y),
         z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
       ),
     ]
