@@ -47,7 +47,7 @@ class House
     door_x_position.upto(door_x_position + door_part.x - 1) do |x|
       available_columns.delete(x)
       0.upto(door_part.y - 1) do |y|
-        not_occupied?(
+        occupy(
           x: x,
           y: -y,
           z: 0,
@@ -88,8 +88,32 @@ class House
   # @param [Integer] to_x
   # @param [Color] walls_color
   # @return [void]
+  def create_unoccupied_wall_along_x(y:, z:, from_x:, to_x:, walls_color:)
+    current_from_x = from_x
+    while occupied?(x: current_from_x, y: y, z: z)
+      current_from_x += 1
+    end
+    if current_from_x >= to_x
+      return
+    end
+    current_to_x = current_from_x
+    while (current_to_x < to_x) && (!occupied?(x: current_to_x, y: y, z: z))
+      current_to_x += 1
+    end
+    create_wall_along_x(y: y, z: z, from_x: current_from_x, to_x: current_to_x, walls_color: walls_color)
+    if current_to_x < to_x
+      create_unoccupied_wall_along_x(y: y, z: z, from_x: current_to_x + 1, to_x: to_x, walls_color: walls_color)
+    end
+  end
+
+  # @param [Integer] y
+  # @param [Integer] z
+  # @param [Integer] from_x
+  # @param [Integer] to_x
+  # @param [Color] walls_color
+  # @return [void]
   def create_wall_along_x(y:, z:, from_x:, to_x:, walls_color:)
-    length = to_x - from_x + 1
+    length = to_x - from_x
     part_classes = Part.calculate_fit(length, Brick::BY_SIZE_X)
     if y % 2 == 1
       part_classes = part_classes.reverse
@@ -113,20 +137,19 @@ class House
       @result << Emitter.comment("Row #{row}")
       if row % 2 == 0
         # Front wall
-        0.upto(@x_width - 1) do |column|
-          add_1_x_1_brick_if_not_occupied(
-            color: walls_color,
-            x: column,
-            y: row,
-            z: 0,
-          )
-        end
-
-        # Back wall
-        create_wall_along_x(
+        create_unoccupied_wall_along_x(
           y: row,
           from_x: 0,
-          to_x: @x_width - 1,
+          to_x: @x_width,
+          z: 0,
+          walls_color: walls_color,
+        )
+
+        # Back wall
+        create_unoccupied_wall_along_x(
+          y: row,
+          from_x: 0,
+          to_x: @x_width,
           z: (@z_width - 1),
           walls_color: walls_color,
         )
@@ -150,20 +173,19 @@ class House
         )
       else
         # Front wall
-        1.upto(@x_width - 2) do |column|
-          add_1_x_1_brick_if_not_occupied(
-            color: walls_color,
-            x: column,
-            y: row,
-            z: 0,
-          )
-        end
-
-        # Back wall
-        create_wall_along_x(
+        create_unoccupied_wall_along_x(
           y: row,
           from_x: 1,
-          to_x: @x_width - 2,
+          to_x: @x_width - 1,
+          z: 0,
+          walls_color: walls_color,
+        )
+
+        # Back wall
+        create_unoccupied_wall_along_x(
+          y: row,
+          from_x: 1,
+          to_x: @x_width - 1,
           z: (@z_width - 1),
           walls_color: walls_color,
         )
@@ -242,7 +264,7 @@ class House
   def create_window(door_part:, window_color:, window_part:, window_x_position:)
     window_x_position.upto(window_x_position + window_part.x - 1) do |x|
       (-door_part.y + window_part.y).downto(-door_part.y + 1) do |y|
-        not_occupied?(
+        occupy(
           x: x,
           y: y,
           z: 0,
@@ -262,27 +284,25 @@ class House
   # @param [Integer] x
   # @param [Integer] y
   # @param [Integer] z
-  # @return [Set, nil]
-  def not_occupied?(x:, y:, z:)
-    key = "#{x}-#{y}-#{z}"
-    @occupied_bricks.add?(key)
+  # @return [String]
+  def occupation_key(x:, y:, z:)
+    "#{x}-#{y}-#{z}"
   end
 
   # @param [Integer] x
   # @param [Integer] y
   # @param [Integer] z
-  # @param [Color] color
-  # @return [void]
-  def add_1_x_1_brick_if_not_occupied(x:, y:, z:, color:)
-    if not_occupied?(x: x, y: y, z: z)
-      add_part(
-        x: x,
-        y: y,
-        z: z,
-        part: Brick1X1.new,
-        color: color,
-      )
-    end
+  # @return [Set, nil]
+  def occupy(x:, y:, z:)
+    @occupied_bricks.add(occupation_key(x: x, y: y, z: z))
+  end
+
+  # @param [Integer] x
+  # @param [Integer] y
+  # @param [Integer] z
+  # @return [Boolean]
+  def occupied?(x:, y:, z:)
+    @occupied_bricks.include?(occupation_key(x: x, y: y, z: z))
   end
 
   # @param [Integer] x
