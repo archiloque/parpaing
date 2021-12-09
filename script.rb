@@ -38,7 +38,7 @@ class House
     @result << Emitter.comment('New house')
     walls_color = POSSIBLE_COLORS.sample
 
-    door_part = Door.new
+    door_part = [Door4Panes, Door].sample.new
     #@type [Integer]
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
 
@@ -64,7 +64,7 @@ class House
       z: 0,
     )
 
-    window_part = Windows.new
+    window_part = [Windows1, Windows2, Windows3].sample.new
     window_color = (POSSIBLE_COLORS - [walls_color, door_color]).sample
     create_windows(
       door_part: door_part,

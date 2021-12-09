@@ -1,13 +1,12 @@
-module Brick
+class Brick < Part
   # @param [Integer] y
   # @return [Integer]
   def create_y(y)
-    ((y - 1) * Part::BRICK_HEIGHT) - Part::STUD_HEIGHT
+    ((y - 1) * BRICK_HEIGHT) - STUD_HEIGHT
   end
 end
 
-class Brick1X1 < Part
-  include Brick
+class Brick1X1 < Brick
 
   def initialize()
     super(
@@ -32,8 +31,7 @@ class Brick1X1 < Part
   end
 end
 
-class Brick1X2X < Part
-  include Brick
+class Brick1X2X < Brick
 
   def initialize()
     super(
@@ -58,8 +56,7 @@ class Brick1X2X < Part
   end
 end
 
-class Brick1X2Z < Part
-  include Brick
+class Brick1X2Z < Brick
 
   def initialize()
     super(
@@ -84,8 +81,7 @@ class Brick1X2Z < Part
   end
 end
 
-class Brick1X3X < Part
-  include Brick
+class Brick1X3X < Brick
 
   def initialize()
     super(
@@ -110,8 +106,7 @@ class Brick1X3X < Part
   end
 end
 
-class Brick1X3Z < Part
-  include Brick
+class Brick1X3Z < Brick
 
   def initialize()
     super(
@@ -136,8 +131,7 @@ class Brick1X3Z < Part
   end
 end
 
-class Brick1X4X < Part
-  include Brick
+class Brick1X4X < Brick
 
   def initialize()
     super(
@@ -162,8 +156,7 @@ class Brick1X4X < Part
   end
 end
 
-class Brick1X4Z < Part
-  include Brick
+class Brick1X4Z < Brick
 
   def initialize()
     super(
@@ -188,8 +181,7 @@ class Brick1X4Z < Part
   end
 end
 
-class Brick1X6X < Part
-  include Brick
+class Brick1X6X < Brick
 
   def initialize()
     super(
@@ -214,8 +206,7 @@ class Brick1X6X < Part
   end
 end
 
-class Brick1X6Z < Part
-  include Brick
+class Brick1X6Z < Brick
 
   def initialize()
     super(
@@ -240,8 +231,7 @@ class Brick1X6Z < Part
   end
 end
 
-class Brick1X8X < Part
-  include Brick
+class Brick1X8X < Brick
 
   def initialize()
     super(
@@ -266,8 +256,7 @@ class Brick1X8X < Part
   end
 end
 
-class Brick1X8Z < Part
-  include Brick
+class Brick1X8Z < Brick
 
   def initialize()
     super(
@@ -292,8 +281,7 @@ class Brick1X8Z < Part
   end
 end
 
-class Brick1X10X < Part
-  include Brick
+class Brick1X10X < Brick
 
   def initialize()
     super(
@@ -318,8 +306,7 @@ class Brick1X10X < Part
   end
 end
 
-class Brick1X10Z < Part
-  include Brick
+class Brick1X10Z < Brick
 
   def initialize()
     super(
@@ -344,7 +331,7 @@ class Brick1X10Z < Part
   end
 end
 
-module Brick
+class Brick
   BY_SIZE_Z = {
     1 => Brick1X1,
     2 => Brick1X2Z,

@@ -1,4 +1,4 @@
-module Plate
+class Plate < Part
   # @param [Integer] y
   # @return [Integer]
   def create_y(y)
@@ -6,8 +6,8 @@ module Plate
   end
 
 end
-class Plate1X10 < Part
-  include Plate
+
+class Plate1X10 < Plate
   def initialize()
     super(
       x: 1,
@@ -31,8 +31,8 @@ class Plate1X10 < Part
   end
 end
 
-class Plate2X10 < Part
-  include Plate
+class Plate2X10 < Plate
+
   def initialize()
     super(
       x: 2,
@@ -56,8 +56,8 @@ class Plate2X10 < Part
   end
 end
 
-class Plate4X10 < Part
-  include Plate
+class Plate4X10 < Plate
+
   def initialize()
     super(
       x: 4,
@@ -81,8 +81,8 @@ class Plate4X10 < Part
   end
 end
 
-class Plate6X10 < Part
-  include Plate
+class Plate6X10 < Plate
+
   def initialize()
     super(
       x: 6,
@@ -106,7 +106,7 @@ class Plate6X10 < Part
   end
 end
 
-module Plate
+class Plate
   BY_SIZE = {
     1 => Plate1X10,
     2 => Plate2X10,

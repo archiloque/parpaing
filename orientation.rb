@@ -10,5 +10,6 @@ class Orientation
 
   DEFAULT = Orientation.new(name: 'Default', code: ' 1 0 0 0 1 0 0 0 1')
   Z_90 = Orientation.new(name: 'Z 90°', code: '0 0 -1 0 1 0 1 0 0')
+  Z_180 = Orientation.new(name: 'Z 180°', code: '-1 0 0 0 1 0 0 0 -1')
   Z_270 = Orientation.new(name: 'Z 270°', code: '0 0 1 0 1 0 -1 0 0')
 end
