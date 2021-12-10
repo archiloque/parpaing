@@ -1,4 +1,10 @@
-class FenceTowardX < Part
+class Fence < Part
+  def create_y(y)
+    (y * BRICK_HEIGHT) - 54
+  end
+
+end
+class FenceTowardX < Fence
   def initialize()
     super(
       x: 4,
@@ -15,14 +21,14 @@ class FenceTowardX < Part
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: (x + 3.5) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (BRICK_WIDTH * 2 + STUD_HEIGHT),
+        y: create_y(y),
         z: z * BRICK_WIDTH,
         ),
     ]
   end
 end
 
-class FenceTowardZ < Part
+class FenceTowardZ < Fence
   def initialize()
     super(
       x: 1,
@@ -39,7 +45,7 @@ class FenceTowardZ < Part
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x - 1) * BRICK_WIDTH,
-        y: (y * BRICK_HEIGHT) - (BRICK_WIDTH * 2 + STUD_HEIGHT),
+        y: create_y(y),
         z: (z - 1.5) * BRICK_WIDTH,
         ),
     ]

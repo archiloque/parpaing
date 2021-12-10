@@ -35,7 +35,7 @@ class House
     #@type [Integer]
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
 
-    available_position_front_wall = (0..@x_width - 1).to_a
+    available_position_front_wall = (0..(@x_width - 1)).to_a
 
     door_x_position.upto(door_x_position + door_part.x - 1) do |x|
       available_position_front_wall.delete(x)
@@ -66,8 +66,8 @@ class House
       windows_width: windows_front_part.x,
       available_positions: available_position_front_wall
     ) do |column|
-      create_window_along_x(
-        door_part: door_part,
+      create_windows_along_x(
+        y_top: -door_part.y,
         window_color: window_color,
         window_part: windows_front_part,
         window_x_position: column,
@@ -79,14 +79,29 @@ class House
     windows_back_part = windows_type[:back].new
     find_windows_positions(
       windows_width: windows_front_part.x,
-      available_positions: (0..@x_width - 1).to_a
+      available_positions: (1..@x_width - 1).to_a
     ) do |column|
-      create_window_along_x(
-        door_part: door_part,
+      create_windows_along_x(
+        y_top: -door_part.y,
         window_color: window_color,
         window_part: windows_back_part,
         window_x_position: column,
         z: (@z_width - 1),
+      )
+    end
+
+    # Left windows
+    windows_left_part = windows_type[:left].new
+    find_windows_positions(
+      windows_width: windows_front_part.x,
+      available_positions: (0..@z_width - 1).to_a
+    ) do |column|
+      create_windows_along_z(
+        y_top: -door_part.y,
+        window_color: window_color,
+        window_part: windows_left_part,
+        window_z_position: column,
+        x: 0,
       )
     end
 
@@ -147,6 +162,56 @@ class House
     end
   end
 
+  # @param [Integer] x
+  # @param [Integer] y
+  # @param [Integer] from_z
+  # @param [Integer] to_z
+  # @param [Color] walls_color
+  # @return [void]
+  def create_wall_along_z(y:, x:, from_z:, to_z:, walls_color:)
+    current_from_z = from_z
+    while occupied?(z: current_from_z, y: y, x: x)
+      current_from_z += 1
+    end
+    if current_from_z >= to_z
+      return
+    end
+    current_to_z = current_from_z
+    while (current_to_z < to_z) && (!occupied?(z: current_to_z, y: y, x: x))
+      current_to_z += 1
+    end
+    create_wall_segment_along_z(y: y, x: x, from_z: current_from_z, to_z: current_to_z, walls_color: walls_color)
+    if current_to_z < to_z
+      create_wall_along_z(y: y, x: x, from_z: current_to_z + 1, to_z: to_z, walls_color: walls_color)
+    end
+  end
+
+  # @param [Integer] y
+  # @param [Integer] x
+  # @param [Integer] from_z
+  # @param [Integer] to_z
+  # @param [Color] walls_color
+  # @return [void]
+  def create_wall_segment_along_z(y:, x:, from_z:, to_z:, walls_color:)
+    length = to_z - from_z
+    part_classes = Part.calculate_fit(length, Brick::BY_SIZE_Z)
+    if y % 2 == 1
+      part_classes = part_classes.reverse
+    end
+    current_z = from_z
+    part_classes.each do |part_classes|
+      part = part_classes.new
+      add_part(
+        x: x,
+        y: y,
+        z: current_z,
+        part: part,
+        color: walls_color
+      )
+      current_z += part.z
+    end
+  end
+
   def create_walls(walls_color)
     0.downto(-@height) do |row|
       @result << Emitter.comment("Row #{row}")
@@ -170,21 +235,21 @@ class House
         )
 
         # Left wall
-        add_part(
-          x: 0,
+        create_wall_along_z(
           y: row,
-          z: 1,
-          part: Brick1X8Z.new,
-          color: walls_color,
+          from_z: 1,
+          to_z: @z_width - 1,
+          x: 0,
+          walls_color: walls_color,
         )
 
         # Right wall
-        add_part(
-          x: (@x_width - 1),
+        create_wall_along_z(
           y: row,
-          z: 1,
-          part: Brick1X8Z.new,
-          color: walls_color,
+          from_z: 1,
+          to_z: @z_width - 1,
+          x: (@x_width - 1),
+          walls_color: walls_color,
         )
       else
         # Front wall
@@ -206,21 +271,21 @@ class House
         )
 
         # Left wall
-        add_part(
-          x: 0,
+        create_wall_along_z(
           y: row,
-          z: 0,
-          part: Brick1X10Z.new,
-          color: walls_color,
+          from_z: 0,
+          to_z: @z_width,
+          x: 0,
+          walls_color: walls_color,
         )
 
         # Right wall
-        add_part(
-          x: (@x_width - 1),
+        create_wall_along_z(
           y: row,
-          z: 0,
-          part: Brick1X10Z.new,
-          color: walls_color,
+          from_z: 0,
+          to_z: @z_width,
+          x: (@x_width - 1),
+          walls_color: walls_color,
         )
       end
     end
@@ -264,15 +329,15 @@ class House
     end
   end
 
-  # @param [Part] door_part
+  # @param [Integer] y_top
   # @param [Color] window_color
   # @param [Part] window_part
   # @param [Integer] window_x_position
   # @param [Integer] z
   # @return [void]
-  def create_window_along_x(door_part:, window_color:, window_part:, window_x_position:, z:)
+  def create_windows_along_x(y_top:, window_color:, window_part:, window_x_position:, z:)
     window_x_position.upto(window_x_position + window_part.x - 1) do |x|
-      (-door_part.y + window_part.y).downto(-door_part.y + 1) do |y|
+      (y_top + window_part.y).downto(y_top + 1) do |y|
         occupy(
           x: x,
           y: y,
@@ -285,9 +350,35 @@ class House
       color: window_color,
       part: window_part,
       x: window_x_position,
-      y: -door_part.y + window_part.y,
+      y: y_top + window_part.y,
       z: z,
     )
+  end
+
+  # @param [Integer] y_top
+  # @param [Color] window_color
+  # @param [Part] window_part
+  # @param [Integer] window_z_position
+  # @param [Integer] x
+  # @return [void]
+  def create_windows_along_z(y_top:, window_color:, window_part:, window_z_position:, x:)
+    window_z_position.upto(window_z_position + window_part.z - 1) do |z|
+      (y_top + window_part.y).downto(y_top + 1) do |y|
+        occupy(
+          x: x,
+          y: y,
+          z: z,
+        )
+      end
+    end
+
+    add_part(
+      color: window_color,
+      part: window_part,
+      x: x,
+      y: y_top + window_part.y,
+      z: window_z_position,
+      )
   end
 
   # @param [Integer] x

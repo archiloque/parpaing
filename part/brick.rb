@@ -4,6 +4,36 @@ class Brick < Part
   def create_y(y)
     ((y - 1) * BRICK_HEIGHT) - STUD_HEIGHT
   end
+
+  BRICK_1X2 = {
+    part_name: 'Brick 1 x 2',
+    part_code: '3004',
+  }
+
+  BRICK_1X3 = {
+    part_name: 'Brick 1 x 3',
+    part_code: '3622',
+  }
+
+  BRICK_1X4 = {
+    part_name: 'Brick 1 x 4',
+    part_code: '3010',
+  }
+
+  BRICK_1X6 = {
+    part_name: 'Brick 1 x 6',
+    part_code: '3009',
+  }
+
+  BRICK_1X8 = {
+    part_name: 'Brick 1 x 8',
+    part_code: '3008',
+  }
+
+  BRICK_1X10 = {
+    part_name: 'Brick 1 x 10',
+    part_code: '6111',
+  }
 end
 
 class Brick1X1 < Brick
@@ -44,13 +74,13 @@ class Brick1X2X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 2',
-        part_code: '3004',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: (x - 0.5) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X2.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: (x - 0.5) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -69,13 +99,13 @@ class Brick1X2Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 2',
-        part_code: '3004',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X2.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH + 10,
+        )
       ),
     ]
   end
@@ -94,13 +124,13 @@ class Brick1X3X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 3',
-        part_code: '3622',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: x * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X3.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: x * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        ),
       ),
     ]
   end
@@ -119,13 +149,13 @@ class Brick1X3Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 3',
-        part_code: '3622',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X3.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: (z + 1) * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -144,13 +174,13 @@ class Brick1X4X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 4',
-        part_code: '3010',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: (x + 0.5) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X4.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: (x + 0.5) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -169,13 +199,13 @@ class Brick1X4Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 4',
-        part_code: '3010',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X4.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: (z + 1.5) * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -194,13 +224,13 @@ class Brick1X6X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 6',
-        part_code: '3009',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: (x + 1.5) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X6.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: (x + 1.5) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -219,13 +249,13 @@ class Brick1X6Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 6',
-        part_code: '3009',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X6.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -244,13 +274,13 @@ class Brick1X8X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 8',
-        part_code: '3008',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: (x + 2.5) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X8.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: (x + 2.5) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -269,13 +299,13 @@ class Brick1X8Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 8',
-        part_code: '3008',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: (z + 3.5) * BRICK_WIDTH,
+        **BRICK_1X8.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: (z + 3.5) * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -294,13 +324,13 @@ class Brick1X10X < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 10',
-        part_code: '6111',
-        color: color,
-        orientation: PartOrientation::DEFAULT,
-        x: (x + 3.5) * BRICK_WIDTH,
-        y: create_y(y),
-        z: z * BRICK_WIDTH,
+        **BRICK_1X10.merge(
+          color: color,
+          orientation: PartOrientation::DEFAULT,
+          x: (x + 3.5) * BRICK_WIDTH,
+          y: create_y(y),
+          z: z * BRICK_WIDTH,
+        )
       ),
     ]
   end
@@ -319,13 +349,13 @@ class Brick1X10Z < Brick
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Brick 1 x 10',
-        part_code: '6111',
-        color: color,
-        orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
-        y: create_y(y),
-        z: (z + 4.5) * BRICK_WIDTH,
+        **BRICK_1X10.merge(
+          color: color,
+          orientation: PartOrientation::Z_90,
+          x: (x - 1) * BRICK_WIDTH,
+          y: create_y(y),
+          z: (z + 4.5) * BRICK_WIDTH,
+        )
       ),
     ]
   end

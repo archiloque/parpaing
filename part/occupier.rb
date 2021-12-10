@@ -10,7 +10,7 @@ module Occupier
   # @param [Integer] z
   # @return [String]
   def occupation_key(x:, y:, z:)
-    "#{x}-#{y}-#{z}"
+    "#{x},#{y},#{z}"
   end
 
   # @param [Integer] x
