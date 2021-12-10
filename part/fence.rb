@@ -1,6 +1,6 @@
 class Fence < Part
   def create_y(y)
-    (y * BRICK_HEIGHT) - 54
+    (y * BRICK_HEIGHT) - 52
   end
 
 end

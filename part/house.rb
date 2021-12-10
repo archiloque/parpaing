@@ -1,14 +1,32 @@
 class House
   include Occupier
 
-  POSSIBLE_COLORS = [
+  WALLS_COLORS = [
     Color::BLUE,
+    Color::LIGHT_GRAY,
+    Color::MEDIUM_BLUE,
+    Color::PINK,
+    Color::RED,
+    Color::RED,
     Color::RED,
     Color::YELLOW,
-    Color::WHITE,
-    Color::LIGHT_GRAY,
-    Color::DARK_TURQUOISE,
+    Color::YELLOW,
+    Color::YELLOW,
+  ].freeze
+
+  DOOR_AND_WINDOWS_COLORS = [
+    Color::BLUE,
     Color::BRIGHT_GREEN,
+    Color::LIGHT_GRAY,
+    Color::MEDIUM_BLUE,
+    Color::MILKY_WHITE,
+    Color::PINK,
+    Color::RED,
+    Color::RED,
+    Color::RED,
+    Color::YELLOW,
+    Color::YELLOW,
+    Color::YELLOW,
   ].freeze
 
   # @param [Integer] x_origin
@@ -29,7 +47,7 @@ class House
   def create()
     @result << Emitter.comment('')
     @result << Emitter.comment('New house')
-    walls_color = POSSIBLE_COLORS.sample
+    walls_color = WALLS_COLORS.sample
 
     door_part = Doors::TYPES.sample.new
     #@type [Integer]
@@ -48,17 +66,16 @@ class House
       end
     end
 
-    door_color = (POSSIBLE_COLORS - [walls_color]).sample
+    door_and_windows_color = (DOOR_AND_WINDOWS_COLORS - [walls_color]).sample
     add_part(
       part: door_part,
-      color: door_color,
+      color: door_and_windows_color,
       x: door_x_position,
       y: 0,
       z: 0,
     )
 
     windows_type = Windows::TYPES.sample
-    window_color = (POSSIBLE_COLORS - [walls_color, door_color]).sample
 
     # Front windows
     windows_front_part = windows_type[:front].new
@@ -68,7 +85,7 @@ class House
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
-        window_color: window_color,
+        window_color: door_and_windows_color,
         window_part: windows_front_part,
         window_x_position: column,
         z: 0,
@@ -83,7 +100,7 @@ class House
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
-        window_color: window_color,
+        window_color: door_and_windows_color,
         window_part: windows_back_part,
         window_x_position: column,
         z: (@z_width - 1),
@@ -98,7 +115,7 @@ class House
     ) do |column|
       create_windows_along_z(
         y_top: -door_part.y,
-        window_color: window_color,
+        window_color: door_and_windows_color,
         window_part: windows_left_part,
         window_z_position: column,
         x: 0,
@@ -113,7 +130,7 @@ class House
     ) do |column|
       create_windows_along_z(
         y_top: -door_part.y,
-        window_color: window_color,
+        window_color: door_and_windows_color,
         window_part: windows_right_part,
         window_z_position: column,
         x: @x_width - 1,
