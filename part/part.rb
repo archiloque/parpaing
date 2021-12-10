@@ -46,9 +46,12 @@ class Part
   end
 end
 
+require_relative 'occupier'
+
 require_relative 'brick'
 require_relative 'baseplate'
 require_relative 'door'
 require_relative 'fence_toward_x'
+require_relative 'house'
 require_relative 'plate'
 require_relative 'windows'

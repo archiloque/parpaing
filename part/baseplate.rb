@@ -28,7 +28,7 @@ class GreenBasePlate < BasePlate
           part_name: 'Baseplate 32 x 32',
           part_code: '3811',
           color: Color::GREEN,
-          orientation: Orientation::DEFAULT,
+          orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))
       )
     ]
@@ -43,7 +43,7 @@ class Crossroads < BasePlate
           part_name: 'Baseplate 32 x 32 with 6-Stud Crossroads with White Dashed Lines and Crosswalks Print',
           part_code: '44343p03',
           color: Color::DARK_BLUISH_GRAY,
-          orientation: Orientation::DEFAULT,
+          orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))
       ),
     ]
@@ -58,7 +58,7 @@ class RoadTowardX < BasePlate
           part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
           part_code: '44336p04',
           color: Color::DARK_BLUISH_GRAY,
-          orientation: Orientation::Z_90,
+          orientation: PartOrientation::Z_90,
         }.merge(create_position(x: x, y: y, z: z))
       ),
     ]
@@ -73,7 +73,7 @@ class RoadTowardZ < BasePlate
           part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
           part_code: '44336p04',
           color: Color::DARK_BLUISH_GRAY,
-          orientation: Orientation::DEFAULT,
+          orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))
       ),
     ]

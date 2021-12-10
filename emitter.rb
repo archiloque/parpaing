@@ -2,7 +2,7 @@ class Emitter
   # @param [String] part_name
   # @param [String] part_code
   # @param [Color] color
-  # @param [Orientation] orientation
+  # @param [PartOrientation] orientation
   # @param [Integer] x
   # @param [Integer] y
   # @param [Integer] z
