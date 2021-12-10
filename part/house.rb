@@ -105,6 +105,21 @@ class House
       )
     end
 
+    # Right windows
+    windows_right_part = windows_type[:right].new
+    find_windows_positions(
+      windows_width: windows_front_part.x,
+      available_positions: (0..@z_width - 1).to_a
+    ) do |column|
+      create_windows_along_z(
+        y_top: -door_part.y,
+        window_color: window_color,
+        window_part: windows_right_part,
+        window_z_position: column,
+        x: @x_width - 1,
+        )
+    end
+
     create_walls(walls_color)
     create_roof(walls_color)
     @result
