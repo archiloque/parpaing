@@ -14,8 +14,8 @@ class Door4Panes < Part
         part_code: '3861',
         color: color,
         orientation: Orientation::Z_90,
-        x: (x + @x - 2) * BRICK_WIDTH,
-        y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
+        x: (x + 2) * BRICK_WIDTH,
+        y: ((y - 5) * BRICK_HEIGHT) - STUD_HEIGHT,
         z: z,
       ),
     ]
@@ -38,19 +38,26 @@ class Door < Part
         part_code: '4130',
         color: color,
         orientation: Orientation::DEFAULT,
-        x: (x + @x - 3.5) * BRICK_WIDTH,
+        x: (x * BRICK_WIDTH) + 10,
         y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
-        z: (z + 0.5) * BRICK_WIDTH,
+        z: z * BRICK_WIDTH + 10,
         ),
       Emitter.emit(
         part_name: 'Door 1 x 4 x 5',
         part_code: '4131',
         color: color,
         orientation: Orientation::DEFAULT,
-        x: (x + @x - 5) * BRICK_WIDTH + 1,
+        x: (x * BRICK_WIDTH) - 19,
         y: ((y - @y) * BRICK_HEIGHT) + STUD_HEIGHT,
-        z: (z - 0.5) * BRICK_WIDTH + 4,
+        z: (z  * BRICK_WIDTH) - 16,
         ),
     ]
   end
+end
+
+module Doors
+  TYPES = [
+    Door,
+    Door4Panes,
+  ]
 end

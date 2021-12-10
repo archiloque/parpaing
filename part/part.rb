@@ -7,8 +7,6 @@ class Part
 
   attr_reader :name, :code, :x, :y, :z
 
-  # @param [String] name
-  # @param [String] code
   # @param [Integer] x
   # @param [Integer] y
   # @param [Integer] z

@@ -113,3 +113,11 @@ class Windows3 < Windows
     ]
   end
 end
+
+class Windows
+  TYPES = [
+    Windows1,
+    Windows2,
+    Windows3,
+  ]
+end

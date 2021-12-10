@@ -5,6 +5,12 @@ class Plate < Part
     (y * Part::BRICK_HEIGHT) - (Part::STUD_HEIGHT * 3)
   end
 
+  # @param [Integer] z
+  # @return [Integer]
+  def create_z(z)
+    (z + @z / 2 - 0.5) * BRICK_WIDTH
+  end
+
 end
 
 class Plate1X10 < Plate
@@ -25,7 +31,7 @@ class Plate1X10 < Plate
         orientation: Orientation::Z_90,
         x: (x - 1) * BRICK_WIDTH,
         y: create_y(y),
-        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
+        z: create_z(z),
       ),
     ]
   end
@@ -50,7 +56,7 @@ class Plate2X10 < Plate
         orientation: Orientation::Z_90,
         x: (x - 0.5) * BRICK_WIDTH,
         y: create_y(y),
-        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
+        z: create_z(z),
       ),
     ]
   end
@@ -75,7 +81,7 @@ class Plate4X10 < Plate
         orientation: Orientation::Z_90,
         x: (x + 0.5) * BRICK_WIDTH,
         y: create_y(y),
-        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
+        z: create_z(z),
       ),
     ]
   end
@@ -100,7 +106,7 @@ class Plate6X10 < Plate
         orientation: Orientation::Z_90,
         x: (x + 1.5) * BRICK_WIDTH,
         y: create_y(y),
-        z: (z + @z / 2 - 0.5) * BRICK_WIDTH,
+        z: create_z(z),
       ),
     ]
   end
