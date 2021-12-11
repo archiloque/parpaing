@@ -221,7 +221,7 @@ class Windows1Right < WindowsRight
           x: pane_x,
           y: pane_y,
           z: z * BRICK_WIDTH - 2,
-          )
+        )
       ),
       Emitter.emit(
         **FILLED_PANE.merge(
@@ -230,7 +230,7 @@ class Windows1Right < WindowsRight
           x: pane_x,
           y: pane_y,
           z: (z + 3) * BRICK_WIDTH + 2,
-          )
+        )
       ),
     ]
   end
@@ -298,11 +298,11 @@ class Windows2Right < WindowsRight
           x: (x - 1) * BRICK_WIDTH + 6,
           y: (y - 3) * BRICK_HEIGHT + 30,
           z: (z * BRICK_WIDTH) + 30,
-          )
+        )
       ),
     ]
   end
-  end
+end
 
 class Windows
   TYPES = [

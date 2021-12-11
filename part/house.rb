@@ -43,25 +43,43 @@ class House
     @result = []
   end
 
+  def create_front_facing()
+    create(
+      door_part: Door::TYPES.sample[:front].new,
+      door_z: 0,
+      position: :front,
+    )
+  end
+
+  def create_back_facing()
+    create(
+      door_part: Door::TYPES.sample[:back].new,
+      door_z: @z_width - 1,
+      position: :back,
+    )
+  end
+
+  # @param [Part] door_part
+  # @param [Integer] door_z
+  # @param [Symbol] position :front or :back
   # @return [Array<String>]
-  def create()
+  def create(door_z:, door_part:, position:)
     @result << Emitter.comment('')
     @result << Emitter.comment('New house')
     walls_color = WALLS_COLORS.sample
 
-    door_part = Doors::TYPES.sample.new
-    #@type [Integer]
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
 
-    available_position_front_wall = (0..(@x_width - 1)).to_a
+    available_position_door_wall = (0..(@x_width - 1)).to_a
+    available_position_other_wall = (0..@x_width - 1).to_a
 
     door_x_position.upto(door_x_position + door_part.x - 1) do |x|
-      available_position_front_wall.delete(x)
+      available_position_door_wall.delete(x)
       0.upto(door_part.y - 1) do |y|
         occupy(
           x: x,
           y: -y,
-          z: 0,
+          z: door_z,
         )
       end
     end
@@ -72,7 +90,7 @@ class House
       color: door_and_windows_color,
       x: door_x_position,
       y: 0,
-      z: 0,
+      z: door_z,
     )
 
     windows_type = Windows::TYPES.sample
@@ -81,7 +99,7 @@ class House
     windows_front_part = windows_type[:front].new
     find_windows_positions(
       windows_width: windows_front_part.x,
-      available_positions: available_position_front_wall
+      available_positions: (position == :front) ? available_position_door_wall : available_position_other_wall
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
@@ -96,7 +114,7 @@ class House
     windows_back_part = windows_type[:back].new
     find_windows_positions(
       windows_width: windows_front_part.x,
-      available_positions: (1..@x_width - 1).to_a
+      available_positions: (position == :front) ? available_position_other_wall : available_position_door_wall
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
@@ -134,7 +152,7 @@ class House
         window_part: windows_right_part,
         window_z_position: column,
         x: @x_width - 1,
-        )
+      )
     end
 
     create_walls(walls_color)
@@ -410,7 +428,7 @@ class House
       x: x,
       y: y_top + window_part.y,
       z: window_z_position,
-      )
+    )
   end
 
   # @param [Integer] x
