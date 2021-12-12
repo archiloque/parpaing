@@ -1,5 +1,6 @@
 class House
   include Occupier
+  include WithResult
 
   WALLS_COLORS = [
     Color::BLUE,
@@ -40,7 +41,6 @@ class House
     @x_width = x_width
     @z_width = z_width
     @height = height
-    @result = []
   end
 
   def create_front_facing()
@@ -59,13 +59,15 @@ class House
     )
   end
 
+  private
+
   # @param [Part] door_part
   # @param [Integer] door_z
   # @param [Symbol] position :front or :back
   # @return [Array<String>]
   def create(door_z:, door_part:, position:)
-    @result << Emitter.comment('')
-    @result << Emitter.comment('New house')
+    add_result(Emitter.comment(''))
+    add_result(Emitter.comment('New house'))
     walls_color = WALLS_COLORS.sample
 
     door_x_position = (1..(@x_width - 1 - (door_part.x))).to_a.sample
@@ -157,10 +159,8 @@ class House
 
     create_walls(walls_color)
     create_roof(walls_color)
-    @result
+    result
   end
-
-  private
 
   # @param [Integer] y
   # @param [Integer] z
@@ -264,7 +264,7 @@ class House
 
   def create_walls(walls_color)
     0.downto(-@height) do |row|
-      @result << Emitter.comment("Row #{row}")
+      add_result(Emitter.comment("Row #{row}"))
       if row % 2 == 0
         # Front wall
         create_wall_along_x(
@@ -438,7 +438,7 @@ class House
   # @param [Part] part
   # @return [void]
   def add_part(x:, y:, z:, part:, color:)
-    @result.concat(
+    concat_result(
       part.create(
         color: color,
         x: @x_origin + x,
