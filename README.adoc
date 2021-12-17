@@ -2,6 +2,6 @@ This is a playground to test generating LEGO landscape.
 
 Code is probably a mess and only inteneded for my own use, buyer beware!
 
-The `script.rb` generate a `result.ldr` file with the link:https://www.ldraw.org/article/218.html[LDraw file format].
+The `city.rb` generate a `result.ldr` file with the link:https://www.ldraw.org/article/218.html[LDraw file format].
 
 To see the result you can use a program like link:https://www.leocad.org[leoCAD] or link:https://www.bricklink.com/v3/studio/download.page[Studio].
