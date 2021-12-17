@@ -12,6 +12,7 @@ class HousesBlock
   HOUSE_HEIGHT = 5
 
   include WithResult
+  include Occupier
 
   # @param [Integer] x_origin
   # @param [Integer] z_origin
@@ -217,17 +218,69 @@ class HousesBlock
         House.new(
           x_origin: @x_origin + x,
           x_width: house_width,
-          z_origin: @z_origin + 0,
+          z_origin: @z_origin,
           z_width: HOUSE_DEPTH,
           height: HOUSE_HEIGHT,
         ).create_front_facing()
       )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_width - 2,
+        from_z: @z_origin + HOUSE_DEPTH + 2,
+        to_z: @z_origin + HOUSE_DEPTH + 5,
+        tree: FruitTree.new,
+      )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_width - 2,
+        from_z: @z_origin + HOUSE_DEPTH + 2,
+        to_z: @z_origin + HOUSE_DEPTH + 5,
+        tree: PineTree.new,
+        )
 
       x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_front_facing_houses(
         x: x,
       )
       x += SPACE_BETWEEN_HOUSE_AND_FENCE + FENCE_WIDTH
+    end
+  end
+
+  # @param [Integer] from_x
+  # @param [Integer] to_x
+  # @param [Integer] from_z
+  # @param [Integer] to_z
+  # @param [Part] tree
+  # @return [void]
+  def create_trees(from_x:, to_x:, from_z:, to_z:, tree:)
+    from_x.upto(to_x) do |x|
+      from_z.upto(to_z) do |z|
+        if Kernel.rand(100) >= 99
+          unless occupied_zone?(
+            from_x: x,
+            to_x: x + tree.x - 1,
+            y: 0,
+            from_z: z,
+            to_z: z + tree.z - 1,
+          )
+            concat_result(
+              tree.create(
+                color: Color::GREEN,
+                x: x,
+                y: 0,
+                z: z,
+              )
+            )
+            occupy_zone(
+              from_x: x,
+              to_x: x + tree.x - 1,
+              y: 0,
+              from_z: z,
+              to_z: z + tree.z - 1,
+            )
+          end
+        end
+      end
     end
   end
 
@@ -243,6 +296,20 @@ class HousesBlock
           height: HOUSE_HEIGHT,
         ).create_back_facing()
       )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_width - 2,
+        from_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        tree: FruitTree.new,
+      )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_width - 2,
+        from_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        tree: PineTree.new,
+        )
 
       x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_back_facing_houses(
