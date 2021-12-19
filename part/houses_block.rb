@@ -43,6 +43,7 @@ class HousesBlock
       )
     end
 
+    create_lamp_posts
     create_fences()
     create_front_facing_houses()
     create_back_facing_houses()
@@ -50,6 +51,22 @@ class HousesBlock
   end
 
   private
+
+  def create_lamp_posts
+    lamp_post = LampPost.new
+    [-4, 6 + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * Part::BASEPLATE_WIDTH)].each do |x|
+      [-3, 39].each do |z|
+        concat_result(
+          lamp_post.create(
+            color: Color::WHITE,
+            x: @x_origin + x,
+            y: 0,
+            z: @z_origin + z,
+          )
+        )
+      end
+    end
+  end
 
   # @param [Integer] z
   # @param [Integer] x
@@ -236,7 +253,7 @@ class HousesBlock
         from_z: @z_origin + HOUSE_DEPTH + 2,
         to_z: @z_origin + HOUSE_DEPTH + 5,
         tree: PineTree.new,
-        )
+      )
 
       x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_front_facing_houses(
@@ -318,7 +335,7 @@ class HousesBlock
         from_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
         to_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
         tree: PineTree.new,
-        )
+      )
 
       x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_back_facing_houses(

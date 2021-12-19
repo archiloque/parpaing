@@ -22,6 +22,7 @@ class Color
   PINK = Color.new(name: 'Pink', code: 13)
   RED = Color.new(name: 'Red', code: 4)
   TRANS_CLEAR = Color.new(name: 'Trans-Clear', code: 47)
+  TRANS_YELLOW = Color.new(name: 'Trans-Yellow', code: 46)
   WHITE = Color.new(name: 'White', code: 15)
   YELLOW = Color.new(name: 'Yellow', code: 14)
 
