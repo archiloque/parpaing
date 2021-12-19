@@ -220,7 +220,7 @@ class HousesBlock
           x_width: house_width,
           z_origin: @z_origin,
           z_width: HOUSE_DEPTH,
-          height: HOUSE_HEIGHT,
+          height: house_height,
         ).create_front_facing()
       )
       create_trees(
@@ -284,6 +284,15 @@ class HousesBlock
     end
   end
 
+  # @return [Integer]
+  def house_height
+    if Kernel.rand(100) >= 95
+      HOUSE_HEIGHT + 1
+    else
+      HOUSE_HEIGHT
+    end
+  end
+
   def create_back_facing_houses()
     x = FENCE_WIDTH + SPACE_BETWEEN_HOUSE_AND_FENCE
     find_houses_list do |house_width|
@@ -293,7 +302,7 @@ class HousesBlock
           x_width: house_width,
           z_origin: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH,
           z_width: HOUSE_DEPTH,
-          height: HOUSE_HEIGHT,
+          height: house_height(),
         ).create_back_facing()
       )
       create_trees(
