@@ -25,14 +25,12 @@ class House
       Color::YELLOW,
       Color::ORANGE,
       Color::LIGHT_FLESH,
-      Color::CHROME_GOLD,
     ],
     Color::DARK_BLUISH_GRAY => [
       Color::WHITE,
       Color::YELLOW,
       Color::ORANGE,
       Color::LIGHT_FLESH,
-      Color::CHROME_GOLD,
     ],
     Color::DARK_TURQUOISE => [
       Color::WHITE,
@@ -88,7 +86,6 @@ class House
       Color::MEDIUM_BLUE,
       Color::RED,
       Color::WHITE,
-      Color::CHROME_GOLD,
     ],
     Color::RED => [
       Color::WHITE,
@@ -149,7 +146,6 @@ class House
       Color::WHITE,
       Color::YELLOW,
       Color::LIGHT_FLESH,
-      Color::CHROME_GOLD,
     ],
     Color::LIGHT_FLESH => [
       Color::BLACK,
@@ -166,25 +162,7 @@ class House
       Color::RED,
       Color::WHITE,
       Color::YELLOW,
-      Color::CHROME_GOLD,
     ],
-    Color::CHROME_GOLD => [
-      Color::BLACK,
-      Color::BLUE,
-      Color::BRIGHT_GREEN,
-      Color::DARK_BLUISH_GRAY,
-      Color::DARK_PINK,
-      Color::DARK_TURQUOISE,
-      Color::GREEN,
-      Color::LIGHT_FLESH,
-      Color::LIGHT_GRAY,
-      Color::MEDIUM_BLUE,
-      Color::ORANGE,
-      Color::PINK,
-      Color::RED,
-      Color::WHITE,
-      Color::YELLOW,
-    ]
   }.freeze
 
   # @param [Integer] x_origin

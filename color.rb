@@ -11,7 +11,6 @@ class Color
   BLACK = Color.new(name: 'Black', code: 0)
   BLUE = Color.new(name: 'Blue', code: 1)
   BRIGHT_GREEN = Color.new(name: 'Bright Green', code: 10)
-  CHROME_GOLD = Color.new(name: 'Chrome Gold', code: 334)
   DARK_BLUISH_GRAY = Color.new(name: 'Dark Bluish Gray', code: 72)
   DARK_PINK = Color.new(name: 'Dark Pink', code: 5)
   DARK_TURQUOISE = Color.new(name: 'Dark Turquoise', code: 3)
@@ -32,7 +31,6 @@ class Color
       Color::BRIGHT_GREEN,
       Color::DARK_BLUISH_GRAY,
       Color::DARK_PINK,
-      Color::CHROME_GOLD,
       Color::DARK_TURQUOISE,
       Color::GREEN,
       Color::LIGHT_FLESH,

@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+# Generate all houses color variations
 require 'set'
 require_relative 'color'
 require_relative 'part_orientation'
