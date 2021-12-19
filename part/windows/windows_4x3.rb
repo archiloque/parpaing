@@ -14,7 +14,7 @@ class Windows4x3 < Part
     part_code: '62113',
   }
 
-  def frame_y
+  def frame_y(y)
     (y - 3) * BRICK_HEIGHT - STUD_HEIGHT
   end
 end
@@ -39,7 +39,7 @@ class Windows4x3Front < Windows4x3
         color: color,
         orientation: PartOrientation::Z_180,
         x: (x * BRICK_WIDTH) + 10,
-        y: frame_y,
+        y: frame_y(y),
         z: z * BRICK_WIDTH,
         )
     )
@@ -66,7 +66,7 @@ class Windows4x3Back < Windows4x3
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: (x * BRICK_WIDTH ) + 10,
-        y: frame_y,
+        y: frame_y(y),
         z: z * BRICK_WIDTH,
         )
     )
@@ -93,7 +93,7 @@ class Windows4x3Left < Windows4x3
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x - 1) * BRICK_WIDTH,
-        y: frame_y,
+        y: frame_y(y),
         z: (z + 1.5) * BRICK_WIDTH,
         )
     )
@@ -120,7 +120,7 @@ class Windows4x3Right < Windows4x3
         color: color,
         orientation: PartOrientation::Z_270,
         x: (x - 1) * BRICK_WIDTH,
-        y: frame_y,
+        y: frame_y(y),
         z: (z + 1.5) * BRICK_WIDTH,
         )
     )

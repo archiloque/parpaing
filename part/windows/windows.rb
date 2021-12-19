@@ -3,6 +3,7 @@ require_relative 'windows1'
 require_relative 'windows2'
 require_relative 'windows_2x2'
 require_relative 'windows3'
+require_relative 'windows4'
 
 class Windows
   TYPES = [
@@ -23,6 +24,12 @@ class Windows
       back: Windows3Back,
       left: Windows3Left,
       right: Windows3Right,
+    },
+    {
+      front: Windows4Front,
+      back: Windows4Back,
+      left: Windows4Left,
+      right: Windows4Right,
     },
   ]
 end
