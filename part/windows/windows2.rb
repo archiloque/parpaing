@@ -52,7 +52,7 @@ class Windows2Left < Windows4x3Left
         **BARRED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_90,
-          x: ((x - 1) * BRICK_WIDTH) - 6,
+          x: (x * BRICK_WIDTH) - 26,
           y: pane_y(y),
           z: (z * BRICK_WIDTH) + 30,
         )
@@ -71,7 +71,7 @@ class Windows2Right < Windows4x3Right
         **BARRED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_90,
-          x: ((x - 1) * BRICK_WIDTH) + 6,
+          x: (x * BRICK_WIDTH) - 14,
           y: pane_y(y),
           z: (z * BRICK_WIDTH) + 30,
         )

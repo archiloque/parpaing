@@ -72,7 +72,7 @@ class HousesBlock
   def create_mailboxes
     concat_result(
       MailboxLeft.new.create(
-        color: Color::RED,
+        color: Color::YELLOW,
         x: @x_origin - 1,
         y: 0,
         z: @z_origin + 19,
@@ -80,11 +80,11 @@ class HousesBlock
     )
     concat_result(
       MailboxRight.new.create(
-        color: Color::RED,
+        color: Color::YELLOW,
         x: @x_origin + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * Part::BASEPLATE_WIDTH) + 5,
         y: 0,
         z: @z_origin + 19,
-        )
+      )
     )
   end
 
@@ -260,6 +260,11 @@ class HousesBlock
           height: house_height,
         ).create_front_facing
       )
+      create_trash_can(
+        x: x,
+        house_width: house_width,
+        z: 1,
+      )
       create_trees(
         from_x: @x_origin + x - 2,
         to_x: @x_origin + x + house_width - 2,
@@ -280,6 +285,31 @@ class HousesBlock
         x: x,
       )
       x += SPACE_BETWEEN_HOUSE_AND_FENCE + FENCE_WIDTH
+    end
+  end
+
+  # @param [Integer] x
+  # @param [Integer] house_width
+  # @param [Integer] z
+  def create_trash_can(x:, house_width:, z:)
+    if Kernel.rand(5) == 0
+      concat_result(
+        TrashCan.new.create(
+          x: @x_origin + x - 2,
+          y: 0,
+          z: @z_origin + z,
+          color: Color::RED,
+          )
+      )
+    elsif Kernel.rand(5) == 0
+      concat_result(
+        TrashCan.new.create(
+          x: @x_origin + house_width + x,
+          y: 0,
+          z: @z_origin + z,
+          color: Color::RED,
+          )
+      )
     end
   end
 
@@ -342,6 +372,11 @@ class HousesBlock
           height: house_height,
         ).create_back_facing
       )
+      create_trash_can(
+        x: x,
+        house_width: house_width,
+        z: Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - 2,
+        )
       create_trees(
         from_x: @x_origin + x - 2,
         to_x: @x_origin + x + house_width - 2,

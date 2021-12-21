@@ -16,6 +16,7 @@ class Color
   DARK_TURQUOISE = Color.new(name: 'Dark Turquoise', code: 3)
   GREEN = Color.new(name: 'Green', code: 2)
   LIGHT_FLESH = Color.new(name: 'Light Flesh', code: 78)
+  LIGHT_BLUISH_GRAY = Color.new(name: 'Light Bluish Gray', code: 72)
   LIGHT_GRAY = Color.new(name: 'Light Gray', code: 7)
   MEDIUM_BLUE = Color.new(name: 'Medium Blue', code: 73)
   ORANGE = Color.new(name: 'Orange', code: 25)

@@ -118,16 +118,16 @@ class Windows2x2Left < Windows2x2
         **FLAT_FRONT_2x2.merge(
           color: color,
           orientation: PartOrientation::Z_270,
-          x: (x - 1) * BRICK_WIDTH,
+          x: (x * BRICK_WIDTH) - 20,
           y: frame_y(y),
-          z: (z + 0.5) * BRICK_WIDTH,
+          z: (z * BRICK_WIDTH) + 10,
         )
       ),
       Emitter.emit(
         **@part.merge(
           color: (@color || color),
           orientation: PartOrientation::Z_90,
-          x: ((x - 1) * BRICK_WIDTH) - 10,
+          x: (x * BRICK_WIDTH) - 30,
           y: pane_y(y),
           z: (z * BRICK_WIDTH) + 10,
         )
@@ -156,16 +156,16 @@ class Windows2x2Right < Windows2x2
         **FLAT_FRONT_2x2.merge(
           color: color,
           orientation: PartOrientation::Z_90,
-          x: (x - 1) * BRICK_WIDTH,
+          x: (x * BRICK_WIDTH) - 20,
           y: frame_y(y),
-          z: (z + 0.5) * BRICK_WIDTH,
+          z: (z * BRICK_WIDTH) + 10,
         )
       ),
       Emitter.emit(
         **@part.merge(
           color: (@color || color),
           orientation: PartOrientation::Z_270,
-          x: ((x - 1) * BRICK_WIDTH) + 10,
+          x: (x * BRICK_WIDTH) - 10,
           y: pane_y(y),
           z: (z * BRICK_WIDTH) + 10,
         )

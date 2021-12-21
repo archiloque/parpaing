@@ -15,7 +15,7 @@ class Windows1Front < Windows4x3Front
         **FILLED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_90,
-          x: (x - 1) * BRICK_WIDTH - 2,
+          x: (x * BRICK_WIDTH) - 22,
           y: pane_y(y),
           z: pane_z,
         )
@@ -24,7 +24,7 @@ class Windows1Front < Windows4x3Front
         **FILLED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_270,
-          x: (x + 2) * BRICK_WIDTH + 2,
+          x: (x * BRICK_WIDTH) + 42,
           y: pane_y(y),
           z: pane_z,
         )
@@ -44,7 +44,7 @@ class Windows1Back < Windows4x3Back
         **FILLED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_90,
-          x: (x - 1) * BRICK_WIDTH - 2,
+          x: (x * BRICK_WIDTH) - 22,
           y: pane_y(y),
           z: pane_z,
         )
@@ -53,7 +53,7 @@ class Windows1Back < Windows4x3Back
         **FILLED_PANE_4x3.merge(
           color: color,
           orientation: PartOrientation::Z_270,
-          x: (x + 2) * BRICK_WIDTH + 2,
+          x: (x * BRICK_WIDTH) + 42,
           y: pane_y(y),
           z: pane_z,
         )
@@ -66,7 +66,7 @@ class Windows1Left < Windows4x3Left
   include Windows1
 
   def create(color:, x:, y:, z:)
-    pane_x = (x - 1) * BRICK_WIDTH - 6
+    pane_x = (x * BRICK_WIDTH) - 26
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
@@ -75,7 +75,7 @@ class Windows1Left < Windows4x3Left
           orientation: PartOrientation::Z_180,
           x: pane_x,
           y: pane_y(y),
-          z: z * BRICK_WIDTH - 2,
+          z: (z * BRICK_WIDTH) - 2,
         )
       ),
       Emitter.emit(
@@ -84,7 +84,7 @@ class Windows1Left < Windows4x3Left
           orientation: PartOrientation::DEFAULT,
           x: pane_x,
           y: pane_y(y),
-          z: (z + 3) * BRICK_WIDTH + 2,
+          z: (z * BRICK_WIDTH) + 62,
         )
       ),
     ]
@@ -95,7 +95,7 @@ class Windows1Right < Windows4x3Right
   include Windows1
 
   def create(color:, x:, y:, z:)
-    pane_x = (x - 1) * BRICK_WIDTH + 6
+    pane_x = (x * BRICK_WIDTH) + 14
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
@@ -104,7 +104,7 @@ class Windows1Right < Windows4x3Right
           orientation: PartOrientation::Z_180,
           x: pane_x,
           y: pane_y(y),
-          z: z * BRICK_WIDTH - 2,
+          z: (z * BRICK_WIDTH) - 2,
         )
       ),
       Emitter.emit(
