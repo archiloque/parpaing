@@ -25,7 +25,7 @@ class Windows4x3Front < Windows4x3
       x: 4,
       y: 3,
       z: 1,
-      )
+    )
   end
 
   # @param [Color] color
@@ -41,7 +41,7 @@ class Windows4x3Front < Windows4x3
         x: (x * BRICK_WIDTH) + 10,
         y: frame_y(y),
         z: z * BRICK_WIDTH,
-        )
+      )
     )
   end
 end
@@ -52,7 +52,7 @@ class Windows4x3Back < Windows4x3
       x: 4,
       y: 3,
       z: 1,
-      )
+    )
   end
 
   # @param [Color] color
@@ -65,10 +65,10 @@ class Windows4x3Back < Windows4x3
       **FRAME_4x3.merge(
         color: color,
         orientation: PartOrientation::DEFAULT,
-        x: (x * BRICK_WIDTH ) + 10,
+        x: (x * BRICK_WIDTH) + 10,
         y: frame_y(y),
         z: z * BRICK_WIDTH,
-        )
+      )
     )
   end
 end
@@ -79,7 +79,7 @@ class Windows4x3Left < Windows4x3
       x: 1,
       y: 3,
       z: 4,
-      )
+    )
   end
 
   # @param [Color] color
@@ -95,7 +95,7 @@ class Windows4x3Left < Windows4x3
         x: (x - 1) * BRICK_WIDTH,
         y: frame_y(y),
         z: (z + 1.5) * BRICK_WIDTH,
-        )
+      )
     )
   end
 end
@@ -106,7 +106,7 @@ class Windows4x3Right < Windows4x3
       x: 1,
       y: 3,
       z: 4,
-      )
+    )
   end
 
   # @param [Color] color
@@ -122,7 +122,7 @@ class Windows4x3Right < Windows4x3
         x: (x - 1) * BRICK_WIDTH,
         y: frame_y(y),
         z: (z + 1.5) * BRICK_WIDTH,
-        )
+      )
     )
   end
 end

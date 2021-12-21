@@ -44,9 +44,10 @@ class HousesBlock
     end
 
     create_lamp_posts
-    create_fences()
-    create_front_facing_houses()
-    create_back_facing_houses()
+    create_mailboxes
+    create_fences
+    create_front_facing_houses
+    create_back_facing_houses
     result
   end
 
@@ -66,6 +67,25 @@ class HousesBlock
         )
       end
     end
+  end
+
+  def create_mailboxes
+    concat_result(
+      MailboxLeft.new.create(
+        color: Color::RED,
+        x: @x_origin - 1,
+        y: 0,
+        z: @z_origin + 19,
+      )
+    )
+    concat_result(
+      MailboxRight.new.create(
+        color: Color::RED,
+        x: @x_origin + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * Part::BASEPLATE_WIDTH) + 5,
+        y: 0,
+        z: @z_origin + 19,
+        )
+    )
   end
 
   # @param [Integer] z
@@ -238,7 +258,7 @@ class HousesBlock
           z_origin: @z_origin,
           z_width: HOUSE_DEPTH,
           height: house_height,
-        ).create_front_facing()
+        ).create_front_facing
       )
       create_trees(
         from_x: @x_origin + x - 2,
@@ -319,8 +339,8 @@ class HousesBlock
           x_width: house_width,
           z_origin: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH,
           z_width: HOUSE_DEPTH,
-          height: house_height(),
-        ).create_back_facing()
+          height: house_height,
+        ).create_back_facing
       )
       create_trees(
         from_x: @x_origin + x - 2,
@@ -348,7 +368,7 @@ class HousesBlock
   def find_houses_list()
     houses_list = nil
     until houses_list
-      houses_list = find_houses_list_inner()
+      houses_list = find_houses_list_inner
     end
 
     houses_list.shuffle.each do |house_width|

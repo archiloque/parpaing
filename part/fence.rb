@@ -21,7 +21,7 @@ class FenceTowardX < Fence
         part_code: '33303',
         color: color,
         orientation: PartOrientation::DEFAULT,
-        x: (x + 3.5) * BRICK_WIDTH,
+        x: (x * BRICK_WIDTH) + 70,
         y: create_y(y),
         z: z * BRICK_WIDTH,
       ),
@@ -45,9 +45,9 @@ class FenceTowardZ < Fence
         part_code: '33303',
         color: color,
         orientation: PartOrientation::Z_90,
-        x: (x - 1) * BRICK_WIDTH,
+        x: (x * BRICK_WIDTH) - 20,
         y: create_y(y),
-        z: (z - 1.5) * BRICK_WIDTH,
+        z: (z * BRICK_WIDTH) - 30,
       ),
     ]
   end

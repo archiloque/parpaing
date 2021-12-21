@@ -6,6 +6,7 @@ end
 
 class Windows1Front < Windows4x3Front
   include Windows1
+
   def create(color:, x:, y:, z:)
     pane_z = (z * BRICK_WIDTH) - 8
     [
@@ -17,7 +18,7 @@ class Windows1Front < Windows4x3Front
           x: (x - 1) * BRICK_WIDTH - 2,
           y: pane_y(y),
           z: pane_z,
-          )
+        )
       ),
       Emitter.emit(
         **FILLED_PANE_4x3.merge(
@@ -26,7 +27,7 @@ class Windows1Front < Windows4x3Front
           x: (x + 2) * BRICK_WIDTH + 2,
           y: pane_y(y),
           z: pane_z,
-          )
+        )
       ),
     ]
   end
@@ -46,7 +47,7 @@ class Windows1Back < Windows4x3Back
           x: (x - 1) * BRICK_WIDTH - 2,
           y: pane_y(y),
           z: pane_z,
-          )
+        )
       ),
       Emitter.emit(
         **FILLED_PANE_4x3.merge(
@@ -55,7 +56,7 @@ class Windows1Back < Windows4x3Back
           x: (x + 2) * BRICK_WIDTH + 2,
           y: pane_y(y),
           z: pane_z,
-          )
+        )
       ),
     ]
   end
@@ -75,7 +76,7 @@ class Windows1Left < Windows4x3Left
           x: pane_x,
           y: pane_y(y),
           z: z * BRICK_WIDTH - 2,
-          )
+        )
       ),
       Emitter.emit(
         **FILLED_PANE_4x3.merge(
@@ -84,7 +85,7 @@ class Windows1Left < Windows4x3Left
           x: pane_x,
           y: pane_y(y),
           z: (z + 3) * BRICK_WIDTH + 2,
-          )
+        )
       ),
     ]
   end
@@ -104,7 +105,7 @@ class Windows1Right < Windows4x3Right
           x: pane_x,
           y: pane_y(y),
           z: z * BRICK_WIDTH - 2,
-          )
+        )
       ),
       Emitter.emit(
         **FILLED_PANE_4x3.merge(
@@ -113,7 +114,7 @@ class Windows1Right < Windows4x3Right
           x: pane_x,
           y: pane_y(y),
           z: (z + 3) * BRICK_WIDTH + 2,
-          )
+        )
       ),
     ]
   end

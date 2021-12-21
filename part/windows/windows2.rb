@@ -6,6 +6,7 @@ end
 
 class Windows2Front < Windows4x3Front
   include Windows2
+
   def create(color:, x:, y:, z:)
     [
       create_frame(color: color, x: x, y: y, z: z),
@@ -24,6 +25,7 @@ end
 
 class Windows2Back < Windows4x3Back
   include Windows2
+
   def create(color:, x:, y:, z:)
     [
       create_frame(color: color, x: x, y: y, z: z),
@@ -42,6 +44,7 @@ end
 
 class Windows2Left < Windows4x3Left
   include Windows2
+
   def create(color:, x:, y:, z:)
     [
       create_frame(color: color, x: x, y: y, z: z),
@@ -60,6 +63,7 @@ end
 
 class Windows2Right < Windows4x3Right
   include Windows2
+
   def create(color:, x:, y:, z:)
     [
       create_frame(color: color, x: x, y: y, z: z),
