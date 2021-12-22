@@ -466,9 +466,9 @@ class HousesBlock
     def initialize(house_width, garage = nil)
       @house_width = house_width
       if garage.nil?
-        if Kernel.rand(10) >= 5
+        if Kernel.rand(10) >= 7
           @garage = Garage::GARAGE_ON_LEFT
-        elsif Kernel.rand(10) >= 0
+        elsif Kernel.rand(10) >= 7
           @garage = Garage::GARAGE_ON_RIGHT
         else
           @garage = Garage::NO_GARAGE
