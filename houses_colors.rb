@@ -10,8 +10,8 @@ require_relative 'part/part'
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   x = 0
-  House::HOUSE_COLORS.keys.each do |walls_color|
-    House::HOUSE_COLORS[walls_color].each do |door_and_windows_color|
+  BuildingColors::COLORS.keys.each do |walls_color|
+    BuildingColors::COLORS[walls_color].each do |door_and_windows_color|
       house = House.new(
         x_origin: x,
         x_width: HousesBlock::MIN_HOUSE_WIDTH,
@@ -20,6 +20,7 @@ File.open('result.ldr', 'w') do |result|
         height: HousesBlock::HOUSE_HEIGHT,
         walls_color: walls_color,
         door_and_windows_color: door_and_windows_color,
+        garage: Garage::NO_GARAGE,
       )
       house.create_front_facing()
       house.result.each do |line|

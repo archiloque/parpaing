@@ -8,7 +8,7 @@ class Emitter
   # @param [Integer] z
   # @return [String]
   def self.emit(part:, color:, orientation:, x:, y:, z:)
-    comment("#{part.name}, color: #{color.name}, position: (#{x.to_i}, #{y}, #{z}), orientation: #{orientation.name}") +
+    comment("#{part.name}, color: #{color.name}, position: (#{x.to_i}, #{y.to_i}, #{z.to_i}), orientation: #{orientation.name}") +
       "1 #{color.code} #{x.to_i} #{y.to_i} #{z.to_i} #{orientation.code} #{part.code}.dat\n"
   end
 

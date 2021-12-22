@@ -2,9 +2,9 @@ class HousesBlock
   include Measures
   FENCE_WIDTH = 1
   SPACE_BETWEEN_HOUSE_AND_FENCE = 2
-  USABLE_BLOCKS_IN_CROSS_BASEPLATES = 3
+  USABLE_BLOCKS_IN_CROSS_BASE_PLATES = 3
   STRAIGHT_BASEPLATES_IN_HOUSES_GROUP = 5
-  BLOCKS_IN_HOUSE_BLOCKS = ((USABLE_BLOCKS_IN_CROSS_BASEPLATES - SPACE_BETWEEN_HOUSE_AND_FENCE - FENCE_WIDTH) * 2) + (BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP)
+  BLOCKS_IN_HOUSE_BLOCKS = ((USABLE_BLOCKS_IN_CROSS_BASE_PLATES - SPACE_BETWEEN_HOUSE_AND_FENCE - FENCE_WIDTH) * 2) + (BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP)
   WIDTH_BETWEEN_HOUSES = FENCE_WIDTH + (SPACE_BETWEEN_HOUSE_AND_FENCE * 2)
 
   MIN_HOUSE_WIDTH = 6
@@ -25,22 +25,22 @@ class HousesBlock
   # @return [Array<String>]
   def create()
     add_crossroads(
-      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
-      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES),
+      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES),
     )
     add_road_toward_z(
-      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
-      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + BASEPLATE_WIDTH,
+      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES),
+      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES) + BASEPLATE_WIDTH,
     )
 
     0.upto(STRAIGHT_BASEPLATES_IN_HOUSES_GROUP - 1) do |index|
       add_road_toward_x(
-        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * BASEPLATE_WIDTH),
-        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+        x: USABLE_BLOCKS_IN_CROSS_BASE_PLATES + (index * BASEPLATE_WIDTH),
+        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES),
       )
       add_green_base_plate(
-        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * BASEPLATE_WIDTH),
-        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + BASEPLATE_WIDTH,
+        x: USABLE_BLOCKS_IN_CROSS_BASE_PLATES + (index * BASEPLATE_WIDTH),
+        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASE_PLATES) + BASEPLATE_WIDTH,
       )
     end
 
@@ -48,7 +48,7 @@ class HousesBlock
     create_mailboxes
     create_fences
     create_front_facing_houses
-    create_back_facing_houses
+    #create_back_facing_houses
     result
   end
 
@@ -155,7 +155,7 @@ class HousesBlock
 
   def create_fences()
     # Between houses
-    from_x = -USABLE_BLOCKS_IN_CROSS_BASEPLATES
+    from_x = -USABLE_BLOCKS_IN_CROSS_BASE_PLATES
     to_x = (BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP) - 1
     create_fence_between_houses_groups(
       z: (BASEPLATE_WIDTH / 2) + 2,
@@ -248,47 +248,6 @@ class HousesBlock
     )
   end
 
-  # @return [void]
-  def create_front_facing_houses()
-    x = FENCE_WIDTH + SPACE_BETWEEN_HOUSE_AND_FENCE
-    find_houses_list do |house_width|
-      concat_result(
-        House.new(
-          x_origin: @x_origin + x,
-          x_width: house_width,
-          z_origin: @z_origin,
-          z_width: HOUSE_DEPTH,
-          height: house_height,
-        ).create_front_facing
-      )
-      create_trash_can(
-        x: x,
-        house_width: house_width,
-        z: 1,
-      )
-      create_trees(
-        from_x: @x_origin + x - 2,
-        to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + HOUSE_DEPTH + 2,
-        to_z: @z_origin + HOUSE_DEPTH + 5,
-        tree: FruitTree.new,
-      )
-      create_trees(
-        from_x: @x_origin + x - 2,
-        to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + HOUSE_DEPTH + 2,
-        to_z: @z_origin + HOUSE_DEPTH + 5,
-        tree: PineTree.new,
-      )
-
-      x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
-      create_fence_between_front_facing_houses(
-        x: x,
-      )
-      x += SPACE_BETWEEN_HOUSE_AND_FENCE + FENCE_WIDTH
-    end
-  end
-
   # @param [Integer] x
   # @param [Integer] house_width
   # @param [Integer] z
@@ -361,39 +320,111 @@ class HousesBlock
     end
   end
 
-  def create_back_facing_houses()
+  # @return [void]
+  def create_front_facing_houses()
     x = FENCE_WIDTH + SPACE_BETWEEN_HOUSE_AND_FENCE
-    find_houses_list do |house_width|
+    find_houses_list do |house_definition|
+      house_x_origin = @x_origin + x
+      if house_definition.garage == Garage::GARAGE_ON_LEFT
+        house_x_origin += Garage::GARAGE_WIDTH
+      end
+
+      if house_definition.garage != Garage::NO_GARAGE
+        if house_definition.garage == Garage::GARAGE_ON_LEFT
+          garage_x = @x_origin + x
+        else
+          garage_x = @x_origin + x + house_definition.house_width
+        end
+        concat_result(
+          Garage.new(
+            x_origin: garage_x,
+            z_origin: @z_origin,
+            z_width: HOUSE_DEPTH,
+            house_definition: house_definition,
+          ).create_front_facing
+        )
+      end
+
       concat_result(
         House.new(
-          x_origin: @x_origin + x,
-          x_width: house_width,
-          z_origin: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH,
+          x_origin: house_x_origin,
+          x_width: house_definition.house_width,
+          z_origin: @z_origin,
           z_width: HOUSE_DEPTH,
           height: house_height,
-        ).create_back_facing
+          house_definition: house_definition,
+        ).create_front_facing
       )
+
       create_trash_can(
         x: x,
-        house_width: house_width,
-        z: BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - 2,
+        house_width: house_definition.total_width,
+        z: 1,
       )
       create_trees(
         from_x: @x_origin + x - 2,
-        to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
-        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        to_x: @x_origin + x + house_definition.total_width - 2,
+        from_z: @z_origin + HOUSE_DEPTH + 2,
+        to_z: @z_origin + HOUSE_DEPTH + 5,
         tree: FruitTree.new,
       )
       create_trees(
         from_x: @x_origin + x - 2,
-        to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
-        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        to_x: @x_origin + x + house_definition.total_width - 2,
+        from_z: @z_origin + HOUSE_DEPTH + 2,
+        to_z: @z_origin + HOUSE_DEPTH + 5,
         tree: PineTree.new,
       )
 
-      x += house_width + SPACE_BETWEEN_HOUSE_AND_FENCE
+      x += house_definition.total_width + SPACE_BETWEEN_HOUSE_AND_FENCE
+      create_fence_between_front_facing_houses(
+        x: x,
+      )
+      x += SPACE_BETWEEN_HOUSE_AND_FENCE + FENCE_WIDTH
+      return
+    end
+  end
+
+  def create_back_facing_houses()
+    x = FENCE_WIDTH + SPACE_BETWEEN_HOUSE_AND_FENCE
+    find_houses_list do |house_definition|
+      house_x_origin = @x_origin + x
+      if house_definition.garage == Garage::GARAGE_ON_LEFT
+        house_x_origin += Garage::GARAGE_WIDTH
+      end
+
+      concat_result(
+        House.new(
+          x_origin: house_x_origin,
+          x_width: house_definition.house_width,
+          z_origin: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH,
+          z_width: HOUSE_DEPTH,
+          height: house_height,
+          house_definition: house_definition,
+        ).create_back_facing
+      )
+
+      create_trash_can(
+        x: x,
+        house_width: house_definition.total_width,
+        z: BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - 2,
+      )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_definition.total_width - 2,
+        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 4,
+        tree: FruitTree.new,
+      )
+      create_trees(
+        from_x: @x_origin + x - 2,
+        to_x: @x_origin + x + house_definition.total_width - 2,
+        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 4,
+        tree: PineTree.new,
+      )
+
+      x += house_definition.total_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_back_facing_houses(
         x: x,
       )
@@ -401,6 +432,8 @@ class HousesBlock
     end
   end
 
+  # @yieldparam [HouseDefinition]
+  # @return [void]
   def find_houses_list()
     houses_list = nil
     until houses_list
@@ -412,7 +445,7 @@ class HousesBlock
     end
   end
 
-  # @return [Array<Integer>, nil]
+  # @return [Array<HouseDefinition>, nil]
   def find_houses_list_inner()
     houses_list = []
     current_houses_width = 0
@@ -420,13 +453,43 @@ class HousesBlock
       if (BLOCKS_IN_HOUSE_BLOCKS - current_houses_width) < MIN_HOUSE_WIDTH
         return nil
       elsif (BLOCKS_IN_HOUSE_BLOCKS - current_houses_width) <= MAX_HOUSE_WIDTH
-        houses_list << (BLOCKS_IN_HOUSE_BLOCKS - current_houses_width)
+        houses_list << HouseDefinition.new((BLOCKS_IN_HOUSE_BLOCKS - current_houses_width), Garage::NO_GARAGE)
         return houses_list
       else
         house_width = (MIN_HOUSE_WIDTH..MAX_HOUSE_WIDTH).to_a.sample
-        houses_list << house_width
-        current_houses_width += house_width + WIDTH_BETWEEN_HOUSES
+        house_definition = HouseDefinition.new(house_width)
+        houses_list << house_definition
+        current_houses_width += WIDTH_BETWEEN_HOUSES + house_definition.total_width
       end
+    end
+  end
+
+  class HouseDefinition
+    attr_reader :house_width, :garage, :walls_color, :door_and_windows_color, :windows_type
+    # @param [Integer] house_width
+    # @param [Integer, nil] garage
+    def initialize(house_width, garage = nil)
+      @house_width = house_width
+      if garage.nil?
+        if Kernel.rand(10) >= 0
+          @garage = Garage::GARAGE_ON_LEFT
+        elsif Kernel.rand(10) > 3
+          @garage = Garage::GARAGE_ON_RIGHT
+        else
+          @garage = Garage::NO_GARAGE
+        end
+      else
+        @garage = garage
+      end
+
+      @walls_color = BuildingColors::COLORS.keys.sample
+      @door_and_windows_color = BuildingColors::COLORS[@walls_color].sample
+      @windows_type = Windows::TYPES.sample
+    end
+
+    # @return [Integer]
+    def total_width
+      @house_width + ((@garage == Garage::NO_GARAGE) ? 0 : Garage::GARAGE_WIDTH)
     end
   end
 end

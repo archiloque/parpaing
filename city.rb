@@ -12,8 +12,8 @@ File.open('result.ldr', 'w') do |result|
   result << "0\n"
   delta_along_x = BASEPLATE_WIDTH * (HousesBlock::STRAIGHT_BASEPLATES_IN_HOUSES_GROUP + 1)
   delta_along_z = BASEPLATE_WIDTH * 2
-  0.upto(1) do |x_index|
-    0.upto(1) do |z_index|
+  0.upto(0) do |x_index|
+    0.upto(0) do |z_index|
       HousesBlock.new(
         x_origin: x_index * delta_along_x,
         z_origin: z_index * delta_along_z,

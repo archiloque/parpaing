@@ -1,5 +1,6 @@
 module Windows2
   include Measures
+
   def pane_y(y)
     (y - 3) * BRICK_HEIGHT + 30
   end

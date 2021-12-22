@@ -1,5 +1,6 @@
 module Windows1
   include Measures
+
   def pane_y(y)
     (y - 3) * BRICK_HEIGHT
   end
