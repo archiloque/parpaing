@@ -170,10 +170,10 @@ class HousesBlock
 
     # Before first houses
     create_fence_between_front_facing_houses(
-      x: 0,
+      x: @x_origin,
     )
     create_fence_between_back_facing_houses(
-      x: 0,
+      x: @x_origin,
     )
   end
 
@@ -219,7 +219,7 @@ class HousesBlock
       concat_result(
         fence.create(
           color: Color::WHITE,
-          x: @x_origin + x,
+          x: x,
           y: 0,
           z: @z_origin + current_z,
         )
@@ -358,13 +358,6 @@ class HousesBlock
         to_z: @z_origin + HOUSE_DEPTH + 5,
         tree: FruitTree.new,
       )
-      create_trees(
-        from_x: x - 2,
-        to_x: @x_origin + x + house_definition.total_width - 2,
-        from_z: @z_origin + HOUSE_DEPTH + 2,
-        to_z: @z_origin + HOUSE_DEPTH + 5,
-        tree: PineTree.new,
-      )
 
       x += house_definition.total_width + SPACE_BETWEEN_HOUSE_AND_FENCE
       create_fence_between_front_facing_houses(
@@ -410,13 +403,6 @@ class HousesBlock
         from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 6,
         to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 4,
         tree: FruitTree.new,
-      )
-      create_trees(
-        from_x: x - 2,
-        to_x: @x_origin + x + house_definition.total_width - 2,
-        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 6,
-        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASE_PLATES) - HOUSE_DEPTH - 4,
-        tree: PineTree.new,
       )
 
       x += house_definition.total_width + SPACE_BETWEEN_HOUSE_AND_FENCE
