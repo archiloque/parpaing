@@ -20,10 +20,10 @@ File.open('result.ldr', 'w') do |result|
         height: HousesBlock::HOUSE_HEIGHT,
         walls_color: walls_color,
         door_and_windows_color: door_and_windows_color,
-        )
+      )
       house.create_front_facing()
       house.result.each do |line|
-          result << line
+        result << line
       end
 
       x += HousesBlock::MIN_HOUSE_WIDTH + 2

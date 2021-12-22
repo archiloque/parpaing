@@ -1,4 +1,6 @@
-class FruitTree < Part
+class FruitTree < SetPart
+  FRUIT_TREE = Part.new('Plant, Fruit Tree', '3470')
+
   def initialize()
     super(
       x: 4,
@@ -10,8 +12,7 @@ class FruitTree < Part
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plant, Fruit Tree',
-        part_code: '3470',
+        part: FRUIT_TREE,
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: (x * BRICK_WIDTH) + 10,
@@ -22,7 +23,9 @@ class FruitTree < Part
   end
 end
 
-class PineTree < Part
+class PineTree < SetPart
+  PINE_TREE = Part.new('Plant, Pine Tree, Large, 4 x 4 x 6 2/3', '3471')
+
   def initialize()
     super(
       x: 4,
@@ -34,8 +37,7 @@ class PineTree < Part
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plant, Pine Tree, Large, 4 x 4 x 6 2/3',
-        part_code: '3471',
+        part: PINE_TREE,
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: (x * BRICK_WIDTH) + 10,

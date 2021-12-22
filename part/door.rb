@@ -1,18 +1,7 @@
-class Door < Part
-  DOOR_4_PANES = {
-    part_name: 'Door 1 x 4 x 5 with 4 Panes',
-    part_code: '3861',
-  }
-
-  DOOR_FRAME = {
-    part_name: 'Door Frame 2 x 4 x 5',
-    part_code: '4130',
-  }
-
-  DOOR = {
-    part_name: 'Door 1 x 4 x 5',
-    part_code: '4131',
-  }
+class Door < SetPart
+  DOOR_4_PANES = Part.new('Door 1 x 4 x 5 with 4 Panes', '3861')
+  DOOR_FRAME = Part.new('Door Frame 2 x 4 x 5', '4130')
+  DOOR = Part.new('Door 1 x 4 x 5', '4131')
 end
 
 class Door4PanesFront < Door
@@ -27,13 +16,12 @@ class Door4PanesFront < Door
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        **DOOR_4_PANES.merge(
-          color: color,
-          orientation: PartOrientation::Z_90,
-          x: (x + 2) * BRICK_WIDTH,
-          y: ((y - 5) * BRICK_HEIGHT) - STUD_HEIGHT,
-          z: (z * BRICK_WIDTH),
-        )
+        part: DOOR_4_PANES,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x * BRICK_WIDTH) + 40,
+        y: (y * BRICK_HEIGHT) - 124,
+        z: (z * BRICK_WIDTH),
       ),
     ]
   end
@@ -51,13 +39,12 @@ class Door4PanesBack < Door
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        **DOOR_4_PANES.merge(
-          color: color,
-          orientation: PartOrientation::Z_270,
-          x: (x - 1) * BRICK_WIDTH,
-          y: ((y - 5) * BRICK_HEIGHT) - STUD_HEIGHT,
-          z: (z * BRICK_WIDTH),
-        )
+        part: DOOR_4_PANES,
+        color: color,
+        orientation: PartOrientation::Z_270,
+        x: (x * BRICK_WIDTH) - 20,
+        y: (y * BRICK_HEIGHT) - 124,
+        z: (z * BRICK_WIDTH),
       ),
     ]
   end
@@ -75,22 +62,20 @@ class DoorFront < Door
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        **DOOR_FRAME.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) + 10,
-          y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
-          z: z * BRICK_WIDTH + 10,
-        )
+        part: DOOR_FRAME,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) + 10,
+        y: (y * BRICK_HEIGHT) - 124,
+        z: z * BRICK_WIDTH + 10,
       ),
       Emitter.emit(
-        **DOOR.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) - 18,
-          y: ((y - @y) * BRICK_HEIGHT) + STUD_HEIGHT,
-          z: (z * BRICK_WIDTH) - 6,
-        )
+        part: DOOR,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) - 18,
+        y: (y * BRICK_HEIGHT) - 116,
+        z: (z * BRICK_WIDTH) - 6,
       ),
     ]
   end
@@ -108,22 +93,20 @@ class Doorback < Door
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        **DOOR_FRAME.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) + 10,
-          y: ((y - @y) * BRICK_HEIGHT) - STUD_HEIGHT,
-          z: z * BRICK_WIDTH - 10,
-        )
+        part: DOOR_FRAME,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) + 10,
+        y: (y * BRICK_HEIGHT) - 124,
+        z: z * BRICK_WIDTH - 10,
       ),
       Emitter.emit(
-        **DOOR.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) - 18,
-          y: ((y - @y) * BRICK_HEIGHT) + STUD_HEIGHT,
-          z: (z * BRICK_WIDTH) + 8,
-        )
+        part: DOOR,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) - 18,
+        y: (y * BRICK_HEIGHT) - 116,
+        z: (z * BRICK_WIDTH) + 8,
       ),
     ]
   end

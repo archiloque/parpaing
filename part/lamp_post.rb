@@ -1,4 +1,8 @@
-class LampPost < Part
+class LampPost < SetPart
+  LAMP_POST = Part.new('Lamp Post 2 x 2 x 7 with 4 Base Flutes', '11062')
+  MINIFIG_HEAD_PLAIN = Part.new('Minifig Head Plain', '3626b')
+  DISCH = Part.new('Dish 2 x 2 Inverted', '4740')
+
   def initialize()
     super(
       x: 2,
@@ -12,8 +16,7 @@ class LampPost < Part
     z_position = (z * BRICK_WIDTH) + 10
     [
       Emitter.emit(
-        part_name: 'Lamp Post 2 x 2 x 7 with 4 Base Flutes',
-        part_code: '11062',
+        part: LAMP_POST,
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: x_position,
@@ -21,8 +24,7 @@ class LampPost < Part
         z: z_position,
       ),
       Emitter.emit(
-        part_name: 'Minifig Head Plain',
-        part_code: '3626b',
+        part: MINIFIG_HEAD_PLAIN,
         color: Color::TRANS_YELLOW,
         orientation: PartOrientation::DEFAULT,
         x: x_position,
@@ -30,8 +32,7 @@ class LampPost < Part
         z: z_position,
       ),
       Emitter.emit(
-        part_name: 'Dish 2 x 2 Inverted',
-        part_code: '4740',
+        part: DISCH,
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: x_position,

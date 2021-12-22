@@ -1,4 +1,9 @@
-class BasePlate < Part
+class BasePlate < SetPart
+
+  PLATE_CROSSROADS = Part.new('Baseplate 32 x 32 with 6-Stud Crossroads with White Dashed Lines and Crosswalks Print', '44343p03')
+  PLATE_ROAD = Part.new('Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print', '44336p04')
+  PLATE_GREEN = Part.new('Baseplate 32 x 32', '3811')
+
   def initialize()
     super(
       x: BASEPLATE_WIDTH,
@@ -25,8 +30,7 @@ class GreenBasePlate < BasePlate
     [
       Emitter.emit(
         **{
-          part_name: 'Baseplate 32 x 32',
-          part_code: '3811',
+          part: PLATE_GREEN,
           color: Color::GREEN,
           orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))
@@ -40,8 +44,7 @@ class Crossroads < BasePlate
     [
       Emitter.emit(
         **{
-          part_name: 'Baseplate 32 x 32 with 6-Stud Crossroads with White Dashed Lines and Crosswalks Print',
-          part_code: '44343p03',
+          part: PLATE_CROSSROADS,
           color: Color::DARK_BLUISH_GRAY,
           orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))
@@ -55,8 +58,7 @@ class RoadTowardX < BasePlate
     [
       Emitter.emit(
         **{
-          part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
-          part_code: '44336p04',
+          part: PLATE_ROAD,
           color: Color::DARK_BLUISH_GRAY,
           orientation: PartOrientation::Z_90,
         }.merge(create_position(x: x, y: y, z: z))
@@ -70,8 +72,7 @@ class RoadTowardZ < BasePlate
     [
       Emitter.emit(
         **{
-          part_name: 'Baseplate 32 x 32 with 6-Stud Straight and Road with White Dashed Lines and Storm Drain Print',
-          part_code: '44336p04',
+          part: PLATE_ROAD,
           color: Color::DARK_BLUISH_GRAY,
           orientation: PartOrientation::DEFAULT,
         }.merge(create_position(x: x, y: y, z: z))

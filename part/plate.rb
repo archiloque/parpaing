@@ -1,8 +1,12 @@
-class Plate < Part
+class Plate < SetPart
+  PLATE_1x10 = Part.new('Plate 1 x 10', '4477')
+  PLATE_2x10 = Part.new('Plate 2 x 10', '3832')
+  PLATE_4x10 = Part.new('Plate 4 x 10', '3030')
+  PLATE_6x10 = Part.new('Plate 6 x 10', '3033')
   # @param [Integer] y
   # @return [Integer]
   def create_y(y)
-    (y * Part::BRICK_HEIGHT) - (Part::STUD_HEIGHT * 3)
+    (y * BRICK_HEIGHT) - (STUD_HEIGHT * 3)
   end
 
   # @param [Integer] z
@@ -25,8 +29,7 @@ class Plate1X10 < Plate
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plate 1 x 10',
-        part_code: '4477',
+        part: PLATE_1x10,
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x * BRICK_WIDTH) - 20,
@@ -50,8 +53,7 @@ class Plate2X10 < Plate
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plate 2 x 10',
-        part_code: '3832',
+        part: PLATE_2x10,
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x * BRICK_WIDTH) - 10,
@@ -75,8 +77,7 @@ class Plate4X10 < Plate
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plate 4 x 10',
-        part_code: '3030',
+        part: PLATE_4x10,
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x * BRICK_WIDTH) + 10,
@@ -100,8 +101,7 @@ class Plate6X10 < Plate
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Plate 6 x 10',
-        part_code: '3033',
+        part: PLATE_6x10,
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x * BRICK_WIDTH) + 30,

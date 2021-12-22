@@ -200,7 +200,7 @@ class House
 
   private
 
-  # @param [Part] door_part
+  # @param [SetPart] door_part
   # @param [Integer] door_z
   # @param [Symbol] position :front or :back
   # @return [Array<String>]
@@ -325,7 +325,7 @@ class House
   # @return [void]
   def create_wall_segment_along_x(y:, z:, from_x:, to_x:)
     length = to_x - from_x
-    part_classes = Part.calculate_fit(length, Brick::BY_SIZE_X)
+    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_X)
     if y % 2 == 1
       part_classes = part_classes.reverse
     end
@@ -373,7 +373,7 @@ class House
   # @return [void]
   def create_wall_segment_along_z(y:, x:, from_z:, to_z:)
     length = to_z - from_z
-    part_classes = Part.calculate_fit(length, Brick::BY_SIZE_Z)
+    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_Z)
     if y % 2 == 1
       part_classes = part_classes.reverse
     end
@@ -463,7 +463,7 @@ class House
   end
 
   def create_roof()
-    roof_parts_classes = Part.calculate_fit(@x_width, Plate::BY_SIZE)
+    roof_parts_classes = SetPart.calculate_fit(@x_width, Plate::BY_SIZE)
     current_x = 0
     roof_parts_classes.each do |roof_part_class|
       roof_part = roof_part_class.new
@@ -501,7 +501,7 @@ class House
   end
 
   # @param [Integer] y_top
-  # @param [Part] window_part
+  # @param [SetPart] window_part
   # @param [Integer] window_x_position
   # @param [Integer] z
   # @return [void]
@@ -526,7 +526,7 @@ class House
   end
 
   # @param [Integer] y_top
-  # @param [Part] window_part
+  # @param [SetPart] window_part
   # @param [Integer] window_z_position
   # @param [Integer] x
   # @return [void]
@@ -554,7 +554,7 @@ class House
   # @param [Integer] y
   # @param [Integer] z
   # @param [Color] color
-  # @param [Part] part
+  # @param [SetPart] part
   # @return [void]
   def add_part(x:, y:, z:, part:, color:)
     concat_result(

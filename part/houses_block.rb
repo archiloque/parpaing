@@ -1,9 +1,10 @@
 class HousesBlock
+  include Measures
   FENCE_WIDTH = 1
   SPACE_BETWEEN_HOUSE_AND_FENCE = 2
   USABLE_BLOCKS_IN_CROSS_BASEPLATES = 3
   STRAIGHT_BASEPLATES_IN_HOUSES_GROUP = 5
-  BLOCKS_IN_HOUSE_BLOCKS = ((USABLE_BLOCKS_IN_CROSS_BASEPLATES - SPACE_BETWEEN_HOUSE_AND_FENCE - FENCE_WIDTH) * 2) + (Part::BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP)
+  BLOCKS_IN_HOUSE_BLOCKS = ((USABLE_BLOCKS_IN_CROSS_BASEPLATES - SPACE_BETWEEN_HOUSE_AND_FENCE - FENCE_WIDTH) * 2) + (BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP)
   WIDTH_BETWEEN_HOUSES = FENCE_WIDTH + (SPACE_BETWEEN_HOUSE_AND_FENCE * 2)
 
   MIN_HOUSE_WIDTH = 6
@@ -24,22 +25,22 @@ class HousesBlock
   # @return [Array<String>]
   def create()
     add_crossroads(
-      x: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
-      z: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
     )
     add_road_toward_z(
-      x: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
-      z: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + Part::BASEPLATE_WIDTH,
+      x: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+      z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + BASEPLATE_WIDTH,
     )
 
     0.upto(STRAIGHT_BASEPLATES_IN_HOUSES_GROUP - 1) do |index|
       add_road_toward_x(
-        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * Part::BASEPLATE_WIDTH),
-        z: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
+        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * BASEPLATE_WIDTH),
+        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES),
       )
       add_green_base_plate(
-        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * Part::BASEPLATE_WIDTH),
-        z: -(Part::BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + Part::BASEPLATE_WIDTH,
+        x: USABLE_BLOCKS_IN_CROSS_BASEPLATES + (index * BASEPLATE_WIDTH),
+        z: -(BASEPLATE_WIDTH - USABLE_BLOCKS_IN_CROSS_BASEPLATES) + BASEPLATE_WIDTH,
       )
     end
 
@@ -55,7 +56,7 @@ class HousesBlock
 
   def create_lamp_posts
     lamp_post = LampPost.new
-    [-4, 6 + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * Part::BASEPLATE_WIDTH)].each do |x|
+    [-4, 6 + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * BASEPLATE_WIDTH)].each do |x|
       [-3, 39].each do |z|
         concat_result(
           lamp_post.create(
@@ -81,7 +82,7 @@ class HousesBlock
     concat_result(
       MailboxRight.new.create(
         color: Color::YELLOW,
-        x: @x_origin + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * Part::BASEPLATE_WIDTH) + 5,
+        x: @x_origin + (STRAIGHT_BASEPLATES_IN_HOUSES_GROUP * BASEPLATE_WIDTH) + 5,
         y: 0,
         z: @z_origin + 19,
       )
@@ -155,14 +156,14 @@ class HousesBlock
   def create_fences()
     # Between houses
     from_x = -USABLE_BLOCKS_IN_CROSS_BASEPLATES
-    to_x = (Part::BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP) - 1
+    to_x = (BASEPLATE_WIDTH * STRAIGHT_BASEPLATES_IN_HOUSES_GROUP) - 1
     create_fence_between_houses_groups(
-      z: (Part::BASEPLATE_WIDTH / 2) + 2,
+      z: (BASEPLATE_WIDTH / 2) + 2,
       from_x: from_x,
       to_x: to_x,
     )
     create_fence_between_houses_groups(
-      z: (Part::BASEPLATE_WIDTH / 2) + 3,
+      z: (BASEPLATE_WIDTH / 2) + 3,
       from_x: from_x,
       to_x: to_x,
     )
@@ -232,7 +233,7 @@ class HousesBlock
   def create_fence_between_front_facing_houses(x:)
     create_fence_between_houses(
       x: x,
-      from_z: (Part::BASEPLATE_WIDTH / 2) + 1,
+      from_z: (BASEPLATE_WIDTH / 2) + 1,
       to_z: 1,
     )
   end
@@ -242,8 +243,8 @@ class HousesBlock
   def create_fence_between_back_facing_houses(x:)
     create_fence_between_houses(
       x: x,
-      from_z: (Part::BASEPLATE_WIDTH) + 3,
-      to_z: (Part::BASEPLATE_WIDTH / 2) + 3,
+      from_z: (BASEPLATE_WIDTH) + 3,
+      to_z: (BASEPLATE_WIDTH / 2) + 3,
     )
   end
 
@@ -299,7 +300,7 @@ class HousesBlock
           y: 0,
           z: @z_origin + z,
           color: Color::RED,
-          )
+        )
       )
     elsif Kernel.rand(5) == 0
       concat_result(
@@ -308,7 +309,7 @@ class HousesBlock
           y: 0,
           z: @z_origin + z,
           color: Color::RED,
-          )
+        )
       )
     end
   end
@@ -317,7 +318,7 @@ class HousesBlock
   # @param [Integer] to_x
   # @param [Integer] from_z
   # @param [Integer] to_z
-  # @param [Part] tree
+  # @param [SetPart] tree
   # @return [void]
   def create_trees(from_x:, to_x:, from_z:, to_z:, tree:)
     from_x.upto(to_x) do |x|
@@ -367,7 +368,7 @@ class HousesBlock
         House.new(
           x_origin: @x_origin + x,
           x_width: house_width,
-          z_origin: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH,
+          z_origin: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH,
           z_width: HOUSE_DEPTH,
           height: house_height,
         ).create_back_facing
@@ -375,20 +376,20 @@ class HousesBlock
       create_trash_can(
         x: x,
         house_width: house_width,
-        z: Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - 2,
-        )
+        z: BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - 2,
+      )
       create_trees(
         from_x: @x_origin + x - 2,
         to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
-        to_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
         tree: FruitTree.new,
       )
       create_trees(
         from_x: @x_origin + x - 2,
         to_x: @x_origin + x + house_width - 2,
-        from_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
-        to_z: @z_origin + Part::BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
+        from_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 6,
+        to_z: @z_origin + BASEPLATE_WIDTH + (2 * USABLE_BLOCKS_IN_CROSS_BASEPLATES) - HOUSE_DEPTH - 4,
         tree: PineTree.new,
       )
 

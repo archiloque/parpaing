@@ -1,6 +1,7 @@
 module Windows2
+  include Measures
   def pane_y(y)
-    (y - 3) * Part::BRICK_HEIGHT + 30
+    (y - 3) * BRICK_HEIGHT + 30
   end
 end
 
@@ -11,13 +12,12 @@ class Windows2Front < Windows4x3Front
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **BARRED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) + 10,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) - 8,
-        )
+        part: BARRED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) + 10,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) - 8,
       ),
     ]
   end
@@ -30,13 +30,12 @@ class Windows2Back < Windows4x3Back
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **BARRED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: (x * BRICK_WIDTH) + 10,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) + 6,
-        )
+        part: BARRED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x * BRICK_WIDTH) + 10,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) + 6,
       ),
     ]
   end
@@ -49,13 +48,12 @@ class Windows2Left < Windows4x3Left
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **BARRED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_90,
-          x: (x * BRICK_WIDTH) - 26,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) + 30,
-        )
+        part: BARRED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x * BRICK_WIDTH) - 26,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) + 30,
       ),
     ]
   end
@@ -68,13 +66,12 @@ class Windows2Right < Windows4x3Right
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **BARRED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_90,
-          x: (x * BRICK_WIDTH) - 14,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) + 30,
-        )
+        part: BARRED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x * BRICK_WIDTH) - 14,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) + 30,
       ),
     ]
   end

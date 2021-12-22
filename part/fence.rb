@@ -1,4 +1,6 @@
-class Fence < Part
+class Fence < SetPart
+  PICKET_FENCE = Part.new('Picket Fence 1 x 4 x 2', '33303')
+
   def create_y(y)
     (y * BRICK_HEIGHT) - 52
   end
@@ -17,8 +19,7 @@ class FenceTowardX < Fence
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Picket Fence 1 x 4 x 2',
-        part_code: '33303',
+        part: PICKET_FENCE,
         color: color,
         orientation: PartOrientation::DEFAULT,
         x: (x * BRICK_WIDTH) + 70,
@@ -41,8 +42,7 @@ class FenceTowardZ < Fence
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part_name: 'Picket Fence 1 x 4 x 2',
-        part_code: '33303',
+        part: PICKET_FENCE,
         color: color,
         orientation: PartOrientation::Z_90,
         x: (x * BRICK_WIDTH) - 20,

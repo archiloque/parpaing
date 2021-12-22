@@ -1,6 +1,7 @@
 module Windows1
+  include Measures
   def pane_y(y)
-    (y - 3) * Part::BRICK_HEIGHT
+    (y - 3) * BRICK_HEIGHT
   end
 end
 
@@ -12,22 +13,20 @@ class Windows1Front < Windows4x3Front
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_90,
-          x: (x * BRICK_WIDTH) - 22,
-          y: pane_y(y),
-          z: pane_z,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x * BRICK_WIDTH) - 22,
+        y: pane_y(y),
+        z: pane_z,
       ),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_270,
-          x: (x * BRICK_WIDTH) + 42,
-          y: pane_y(y),
-          z: pane_z,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_270,
+        x: (x * BRICK_WIDTH) + 42,
+        y: pane_y(y),
+        z: pane_z,
       ),
     ]
   end
@@ -41,22 +40,20 @@ class Windows1Back < Windows4x3Back
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_90,
-          x: (x * BRICK_WIDTH) - 22,
-          y: pane_y(y),
-          z: pane_z,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x * BRICK_WIDTH) - 22,
+        y: pane_y(y),
+        z: pane_z,
       ),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_270,
-          x: (x * BRICK_WIDTH) + 42,
-          y: pane_y(y),
-          z: pane_z,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_270,
+        x: (x * BRICK_WIDTH) + 42,
+        y: pane_y(y),
+        z: pane_z,
       ),
     ]
   end
@@ -70,22 +67,20 @@ class Windows1Left < Windows4x3Left
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_180,
-          x: pane_x,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) - 2,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_180,
+        x: pane_x,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) - 2,
       ),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: pane_x,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) + 62,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: pane_x,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) + 62,
       ),
     ]
   end
@@ -99,22 +94,20 @@ class Windows1Right < Windows4x3Right
     [
       create_frame(color: color, x: x, y: y, z: z),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::Z_180,
-          x: pane_x,
-          y: pane_y(y),
-          z: (z * BRICK_WIDTH) - 2,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::Z_180,
+        x: pane_x,
+        y: pane_y(y),
+        z: (z * BRICK_WIDTH) - 2,
       ),
       Emitter.emit(
-        **FILLED_PANE_4x3.merge(
-          color: color,
-          orientation: PartOrientation::DEFAULT,
-          x: pane_x,
-          y: pane_y(y),
-          z: (z + 3) * BRICK_WIDTH + 2,
-        )
+        part: FILLED_PANE_4x3,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: pane_x,
+        y: pane_y(y),
+        z: (z + 3) * BRICK_WIDTH + 2,
       ),
     ]
   end
