@@ -30,6 +30,7 @@ class Garage
     @house_definition = house_definition
   end
 
+  # @return [Array<String>]
   def create_front_facing()
     concat_result(
       [
@@ -58,6 +59,28 @@ class Garage
         z: @z_origin,
         color: @house_definition.walls_color,
       )
+    )
+
+    windows_part = @house_definition.windows_type[:back].new
+    window_x_position = (GARAGE_WIDTH / 2) - (windows_part.x / 2)
+    windows_y = -DOOR_HEIGHT + windows_part.y
+    windows_z = @z_width - 1
+    window_x_position.upto(window_x_position + windows_part.x - 1) do |x|
+      (windows_y).downto(-DOOR_HEIGHT) do |y|
+        occupy(
+          x: x,
+          y: y,
+          z: windows_z,
+        )
+      end
+    end
+
+    add_part(
+      color: @house_definition.door_and_windows_color,
+      part: windows_part,
+      x: window_x_position,
+      y: windows_y,
+      z: windows_z,
     )
 
     0.downto(-DOOR_HEIGHT + 1) do |row|
@@ -109,4 +132,10 @@ class Garage
     end
     result
   end
-end
+
+  # @return [Array<String>]
+  def create_back_facing()
+    result
+  end
+
+  end

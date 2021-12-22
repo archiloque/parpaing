@@ -85,7 +85,7 @@ class House
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
-        window_part: windows_front_part,
+        windows_part: windows_front_part,
         window_x_position: column,
         z: 0,
       )
@@ -99,7 +99,7 @@ class House
     ) do |column|
       create_windows_along_x(
         y_top: -door_part.y,
-        window_part: windows_back_part,
+        windows_part: windows_back_part,
         window_x_position: column,
         z: (@z_width - 1),
       )
@@ -115,7 +115,7 @@ class House
   # @return [void]
   def create_walls_windows(door_part, windows_front_part)
     # Left windows
-    unless @garage == Garage::GARAGE_ON_LEFT
+    unless @house_definition.garage == Garage::GARAGE_ON_LEFT
       windows_left_part = @house_definition.windows_type[:left].new
       find_windows_positions(
         windows_width: windows_front_part.x,
@@ -123,7 +123,7 @@ class House
       ) do |column|
         create_windows_along_z(
           y_top: -door_part.y,
-          window_part: windows_left_part,
+          windows_part: windows_left_part,
           window_z_position: column,
           x: 0,
         )
@@ -131,7 +131,7 @@ class House
     end
 
     # Right windows
-    unless @garage == Garage::GARAGE_ON_RIGHT
+    unless @house_definition.garage == Garage::GARAGE_ON_RIGHT
       windows_right_part = @house_definition.windows_type[:right].new
       find_windows_positions(
         windows_width: windows_front_part.x,
@@ -139,7 +139,7 @@ class House
       ) do |column|
         create_windows_along_z(
           y_top: -door_part.y,
-          window_part: windows_right_part,
+          windows_part: windows_right_part,
           window_z_position: column,
           x: @x_width - 1,
         )
@@ -256,13 +256,13 @@ class House
   end
 
   # @param [Integer] y_top
-  # @param [SetPart] window_part
+  # @param [SetPart] windows_part
   # @param [Integer] window_x_position
   # @param [Integer] z
   # @return [void]
-  def create_windows_along_x(y_top:, window_part:, window_x_position:, z:)
-    window_x_position.upto(window_x_position + window_part.x - 1) do |x|
-      (y_top + window_part.y).downto(y_top + 1) do |y|
+  def create_windows_along_x(y_top:, windows_part:, window_x_position:, z:)
+    window_x_position.upto(window_x_position + windows_part.x - 1) do |x|
+      (y_top + windows_part.y).downto(y_top + 1) do |y|
         occupy(
           x: x,
           y: y,
@@ -273,21 +273,21 @@ class House
 
     add_part(
       color: @house_definition.door_and_windows_color,
-      part: window_part,
+      part: windows_part,
       x: window_x_position,
-      y: y_top + window_part.y,
+      y: y_top + windows_part.y,
       z: z,
     )
   end
 
   # @param [Integer] y_top
-  # @param [SetPart] window_part
+  # @param [SetPart] windows_part
   # @param [Integer] window_z_position
   # @param [Integer] x
   # @return [void]
-  def create_windows_along_z(y_top:, window_part:, window_z_position:, x:)
-    window_z_position.upto(window_z_position + window_part.z - 1) do |z|
-      (y_top + window_part.y).downto(y_top + 1) do |y|
+  def create_windows_along_z(y_top:, windows_part:, window_z_position:, x:)
+    window_z_position.upto(window_z_position + windows_part.z - 1) do |z|
+      (y_top + windows_part.y).downto(y_top + 1) do |y|
         occupy(
           x: x,
           y: y,
@@ -298,9 +298,9 @@ class House
 
     add_part(
       color: @house_definition.door_and_windows_color,
-      part: window_part,
+      part: windows_part,
       x: x,
-      y: y_top + window_part.y,
+      y: y_top + windows_part.y,
       z: window_z_position,
     )
   end
