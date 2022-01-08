@@ -12,6 +12,7 @@ class Brick < SetPart
   BRICK_1X6 = Part.new('Brick 1 x 6', '3009')
   BRICK_1X8 = Part.new('Brick 1 x 8', '3008')
   BRICK_1X10 = Part.new('Brick 1 x 10', '6111')
+  BRICK_1X12 = Part.new('Brick 1 x 12', '6112')
 end
 
 class Brick1X1 < Brick
@@ -302,6 +303,30 @@ class Brick1X10X < Brick
   end
 end
 
+class Brick1X12X < Brick
+
+  def initialize()
+    super(
+      x: 12,
+      y: 1,
+      z: 1,
+      )
+  end
+
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part: BRICK_1X10,
+        color: color,
+        orientation: PartOrientation::DEFAULT,
+        x: (x + 4.5) * BRICK_WIDTH,
+        y: create_y(y),
+        z: z * BRICK_WIDTH,
+        ),
+    ]
+  end
+end
+
 class Brick1X10Z < Brick
 
   def initialize()
@@ -326,6 +351,30 @@ class Brick1X10Z < Brick
   end
 end
 
+class Brick1X12Z < Brick
+
+  def initialize()
+    super(
+      x: 1,
+      y: 1,
+      z: 12,
+      )
+  end
+
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part: BRICK_1X12,
+        color: color,
+        orientation: PartOrientation::Z_90,
+        x: (x - 1) * BRICK_WIDTH,
+        y: create_y(y),
+        z: (z + 5.5) * BRICK_WIDTH,
+        ),
+    ]
+  end
+end
+
 class Brick
   BY_SIZE_Z = {
     1 => Brick1X1,
@@ -335,6 +384,7 @@ class Brick
     6 => Brick1X6Z,
     8 => Brick1X8Z,
     10 => Brick1X10Z,
+    12 => Brick1X12Z,
   }
   BY_SIZE_X = {
     1 => Brick1X1,
@@ -344,5 +394,6 @@ class Brick
     6 => Brick1X6X,
     8 => Brick1X8X,
     10 => Brick1X10X,
+    12 => Brick1X12X,
   }
 end

@@ -1,6 +1,6 @@
 = Lego constructions
 
-This is a playground to test generating LEGO constructions.
+This is a playground to generate LEGO constructions.
 
 Code is probably a mess and only intended for my own use, buyer beware!
 
@@ -8,8 +8,12 @@ The scripts generate LDR files that use the link:https://www.ldraw.org/article/2
 
 To see the result you can use a program like link:https://www.leocad.org[leoCAD] or link:https://www.bricklink.com/v3/studio/download.page[Studio]. Studio can also generate nice renderings.
 
-== Suburb
+== Suburbs
 
 image::suburbs.png[]
 
 The `suburbs` directory generates suburb landscapes, run the `city.rb` to generate a `result.ldr` file.
+
+== Townscaper
+
+Constructions inspired by link:https://www.townscapergame.com[Townscaper].
