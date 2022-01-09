@@ -26,7 +26,7 @@ class Brick1X2Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: z.number + (HALF_BRICK_WIDTH * 1),
+        z: z + (HALF_BRICK_WIDTH * 1),
       ),
     ]
   end
@@ -48,7 +48,7 @@ class Brick1X3Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: z.number + (HALF_BRICK_WIDTH * 2),
+        z: z + (HALF_BRICK_WIDTH * 2),
       ),
     ]
   end
@@ -70,7 +70,7 @@ class Brick1X4Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: z.number + (HALF_BRICK_WIDTH * 3),
+        z: z + (HALF_BRICK_WIDTH * 3),
       ),
     ]
   end
@@ -92,7 +92,7 @@ class Brick1X6Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: z.number + (HALF_BRICK_WIDTH * 5),
+        z: z + (HALF_BRICK_WIDTH * 5),
       ),
     ]
   end
@@ -114,7 +114,7 @@ class Brick1X8Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: z.number + (HALF_BRICK_WIDTH * 7),
+        z: z + (HALF_BRICK_WIDTH * 7),
       ),
     ]
   end

@@ -14,7 +14,7 @@ class Emitter
       z: z,
     }.each_pair do |k, v|
       unless v.is_a?(DrawUnit)
-        raise "#{k} is not a MeasurementNumber"
+        raise "#{k} is not a #{DrawUnit}"
       end
     end
     comment("#{part.name}, color: #{color.name}, position: (#{x.number}, #{y.number}, #{z.number}), orientation: #{orientation.name}") +

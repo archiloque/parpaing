@@ -1,6 +1,7 @@
 require 'set'
 
 module Occupier
+  include Common
   def occupied_bricks
     @occupied_bricks ||= Set.new
   end
@@ -10,6 +11,15 @@ module Occupier
   # @param [NumberOfBrick] z
   # @return [String]
   def occupation_key(x:, y:, z:)
+    {
+      x: x,
+      y: y,
+      z: z,
+    }.each_pair do |k, v|
+      unless v.is_a?(NumberOfBrick)
+        raise "#{k} is not a #{NumberOfBrick}"
+      end
+    end
     "#{x.number},#{y.number},#{z.number}"
   end
 

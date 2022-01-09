@@ -91,7 +91,7 @@ module WithWalls
   # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
   # @param [UnitNumber] m_z
-  # @param [NumberOfBrick] x
+  # @param [NumberOfBrick] b_x
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_from_z
   # @param [NumberOfBrick] b_to_z
