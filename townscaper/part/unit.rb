@@ -24,64 +24,92 @@ class Unit
   end
 
   def create
+    m_x = 0.to_m
+    m_y = 0.to_m
+    m_z = 0.to_m
+
     0.to_b.downto(-UNIT_HEIGHT_IN_BRICKS) do |row_in_brick|
       if row_in_brick % 2 == 0
         # North wall
         create_wall_along_x(
-          from_x: 0.to_b,
-          to_x: UNIT_WIDTH_IN_BRICKS,
-          y: row_in_brick,
-          z: 0.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_from_x: 0.to_b,
+          b_to_x: UNIT_WIDTH_IN_BRICKS,
+          b_y: row_in_brick,
+          b_z: 0.to_b,
         )
         # South wall
         create_wall_along_x(
-          from_x: 0.to_b,
-          to_x: UNIT_WIDTH_IN_BRICKS,
-          y: row_in_brick,
-          z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_from_x: 0.to_b,
+          b_to_x: UNIT_WIDTH_IN_BRICKS,
+          b_y: row_in_brick,
+          b_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
         )
         # East
         create_wall_along_z(
-          x: 0.to_b,
-          y: row_in_brick,
-          from_z: 1.to_b,
-          to_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_x: 0.to_b,
+          b_y: row_in_brick,
+          b_from_z: 1.to_b,
+          b_to_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
         )
         # West
         create_wall_along_z(
-          x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
-          y: row_in_brick,
-          from_z: 1.to_b,
-          to_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          b_y: row_in_brick,
+          b_from_z: 1.to_b,
+          b_to_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
         )
       else
         # North wall
         create_wall_along_x(
-          from_x: 1.to_b,
-          to_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
-          y: row_in_brick,
-          z: 0.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_from_x: 1.to_b,
+          b_to_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          b_y: row_in_brick,
+          b_z: 0.to_b,
         )
         # South wall
         create_wall_along_x(
-          from_x: 1.to_b,
-          to_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
-          y: row_in_brick,
-          z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_from_x: 1.to_b,
+          b_to_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          b_y: row_in_brick,
+          b_z: UNIT_WIDTH_IN_BRICKS - 1.to_b,
         )
         # East
         create_wall_along_z(
-          x: 0.to_b,
-          y: row_in_brick,
-          from_z: 0.to_b,
-          to_z: UNIT_WIDTH_IN_BRICKS,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_x: 0.to_b,
+          b_y: row_in_brick,
+          b_from_z: 0.to_b,
+          b_to_z: UNIT_WIDTH_IN_BRICKS,
         )
         # West
         create_wall_along_z(
-          x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
-          y: row_in_brick,
-          from_z: 0.to_b,
-          to_z: UNIT_WIDTH_IN_BRICKS,
+          m_x: m_x,
+          m_y: m_y,
+          m_z: m_z,
+          b_x: UNIT_WIDTH_IN_BRICKS - 1.to_b,
+          b_y: row_in_brick,
+          b_from_z: 0.to_b,
+          b_to_z: UNIT_WIDTH_IN_BRICKS,
         )
       end
     end
