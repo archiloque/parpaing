@@ -24,11 +24,56 @@ class Unit
   end
 
   def create
-    m_x = 0.to_m
-    m_y = 0.to_m
-    m_z = 0.to_m
+    create_walls
+    create_floor
+    create_roof
+    result
+  end
 
-    0.to_b.downto(-UNIT_HEIGHT_IN_BRICKS) do |row_in_brick|
+  def create_floor
+    elements = SetPart.calculate_fit(UNIT_WIDTH_IN_BRICKS, Plate::BY_SIZE)
+    current_x = 0.to_b
+    elements.each do |element|
+      part = element.part_class.new
+      add_part(
+        m_x: @x_origin,
+        m_y: @y_origin,
+        m_z: @z_origin,
+        b_x: current_x,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: part,
+        color: Color::BLACK
+      )
+      current_x += element.size
+    end
+  end
+
+  def create_roof
+    elements = SetPart.calculate_fit(UNIT_WIDTH_IN_BRICKS, Plate::BY_SIZE)
+    current_x = 0.to_b
+    elements.each do |element|
+      part = element.part_class.new
+      add_part(
+        m_x: @x_origin,
+        m_y: (@y_origin.number - PLATE_HEIGHT - (UNIT_HEIGHT_IN_BRICKS.number * BRICK_HEIGHT)).to_m,
+        m_z: @z_origin,
+        b_x: current_x,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: part,
+        color: Color::BLACK
+      )
+      current_x += element.size
+    end
+  end
+
+  def create_walls
+    m_x = @x_origin
+    m_y = @y_origin - PLATE_HEIGHT.to_m
+    m_z = @z_origin
+
+    0.to_b.downto(-(UNIT_HEIGHT_IN_BRICKS.number - 1).to_b) do |row_in_brick|
       if row_in_brick % 2 == 0
         # North wall
         create_wall_along_x(
@@ -113,7 +158,6 @@ class Unit
         )
       end
     end
-    result
   end
 
 end

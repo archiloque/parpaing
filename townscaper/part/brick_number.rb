@@ -8,6 +8,11 @@ class BrickNumber
     @number = number
   end
 
+  # @return [String]
+  def to_s
+    "B #{number}"
+  end
+
   # @param [BrickNumber] limit
   # @yieldparam [BrickNumber]
   # @return [void]
@@ -65,19 +70,13 @@ class BrickNumber
     number % other
   end
 
-  # @return [String]
-  def to_s
-    "B #{number}"
-  end
-
   private
 
   # @param [Object] value
   # @return [void]
   def check_brick_number(value)
     unless value.is_a?(BrickNumber)
-      raise "#{value} is not a BrickNumber"
+      raise "#{value} is not a #{BrickNumber}"
     end
   end
-
 end

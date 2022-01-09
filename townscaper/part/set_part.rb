@@ -21,10 +21,25 @@ class SetPart
         current_index += 1
       end
       while remaining_length >= parts_width[current_index]
-        result << parts[parts_width[current_index]]
+        result << FitElement.new(parts_width[current_index].to_b, parts[parts_width[current_index]])
         remaining_length -= parts_width[current_index]
       end
     end
     result
+  end
+
+  class FitElement
+    # @return [BrickNumber]
+    attr_reader :size
+
+    # @return [part_class]
+    attr_reader :part_class
+
+    # @param [BrickNumber] size
+    # @param [Class] part_class
+    def initialize(size, part_class)
+      @size = size
+      @part_class = part_class
+    end
   end
 end

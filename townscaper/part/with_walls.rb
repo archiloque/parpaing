@@ -67,13 +67,13 @@ module WithWalls
     b_to_x:
   )
     length = b_to_x - b_from_x
-    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_X)
+    elements = SetPart.calculate_fit(length, Brick::BY_SIZE_X)
     if b_y % 2 == 1
-      part_classes = part_classes.reverse
+      elements = elements.reverse
     end
     current_x = b_from_x
-    part_classes.each do |part_classes|
-      part = part_classes.new
+    elements.each do |element|
+      part = element.part_class.new
       add_part(
         m_x: m_x,
         m_y: m_y,
@@ -84,7 +84,7 @@ module WithWalls
         part: part,
         color: Color::BLACK,
       )
-      current_x += part.x
+      current_x += element.size
     end
   end
 
@@ -155,13 +155,13 @@ module WithWalls
     b_from_z:,
     b_to_z:)
     length = b_to_z - b_from_z
-    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_Z)
+    elements = SetPart.calculate_fit(length, Brick::BY_SIZE_Z)
     if b_y % 2 == 1
-      part_classes = part_classes.reverse
+      elements = elements.reverse
     end
     current_z = b_from_z
-    part_classes.each do |part_classes|
-      part = part_classes.new
+    elements.each do |element|
+      part = element.part_class.new
       add_part(
         m_x: m_x,
         m_y: m_y,
@@ -172,7 +172,7 @@ module WithWalls
         part: part,
         color: Color::BLACK,
       )
-      current_z += part.z
+      current_z += element.size
     end
   end
 
