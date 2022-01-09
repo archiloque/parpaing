@@ -20,5 +20,6 @@ require_relative 'with_result'
 require_relative 'with_walls'
 
 require_relative 'brick'
+require_relative 'plate'
 require_relative 'baseplate'
 require_relative 'unit'

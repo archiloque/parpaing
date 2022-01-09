@@ -6,7 +6,7 @@ class BasePlate < SetPart
   # @return [Hash]
   def create_position(x:, z:)
     {
-      x: x +  (14 * BRICK_WIDTH),
+      x: x + (14 * BRICK_WIDTH),
       y: -24,
       z: z + (15 * BRICK_WIDTH),
     }

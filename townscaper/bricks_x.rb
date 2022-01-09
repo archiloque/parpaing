@@ -18,7 +18,7 @@ File.open('result.ldr', 'w') do |result|
         x: 0.to_m,
         y: 0.to_m,
         z: current_z.to_m,
-        ).each do |line|
+      ).each do |line|
       result << line
     end
     current_z += (2 * Measures::BRICK_WIDTH)

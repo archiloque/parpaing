@@ -30,7 +30,7 @@ module WithWalls
   # @return [void]
   def create_wall_segment_along_x(y:, z:, from_x:, to_x:)
     length = to_x - from_x
-    part_classes = OccupyingPart.calculate_fit(length, Brick::BY_SIZE_X)
+    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_X)
     if y % 2 == 1
       part_classes = part_classes.reverse
     end
@@ -78,7 +78,7 @@ module WithWalls
   # @return [void]
   def create_wall_segment_along_z(y:, x:, from_z:, to_z:)
     length = to_z - from_z
-    part_classes = OccupyingPart.calculate_fit(length, Brick::BY_SIZE_Z)
+    part_classes = SetPart.calculate_fit(length, Brick::BY_SIZE_Z)
     if y % 2 == 1
       part_classes = part_classes.reverse
     end

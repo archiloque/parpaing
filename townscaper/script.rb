@@ -15,6 +15,6 @@ File.open('result.ldr', 'w') do |result|
     y_origin: 0.to_m,
     z_origin: 0.to_m,
   ).create.each do |line|
-      result << line
+    result << line
   end
 end
