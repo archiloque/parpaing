@@ -43,7 +43,7 @@ module WithWalls
         m_z: m_z,
         b_y: b_y,
         b_z: b_z,
-        b_from_x: current_to_x + 1,
+        b_from_x: current_to_x + 1.to_b,
         b_to_x: b_to_x,
       )
     end
