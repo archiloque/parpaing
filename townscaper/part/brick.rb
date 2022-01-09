@@ -31,7 +31,7 @@ class Brick1X1 < Brick
         part: BRICK_1X1,
         color: color,
         orientation: PartOrientation::O_0,
-        x: x.number - BRICK_WIDTH,
+        x: x,
         y: create_y(y),
         z: z,
       ),

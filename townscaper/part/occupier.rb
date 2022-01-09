@@ -5,27 +5,27 @@ module Occupier
     @occupied_bricks ||= Set.new
   end
 
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
+  # @param [BrickNumber] x
+  # @param [BrickNumber] y
+  # @param [BrickNumber] z
   # @return [String]
   def occupation_key(x:, y:, z:)
-    "#{x},#{y},#{z}"
+    "#{x.number},#{y.number},#{z.number}"
   end
 
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
+  # @param [BrickNumber] x
+  # @param [BrickNumber] y
+  # @param [BrickNumber] z
   # @return [void]
   def occupy(x:, y:, z:)
     occupied_bricks.add(occupation_key(x: x, y: y, z: z))
   end
 
-  # @param [Integer] from_x
-  # @param [Integer] to_x
-  # @param [Integer] y
-  # @param [Integer] from_z
-  # @param [Integer] to_z
+  # @param [BrickNumber] from_x
+  # @param [BrickNumber] to_x
+  # @param [BrickNumber] y
+  # @param [BrickNumber] from_z
+  # @param [BrickNumber] to_z
   # @return [void]
   def occupy_zone(from_x:, to_x:, y:, from_z:, to_z:)
     from_x.upto(to_x) do |x|
@@ -35,19 +35,19 @@ module Occupier
     end
   end
 
-  # @param [Integer] x
-  # @param [Integer] y
-  # @param [Integer] z
+  # @param [BrickNumber] x
+  # @param [BrickNumber] y
+  # @param [BrickNumber] z
   # @return [Boolean]
   def occupied?(x:, y:, z:)
     occupied_bricks.include?(occupation_key(x: x, y: y, z: z))
   end
 
-  # @param [Integer] from_x
-  # @param [Integer] to_x
-  # @param [Integer] y
-  # @param [Integer] from_z
-  # @param [Integer] to_z
+  # @param [BrickNumber] from_x
+  # @param [BrickNumber] to_x
+  # @param [BrickNumber] y
+  # @param [BrickNumber] from_z
+  # @param [BrickNumber] to_z
   # @return [Boolean]
   def occupied_zone?(from_x:, to_x:, y:, from_z:, to_z:)
     from_x.upto(to_x) do |x|
