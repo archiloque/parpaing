@@ -1,14 +1,15 @@
 class OccupyingPart < SetPart
-  # @return [BrickNumber]
+  # @return [NumberOfBrick]
   attr_reader :x
-  # @return [BrickNumber]
+  # @return [NumberOfBrick]
   attr_reader :y
-  # @return [BrickNumber]
+  # @return [NumberOfBrick]
   attr_reader :z
 
-  # @param [BrickNumber] x
-  # @param [BrickNumber] y
-  # @param [BrickNumber] z
+  # @param [NumberOfBrick] x
+  # @param [NumberOfBrick] y
+  # @param [NumberOfBrick] z
+
   def initialize(x:, y:, z:)
     @x = x
     @y = y

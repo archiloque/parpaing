@@ -1,14 +1,14 @@
 class SetPart
   # @param [Color] color
-  # @param [MeasurementNumber] x
-  # @param [MeasurementNumber] y
-  # @param [MeasurementNumber] z
+  # @param [UnitNumber] x
+  # @param [UnitNumber] y
+  # @param [UnitNumber] z
   # @return [Array<String>]
   def create(color:, x:, y:, z:)
     raise NotImplementedError
   end
 
-  # @param [BrickNumber] target_length
+  # @param [NumberOfBrick] target_length
   # @param [Hash{Integer->Class}] parts
   # @return [Array<Class>]
   def self.calculate_fit(target_length, parts)
@@ -29,13 +29,13 @@ class SetPart
   end
 
   class FitElement
-    # @return [BrickNumber]
+    # @return [NumberOfBrick]
     attr_reader :size
 
     # @return [part_class]
     attr_reader :part_class
 
-    # @param [BrickNumber] size
+    # @param [NumberOfBrick] size
     # @param [Class] part_class
     def initialize(size, part_class)
       @size = size

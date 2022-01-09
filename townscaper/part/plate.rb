@@ -4,16 +4,16 @@ class Plate < SetPart
   PLATE_4X12 = Part.new('Plate 4 x 12', '3029')
   PLATE_6X12 = Part.new('Plate 6 x 12', '3028')
 
-  # @param [MeasurementNumber] y
-  # @return [MeasurementNumber]
+  # @param [DrawUnit] y
+  # @return [DrawUnit]
   def create_y(y)
-    (y.number - (STUD_HEIGHT * 3)).to_m
+    y - (STUD_HEIGHT * 3)
   end
 
-  # @param [MeasurementNumber] z
-  # @return [MeasurementNumber]
+  # @param [DrawUnit] z
+  # @return [DrawUnit]
   def create_z(z)
-    (z.number + (11 * HALF_BRICK_WIDTH)).to_m
+    z + (HALF_BRICK_WIDTH * 11)
   end
 end
 
@@ -39,7 +39,7 @@ class Plate2X12 < Plate
         part: PLATE_2X12,
         color: color,
         orientation: PartOrientation::O_90,
-        x: (x.number + (HALF_BRICK_WIDTH)).to_m,
+        x: x + (HALF_BRICK_WIDTH * 1),
         y: create_y(y),
         z: create_z(z),
       ),
@@ -54,7 +54,7 @@ class Plate4X12 < Plate
         part: PLATE_4X12,
         color: color,
         orientation: PartOrientation::O_90,
-        x: (x.number + (3 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (HALF_BRICK_WIDTH * 3),
         y: create_y(y),
         z: create_z(z),
       ),
@@ -69,7 +69,7 @@ class Plate6X12 < Plate
         part: PLATE_6X12,
         color: color,
         orientation: PartOrientation::O_90,
-        x: (x.number + (5 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (HALF_BRICK_WIDTH * 5),
         y: create_y(y),
         z: create_z(z),
       ),

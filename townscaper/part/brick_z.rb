@@ -1,6 +1,6 @@
 class BrickZ < Brick
 
-  # @param [BrickNumber] z
+  # @param [NumberOfBrick] z
   def initialize(z)
     super(
       x: 1.to_b,
@@ -26,7 +26,7 @@ class Brick1X2Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + HALF_BRICK_WIDTH).to_m,
+        z: z.number + (HALF_BRICK_WIDTH * 1),
       ),
     ]
   end
@@ -48,7 +48,7 @@ class Brick1X3Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (2 * HALF_BRICK_WIDTH)).to_m,
+        z: z.number + (HALF_BRICK_WIDTH * 2),
       ),
     ]
   end
@@ -70,7 +70,7 @@ class Brick1X4Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (3 * HALF_BRICK_WIDTH)).to_m,
+        z: z.number + (HALF_BRICK_WIDTH * 3),
       ),
     ]
   end
@@ -92,7 +92,7 @@ class Brick1X6Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (5 * HALF_BRICK_WIDTH)).to_m,
+        z: z.number + (HALF_BRICK_WIDTH * 5),
       ),
     ]
   end
@@ -114,7 +114,7 @@ class Brick1X8Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (7 * HALF_BRICK_WIDTH)).to_m,
+        z: z.number + (HALF_BRICK_WIDTH * 7),
       ),
     ]
   end
@@ -136,7 +136,7 @@ class Brick1X10Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (9 * HALF_BRICK_WIDTH)).to_m,
+        z: z + (HALF_BRICK_WIDTH * 9),
       ),
     ]
   end
@@ -158,7 +158,7 @@ class Brick1X12Z < BrickZ
         orientation: PartOrientation::O_90,
         x: x,
         y: create_y(y),
-        z: (z.number + (11 * HALF_BRICK_WIDTH)).to_m,
+        z: z + (HALF_BRICK_WIDTH * 11),
       ),
     ]
   end

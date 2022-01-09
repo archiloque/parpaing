@@ -1,12 +1,12 @@
 module WithWalls
 
-  # @param [MeasurementNumber] m_x
-  # @param [MeasurementNumber] m_y
-  # @param [MeasurementNumber] m_z
-  # @param [BrickNumber] b_y
-  # @param [BrickNumber] b_z
-  # @param [BrickNumber] b_from_x
-  # @param [BrickNumber] b_to_x
+  # @param [UnitNumber] m_x
+  # @param [UnitNumber] m_y
+  # @param [UnitNumber] m_z
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_z
+  # @param [NumberOfBrick] b_from_x
+  # @param [NumberOfBrick] b_to_x
   # @return [void]
   def create_wall_along_x(
     m_x:,
@@ -49,13 +49,13 @@ module WithWalls
     end
   end
 
-  # @param [MeasurementNumber] m_x
-  # @param [MeasurementNumber] m_y
-  # @param [MeasurementNumber] m_z
-  # @param [BrickNumber] b_y
-  # @param [BrickNumber] b_z
-  # @param [BrickNumber] b_from_x
-  # @param [BrickNumber] b_to_x
+  # @param [UnitNumber] m_x
+  # @param [UnitNumber] m_y
+  # @param [UnitNumber] m_z
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_z
+  # @param [NumberOfBrick] b_from_x
+  # @param [NumberOfBrick] b_to_x
   # @return [void]
   def create_wall_segment_along_x(
     m_x:,
@@ -82,19 +82,19 @@ module WithWalls
         b_y: b_y,
         b_z: b_z,
         part: part,
-        color: Color::BLACK,
+        color: Color::BLUE,
       )
       current_x += element.size
     end
   end
 
-  # @param [MeasurementNumber] m_x
-  # @param [MeasurementNumber] m_y
-  # @param [MeasurementNumber] m_z
-  # @param [BrickNumber] x
-  # @param [BrickNumber] b_y
-  # @param [BrickNumber] b_from_z
-  # @param [BrickNumber] b_to_z
+  # @param [UnitNumber] m_x
+  # @param [UnitNumber] m_y
+  # @param [UnitNumber] m_z
+  # @param [NumberOfBrick] x
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_from_z
+  # @param [NumberOfBrick] b_to_z
   # @return [void]
   def create_wall_along_z(
     m_x:,
@@ -138,13 +138,13 @@ module WithWalls
     end
   end
 
-  # @param [MeasurementNumber] m_x
-  # @param [MeasurementNumber] m_y
-  # @param [MeasurementNumber] m_z
-  # @param [BrickNumber] b_y
-  # @param [BrickNumber] b_x
-  # @param [BrickNumber] b_from_z
-  # @param [BrickNumber] b_to_z
+  # @param [UnitNumber] m_x
+  # @param [UnitNumber] m_y
+  # @param [UnitNumber] m_z
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_x
+  # @param [NumberOfBrick] b_from_z
+  # @param [NumberOfBrick] b_to_z
   # @return [void]
   def create_wall_segment_along_z(
     m_x:,
@@ -170,18 +170,18 @@ module WithWalls
         b_y: b_y,
         b_z: current_z,
         part: part,
-        color: Color::BLACK,
+        color: Color::BLUE,
       )
       current_z += element.size
     end
   end
 
-  # @param [MeasurementNumber] m_x
-  # @param [MeasurementNumber] m_y
-  # @param [MeasurementNumber] m_z
-  # @param [BrickNumber] b_x
-  # @param [BrickNumber] b_y
-  # @param [BrickNumber] b_z
+  # @param [UnitNumber] m_x
+  # @param [UnitNumber] m_y
+  # @param [UnitNumber] m_z
+  # @param [NumberOfBrick] b_x
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_z
   # @param [Color] color
   # @param [SetPart] part
   # @return [void]
@@ -198,9 +198,9 @@ module WithWalls
     concat_result(
       part.create(
         color: color,
-        x: (m_x.number + (b_x.number * Measures::BRICK_WIDTH)).to_m,
-        y: (m_y.number + (b_y.number * Measures::BRICK_HEIGHT)).to_m,
-        z: (m_z.number + (b_z.number * Measures::BRICK_WIDTH)).to_m,
+        x: m_x + (b_x * Measures::BRICK_WIDTH),
+        y: m_y + (b_y * Measures::BRICK_HEIGHT),
+        z: m_z + (b_z * Measures::BRICK_WIDTH),
       )
     )
   end

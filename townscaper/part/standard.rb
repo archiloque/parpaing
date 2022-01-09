@@ -1,5 +1,4 @@
-class Unit
-  include Measures
+class Standard
   include Occupier
   include WithResult
   include WithWalls
@@ -7,12 +6,12 @@ class Unit
   UNIT_WIDTH_IN_BRICKS = 12.to_b
   UNIT_HEIGHT_IN_BRICKS = 6.to_b
 
-  UNIT_WIDTH_IN_MEASUREMENT = (UNIT_WIDTH_IN_BRICKS.number * BRICK_WIDTH).to_m
-  UNIT_HEIGHT_IN_MEASUREMENT = ((UNIT_HEIGHT_IN_BRICKS.number * BRICK_HEIGHT) + (2 * PLATE_HEIGHT)).to_m
+  UNIT_WIDTH_IN_MEASUREMENT = UNIT_WIDTH_IN_BRICKS * Measures::BRICK_WIDTH
+  UNIT_HEIGHT_IN_MEASUREMENT = (UNIT_HEIGHT_IN_BRICKS * Measures::BRICK_HEIGHT) + (Measures::PLATE_HEIGHT * 2)
 
-  # @param [MeasurementNumber] x_origin
-  # @param [MeasurementNumber] y_origin
-  # @param [MeasurementNumber] z_origin
+  # @param [DrawUnit] x_origin
+  # @param [DrawUnit] y_origin
+  # @param [DrawUnit] z_origin
   def initialize(
     x_origin:,
     y_origin:,
@@ -43,7 +42,7 @@ class Unit
         b_y: 0.to_b,
         b_z: 0.to_b,
         part: part,
-        color: Color::BLACK
+        color: Color::BLUE
       )
       current_x += element.size
     end
@@ -56,13 +55,13 @@ class Unit
       part = element.part_class.new
       add_part(
         m_x: @x_origin,
-        m_y: (@y_origin.number - PLATE_HEIGHT - (UNIT_HEIGHT_IN_BRICKS.number * BRICK_HEIGHT)).to_m,
+        m_y: @y_origin - PLATE_HEIGHT - (UNIT_HEIGHT_IN_BRICKS * BRICK_HEIGHT),
         m_z: @z_origin,
         b_x: current_x,
         b_y: 0.to_b,
         b_z: 0.to_b,
         part: part,
-        color: Color::BLACK
+        color: Color::BLUE
       )
       current_x += element.size
     end
@@ -70,10 +69,10 @@ class Unit
 
   def create_walls
     m_x = @x_origin
-    m_y = @y_origin - PLATE_HEIGHT.to_m
+    m_y = @y_origin - PLATE_HEIGHT
     m_z = @z_origin
 
-    0.to_b.downto(-(UNIT_HEIGHT_IN_BRICKS.number - 1).to_b) do |row_in_brick|
+    0.to_b.downto(-(UNIT_HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
       if row_in_brick % 2 == 0
         # North wall
         create_wall_along_x(

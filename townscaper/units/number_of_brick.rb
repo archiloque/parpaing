@@ -1,5 +1,6 @@
-# Wrapper
-class BrickNumber
+class NumberOfBrick
+  include Common
+
   # @return [Integer]
   attr_reader :number
 
@@ -10,10 +11,10 @@ class BrickNumber
 
   # @return [String]
   def to_s
-    "B #{number}"
+    "#{self.class} #{number}"
   end
 
-  # @param [BrickNumber] limit
+  # @param [NumberOfBrick] limit
   # @yieldparam [BrickNumber]
   # @return [void]
   def upto(limit)
@@ -22,7 +23,7 @@ class BrickNumber
     end
   end
 
-  # @param [BrickNumber] limit
+  # @param [NumberOfBrick] limit
   # @yieldparam [BrickNumber]
   # @return [void]
   def downto(limit)
@@ -31,35 +32,35 @@ class BrickNumber
     end
   end
 
-  # @param [BrickNumber] value
-  # @return [BrickNumber]
+  # @param [NumberOfBrick] value
+  # @return [NumberOfBrick]
   def +(value)
-    check_brick_number(value)
+    check_type(value, NumberOfBrick)
     (number + value.number).to_b
   end
 
-  # @param [BrickNumber] value
-  # @return [BrickNumber]
+  # @param [NumberOfBrick] value
+  # @return [NumberOfBrick]
   def -(value)
-    check_brick_number(value)
+    check_type(value, NumberOfBrick)
     (number - value.number).to_b
   end
 
-  # @param [BrickNumber] value
+  # @param [NumberOfBrick] value
   # @return [Boolean]
   def >=(value)
-    check_brick_number(value)
+    check_type(value, NumberOfBrick)
     number >= value.number
   end
 
-  # @param [BrickNumber] value
+  # @param [NumberOfBrick] value
   # @return [Boolean]
   def <(value)
-    check_brick_number(value)
+    check_type(value, NumberOfBrick)
     number < value.number
   end
 
-  # @return [BrickNumber]
+  # @return [NumberOfBrick]
   def -@
     (-number).to_b
   end
@@ -70,13 +71,10 @@ class BrickNumber
     number % other
   end
 
-  private
-
-  # @param [Object] value
-  # @return [void]
-  def check_brick_number(value)
-    unless value.is_a?(BrickNumber)
-      raise "#{value} is not a #{BrickNumber}"
-    end
+  # @param [BrickMeasure] size
+  # @return [DrawUnit]
+  def *(size)
+    check_type(size, DrawUnitPerBrick)
+    (number * size.number).to_u
   end
 end

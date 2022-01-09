@@ -3,9 +3,9 @@ class Emitter
   # @param [String] part_code
   # @param [Color] color
   # @param [PartOrientation] orientation
-  # @param [MeasurementNumber] x
-  # @param [MeasurementNumber] y
-  # @param [MeasurementNumber] z
+  # @param [UnitNumber] x
+  # @param [UnitNumber] y
+  # @param [UnitNumber] z
   # @return [String]
   def self.emit(part:, color:, orientation:, x:, y:, z:)
     {
@@ -13,7 +13,7 @@ class Emitter
       y: y,
       z: z,
     }.each_pair do |k, v|
-      unless v.is_a?(MeasurementNumber)
+      unless v.is_a?(DrawUnit)
         raise "#{k} is not a MeasurementNumber"
       end
     end

@@ -1,6 +1,6 @@
 class BrickX < Brick
 
-  # @param [BrickNumber] x
+  # @param [NumberOfBrick] x
   def initialize(x)
     super(
       x: x,
@@ -24,7 +24,7 @@ class Brick1X2X < BrickX
         part: BRICK_1X2,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + HALF_BRICK_WIDTH).to_m,
+        x: x + (HALF_BRICK_WIDTH * 1),
         y: create_y(y),
         z: z,
       ),
@@ -46,7 +46,7 @@ class Brick1X3X < BrickX
         part: BRICK_1X3,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (2 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (2 * HALF_BRICK_WIDTH),
         y: create_y(y),
         z: z
       ),
@@ -68,7 +68,7 @@ class Brick1X4X < BrickX
         part: BRICK_1X4,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (3 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (3 * HALF_BRICK_WIDTH),
         y: create_y(y),
         z: z,
       ),
@@ -90,7 +90,7 @@ class Brick1X6X < BrickX
         part: BRICK_1X6,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (5 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (5 * HALF_BRICK_WIDTH),
         y: create_y(y),
         z: z,
       ),
@@ -112,7 +112,7 @@ class Brick1X8X < BrickX
         part: BRICK_1X8,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (7 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (7 * HALF_BRICK_WIDTH),
         y: create_y(y),
         z: z,
       ),
@@ -134,7 +134,7 @@ class Brick1X10X < BrickX
         part: BRICK_1X10,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (9 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (HALF_BRICK_WIDTH * 9),
         y: create_y(y),
         z: z,
       ),
@@ -156,7 +156,7 @@ class Brick1X12X < BrickX
         part: BRICK_1X12,
         color: color,
         orientation: PartOrientation::O_0,
-        x: (x.number + (11 * HALF_BRICK_WIDTH)).to_m,
+        x: x + (HALF_BRICK_WIDTH * 11),
         y: create_y(y),
         z: z,
       ),

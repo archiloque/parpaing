@@ -1,8 +1,8 @@
 class Brick < OccupyingPart
-  # @param [MeasurementNumber] y
-  # @return [MeasurementNumber]
+  # @param [DrawUnit] y
+  # @return [DrawUnit]
   def create_y(y)
-    (y.number - BRICK_HEIGHT - STUD_HEIGHT).to_m
+    y - (1.to_b * BRICK_HEIGHT) - STUD_HEIGHT
   end
 
   BRICK_1X1 = Part.new('Brick 1 x 2', '3005')
