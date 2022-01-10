@@ -46,7 +46,7 @@ class Brick1X3X < BrickX
         part: BRICK_1X3,
         color: color,
         orientation: PartOrientation::O_0,
-        x: x + (2 * HALF_BRICK_WIDTH),
+        x: x + (HALF_BRICK_WIDTH * 2),
         y: create_y(y),
         z: z
       ),
@@ -68,7 +68,7 @@ class Brick1X4X < BrickX
         part: BRICK_1X4,
         color: color,
         orientation: PartOrientation::O_0,
-        x: x + (3 * HALF_BRICK_WIDTH),
+        x: x + (HALF_BRICK_WIDTH * 3),
         y: create_y(y),
         z: z,
       ),
@@ -84,13 +84,18 @@ class Brick1X6X < BrickX
     )
   end
 
+  # @return [Part]
+  def part
+    BRICK_1X6
+  end
+
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part: BRICK_1X6,
+        part: part,
         color: color,
         orientation: PartOrientation::O_0,
-        x: x + (5 * HALF_BRICK_WIDTH),
+        x: x + (HALF_BRICK_WIDTH * 5),
         y: create_y(y),
         z: z,
       ),
@@ -112,7 +117,7 @@ class Brick1X8X < BrickX
         part: BRICK_1X8,
         color: color,
         orientation: PartOrientation::O_0,
-        x: x + (7 * HALF_BRICK_WIDTH),
+        x: x + (HALF_BRICK_WIDTH * 7),
         y: create_y(y),
         z: z,
       ),

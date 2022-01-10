@@ -1,12 +1,13 @@
 class BasePlate < SetPart
   # @param [DrawUnit] x
+  # @param [DrawUnit] y
   # @param [DrawUnit] z
   # @return [Hash]
-  def create_position(x:, z:)
+  def create_position(x:, y:, z:)
     {
-      x: x + (14.to_b * MeasureNumber.BRICK_WIDTH),
-      y: -24.to_b,
-      z: z + (15.to_b * MeasureNumber.BRICK_WIDTH),
+      x: x + (15.to_b * Measures::BRICK_WIDTH) + HALF_BRICK_WIDTH,
+      y: y,
+      z: z + (15.to_b * Measures::BRICK_WIDTH) + HALF_BRICK_WIDTH,
     }
   end
 
@@ -17,7 +18,7 @@ class BasePlate < SetPart
           part: Part.new('Baseplate 32 x 32', '3811'),
           color: Color::BLUE,
           orientation: PartOrientation::O_0,
-        }.merge(create_position(x: x, z: z))
+        }.merge(create_position(x: x, y: y, z: z))
       )
     ]
   end

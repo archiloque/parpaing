@@ -11,7 +11,7 @@ include Measures
 
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
-  Standard.new(
+  Cell.new(
     x_origin: 0.to_u,
     y_origin: 0.to_u,
     z_origin: 0.to_u,

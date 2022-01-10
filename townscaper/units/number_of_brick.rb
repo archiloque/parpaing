@@ -77,4 +77,16 @@ class NumberOfBrick
     check_type(size, DrawUnitPerBrick)
     (number * size.number).to_u
   end
+
+  # @param [Integer] size
+  # @return [NumberOfBrick]
+  def /(size)
+    check_type(size, Integer)
+    result = number.to_f / size
+    unless result % 1 == 0
+      raise "Invalid division: [#{number}]/[#{size}]"
+    end
+    result.to_i.to_b
+  end
+
 end

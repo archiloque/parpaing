@@ -84,10 +84,15 @@ class Brick1X6Z < BrickZ
     )
   end
 
+  # @return [Part]
+  def part
+    BRICK_1X6
+  end
+
   def create(color:, x:, y:, z:)
     [
       Emitter.emit(
-        part: BRICK_1X6,
+        part: part,
         color: color,
         orientation: PartOrientation::O_90,
         x: x,

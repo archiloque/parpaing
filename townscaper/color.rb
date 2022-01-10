@@ -8,12 +8,12 @@ class Color
     @code = code
   end
 
-  BLACK = Color.new(name: 'Black', code: 0)
   BLUE = Color.new(name: 'Blue', code: 1)
+  YELLOW = Color.new(name: 'Yellow', code: 14)
 
   ALL =
     [
-      Color::BLACK,
       Color::BLUE,
+      Color::YELLOW,
     ]
 end
