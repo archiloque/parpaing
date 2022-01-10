@@ -330,17 +330,6 @@ class Cell
         part: Brick1X4Z.new,
         )
     )
-
-    add_part(
-      m_x: @x_origin,
-      m_y: @y_origin + (2.to_b * Measures::BRICK_HEIGHT) - Measures::STUD_HEIGHT,
-      m_z: @z_origin,
-      color: Color::BLUE,
-      b_x: - ((Measures::BASEPLATE_WIDTH - WIDTH_IN_BRICKS) / 2),
-      b_y: 0.to_b,
-      b_z: - ((Measures::BASEPLATE_WIDTH - WIDTH_IN_BRICKS) / 2),
-      part: BasePlate.new,
-    )
   end
 
 end

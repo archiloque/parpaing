@@ -8,7 +8,7 @@ class PartOrientation
     @code = code
   end
 
-  O_0 = PartOrientation.new(name: 'Default', code: ' 1 0 0 0 1 0 0 0 1')
+  O_0 = PartOrientation.new(name: 'Z 0°', code: ' 1 0 0 0 1 0 0 0 1')
   O_90 = PartOrientation.new(name: 'Z 90°', code: '0 0 -1 0 1 0 1 0 0')
   O_180 = PartOrientation.new(name: 'Z 180°', code: '-1 0 0 0 1 0 0 0 -1')
   O_270 = PartOrientation.new(name: 'Z 270°', code: '0 0 1 0 1 0 -1 0 0')

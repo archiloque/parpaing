@@ -17,7 +17,7 @@ class Emitter
         raise "#{k} is not a #{DrawUnit}"
       end
     end
-    comment("#{part.name}, color: #{color.name}, position: (#{x.number}, #{y.number}, #{z.number}), orientation: #{orientation.name}") +
+    comment("#{part.name}, #{color.name}, (#{x.number}, #{y.number}, #{z.number}), #{orientation.name}") +
       "1 #{color.code} #{x.number} #{y.number} #{z.number} #{orientation.code} #{part.code}.dat\n"
   end
 
