@@ -182,8 +182,25 @@ class Cell
           part: ArchX.new,
         )
       )
-
-      unless @level.filled?(@x_index - 1, @z_index)
+      if @level.filled?(@x_index - 1, @z_index)
+        # In a corner
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 0.to_b,
+            b_z: @z_origin,
+            part: Brick1X3X.new,
+          )
+        )
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 1.to_b,
+            b_z: @z_origin,
+            part: Brick1X4X.new,
+          )
+        )
+      else
         # Standard case
         add_part(
           **common.merge(
@@ -204,31 +221,51 @@ class Cell
       end
 
       if @level.filled?(@x_index + 1, @z_index)
-        # Another cell on the same side
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 9.to_b,
-            b_y: 0.to_b,
-            b_z: @z_origin,
-            part: ArchX.new,
+        if @level.filled?(@x_index + 1, @z_index + 1)
+          # In a corner
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 9.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin,
+              part: Brick1X3X.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 8.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin,
-            part: Brick1X2X.new,
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 8.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin,
+              part: Brick1X4X.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 14.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin,
-            part: Brick1X2X.new,
+        else
+          # Another cell on the same side
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 9.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin,
+              part: ArchX.new,
+            )
           )
-        )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 8.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin,
+              part: Brick1X2X.new,
+            )
+          )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 14.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin,
+              part: Brick1X2X.new,
+            )
+          )
+        end
       else
         # Standard case
         add_part(
@@ -263,8 +300,25 @@ class Cell
           part: ArchX.new,
         )
       )
-
-      unless @level.filled?(@x_index - 1, @z_index)
+      if @level.filled?(@x_index - 1, @z_index)
+        # In  corner
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 0.to_b,
+            b_z: @z_origin + 11.to_b,
+            part: Brick1X3X.new,
+          )
+        )
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 1.to_b,
+            b_z: @z_origin + 11.to_b,
+            part: Brick1X4X.new,
+          )
+        )
+      else
         # Standard case
         add_part(
           **common.merge(
@@ -285,31 +339,52 @@ class Cell
       end
 
       if @level.filled?(@x_index + 1, @z_index)
-        # Another cell on the same side
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 9.to_b,
-            b_y: 0.to_b,
-            b_z: @z_origin + 11.to_b,
-            part: ArchX.new,
+        if @level.filled?(@x_index + 1, @z_index + 1)
+          # In a corner
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 9.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin + 11.to_b,
+              part: Brick1X3X.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 8.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin + 11.to_b,
-            part: Brick1X2X.new,
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 8.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 11.to_b,
+              part: Brick1X4X.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 14.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin + 11.to_b,
-            part: Brick1X2X.new,
+        else
+          # Another cell on the same side
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 9.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin + 11.to_b,
+              part: ArchX.new,
+            )
           )
-        )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 8.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 11.to_b,
+              part: Brick1X2X.new,
+            )
+          )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 14.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 11.to_b,
+              part: Brick1X2X.new,
+            )
+          )
+        end
+
       else
         add_part(
           **common.merge(
@@ -343,8 +418,25 @@ class Cell
           part: ArchZ.new,
         )
       )
-
-      unless @level.filled?(@x_index, @z_index - 1)
+      if @level.filled?(@x_index, @z_index - 1)
+        # In a corner
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 0.to_b,
+            b_z: @z_origin,
+            part: Brick1X3Z.new,
+          )
+        )
+        add_part(
+          **common.merge(
+            b_x: @x_origin,
+            b_y: 1.to_b,
+            b_z: @z_origin,
+            part: Brick1X4Z.new,
+          )
+        )
+      else
         # Standard case
         add_part(
           **common.merge(
@@ -365,31 +457,51 @@ class Cell
       end
 
       if @level.filled?(@x_index, @z_index + 1)
-        # Another cell on the same side
-        add_part(
-          **common.merge(
-            b_x: @x_origin,
-            b_y: 0.to_b,
-            b_z: @z_origin + 9.to_b,
-            part: ArchZ.new,
+        if @level.filled?(@x_index + 1, @z_index + 1)
+          # In a corner
+          add_part(
+            **common.merge(
+              b_x: @x_origin,
+              b_y: 0.to_b,
+              b_z: @z_origin + 8.to_b,
+              part: Brick1X4Z.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin,
-            b_y: 1.to_b,
-            b_z: @z_origin + 8.to_b,
-            part: Brick1X2Z.new,
+          add_part(
+            **common.merge(
+              b_x: @x_origin,
+              b_y: 1.to_b,
+              b_z: @z_origin + 8.to_b,
+              part: Brick1X4Z.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin,
-            b_y: 1.to_b,
-            b_z: @z_origin + 14.to_b,
-            part: Brick1X2Z.new,
+        else
+          # Another cell on the same side
+          add_part(
+            **common.merge(
+              b_x: @x_origin,
+              b_y: 0.to_b,
+              b_z: @z_origin + 9.to_b,
+              part: ArchZ.new,
+            )
           )
-        )
+          add_part(
+            **common.merge(
+              b_x: @x_origin,
+              b_y: 1.to_b,
+              b_z: @z_origin + 8.to_b,
+              part: Brick1X2Z.new,
+            )
+          )
+          add_part(
+            **common.merge(
+              b_x: @x_origin,
+              b_y: 1.to_b,
+              b_z: @z_origin + 14.to_b,
+              part: Brick1X2Z.new,
+            )
+          )
+        end
       else
         # Standard case
         add_part(
@@ -424,8 +536,25 @@ class Cell
           part: ArchZ.new,
         )
       )
-
-      unless @level.filled?(@x_index, @z_index - 1)
+      if @level.filled?(@x_index, @z_index - 1)
+        # In a corner
+        add_part(
+          **common.merge(
+            b_x: @x_origin + 11.to_b,
+            b_y: 0.to_b,
+            b_z: @z_origin,
+            part: Brick1X3Z.new,
+          )
+        )
+        add_part(
+          **common.merge(
+            b_x: @x_origin + 11.to_b,
+            b_y: 1.to_b,
+            b_z: @z_origin,
+            part: Brick1X4Z.new,
+          )
+        )
+      else
         # Standard case
         add_part(
           **common.merge(
@@ -446,31 +575,51 @@ class Cell
       end
 
       if @level.filled?(@x_index, @z_index + 1)
-        # Another cell on the same side
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 11.to_b,
-            b_y: 0.to_b,
-            b_z: @z_origin + 9.to_b,
-            part: ArchZ.new,
+        if @level.filled?(@x_index + 1, @z_index + 1)
+          # In a corner
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 11.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin + 9.to_b,
+              part: Brick1X3Z.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 11.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin + 8.to_b,
-            part: Brick1X2Z.new,
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 11.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 8.to_b,
+              part: Brick1X4Z.new,
+            )
           )
-        )
-        add_part(
-          **common.merge(
-            b_x: @x_origin + 11.to_b,
-            b_y: 1.to_b,
-            b_z: @z_origin + 14.to_b,
-            part: Brick1X2Z.new,
+        else
+          # Another cell on the same side
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 11.to_b,
+              b_y: 0.to_b,
+              b_z: @z_origin + 9.to_b,
+              part: ArchZ.new,
+            )
           )
-        )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 11.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 8.to_b,
+              part: Brick1X2Z.new,
+            )
+          )
+          add_part(
+            **common.merge(
+              b_x: @x_origin + 11.to_b,
+              b_y: 1.to_b,
+              b_z: @z_origin + 14.to_b,
+              part: Brick1X2Z.new,
+            )
+          )
+        end
       else
         # Standard case
         add_part(
