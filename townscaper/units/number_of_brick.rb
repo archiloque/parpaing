@@ -71,11 +71,16 @@ class NumberOfBrick
     number % other
   end
 
-  # @param [BrickMeasure] size
-  # @return [DrawUnit]
+  # @param [BrickMeasure, Integer] size
+  # @return [DrawUnit, NumberOfBrick]
   def *(size)
-    check_type(size, DrawUnitPerBrick)
-    (number * size.number).to_u
+    if size.is_a?(Integer)
+      (number * size).to_b
+    elsif size.is_a?(DrawUnitPerBrick)
+      (number * size.number).to_u
+    else
+      raise "Can't process [#{size}], should be an #{Integer} or a #{DrawUnitPerBrick}"
+    end
   end
 
   # @param [Integer] size

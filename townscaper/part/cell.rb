@@ -9,17 +9,23 @@ class Cell
   WIDTH_IN_UNIT = WIDTH_IN_BRICKS * Measures::BRICK_WIDTH
   HEIGHT_IN_UNIT = (HEIGHT_IN_BRICKS * Measures::BRICK_HEIGHT) + (Measures::PLATE_HEIGHT * 2)
 
-  # @param [DrawUnit] x_origin
+  # @param [Integer] x_index
+  # @param [Integer] z_index
   # @param [DrawUnit] y_origin
-  # @param [DrawUnit] z_origin
+  # @param [Level] level
   def initialize(
-    x_origin:,
+    x_index:,
     y_origin:,
-    z_origin:
+    z_index:,
+    level:
   )
-    @x_origin = x_origin
+    @x_index = x_index
     @y_origin = y_origin
-    @z_origin = z_origin
+    @z_index = z_index
+    @level = level
+
+    @x_origin = WIDTH_IN_BRICKS * @x_index
+    @z_origin = WIDTH_IN_BRICKS * @z_index
   end
 
   def create
@@ -32,18 +38,86 @@ class Cell
 
   private
 
+  def create_walls_even(common)
+    # North wall
+    create_wall_along_x(
+      **common.merge(
+        b_from_x: @x_origin,
+        b_to_x: @x_origin + WIDTH_IN_BRICKS,
+        b_z: @z_origin,
+      )
+    )
+    # South wall
+    create_wall_along_x(
+      **common.merge(
+        b_from_x: @x_origin,
+        b_to_x: @x_origin + WIDTH_IN_BRICKS,
+        b_z: @z_origin + WIDTH_IN_BRICKS - 1.to_b,
+      )
+    )
+    # East
+    create_wall_along_z(
+      **common.merge(
+        b_x: @x_origin,
+        b_from_z: @z_origin + 1.to_b,
+        b_to_z: @z_origin + WIDTH_IN_BRICKS - 1.to_b,
+      )
+    )
+    # West
+    create_wall_along_z(
+      **common.merge(
+        b_x: @x_origin + WIDTH_IN_BRICKS - 1.to_b,
+        b_from_z: @z_origin + 1.to_b,
+        b_to_z: @z_origin + WIDTH_IN_BRICKS - 1.to_b,
+      )
+    )
+  end
+
+  def create_walls_odd(common)
+    # North wall
+    create_wall_along_x(
+      **common.merge(
+        b_from_x: @x_origin + 1.to_b,
+        b_to_x: @x_origin + WIDTH_IN_BRICKS - 1.to_b,
+        b_z: @z_origin,
+        )
+    )
+    # South wall
+    create_wall_along_x(
+      **common.merge(
+        b_from_x: @x_origin+ 1.to_b,
+        b_to_x: @x_origin + WIDTH_IN_BRICKS - 1.to_b,
+        b_z: @z_origin + WIDTH_IN_BRICKS - 1.to_b,
+        )
+    )
+    # East
+    create_wall_along_z(
+      **common.merge(
+        b_x: @x_origin,
+        b_from_z: @z_origin,
+        b_to_z: @z_origin + WIDTH_IN_BRICKS,
+        )
+    )
+    # West
+    create_wall_along_z(
+      **common.merge(
+        b_x: @x_origin + WIDTH_IN_BRICKS - 1.to_b,
+        b_from_z: @z_origin,
+        b_to_z: @z_origin + WIDTH_IN_BRICKS,
+        )
+    )
+  end
+
   def create_floor
     elements = SetPart.calculate_fit(WIDTH_IN_BRICKS, Plate::BY_SIZE)
     current_x = 0.to_b
     elements.each do |element|
       part = element.part_class.new
       add_part(
-        m_x: @x_origin,
         m_y: @y_origin,
-        m_z: @z_origin,
-        b_x: current_x,
+        b_x: @x_origin + current_x,
         b_y: 0.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: part,
         color: Color::YELLOW
       )
@@ -57,12 +131,10 @@ class Cell
     elements.each do |element|
       part = element.part_class.new
       add_part(
-        m_x: @x_origin,
         m_y: @y_origin - PLATE_HEIGHT - (HEIGHT_IN_BRICKS * BRICK_HEIGHT),
-        m_z: @z_origin,
-        b_x: current_x,
+        b_x: @x_origin + current_x,
         b_y: 0.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: part,
         color: Color::YELLOW
       )
@@ -71,193 +143,127 @@ class Cell
   end
 
   def create_walls
-    m_x = @x_origin
     m_y = @y_origin - PLATE_HEIGHT
-    m_z = @z_origin
 
     0.to_b.downto(-(HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
       common = {
-        m_x: m_x,
         m_y: m_y,
-        m_z: m_z,
         b_y: row_in_brick,
       }
 
       if row_in_brick % 2 == 0
-        # North wall
-        create_wall_along_x(
-          **common.merge(
-            b_from_x: 0.to_b,
-            b_to_x: WIDTH_IN_BRICKS,
-            b_z: 0.to_b,
-          )
-        )
-        # South wall
-        create_wall_along_x(
-          **common.merge(
-            b_from_x: 0.to_b,
-            b_to_x: WIDTH_IN_BRICKS,
-            b_z: WIDTH_IN_BRICKS - 1.to_b,
-          )
-        )
-        # East
-        create_wall_along_z(
-          **common.merge(
-            b_x: 0.to_b,
-            b_from_z: 1.to_b,
-            b_to_z: WIDTH_IN_BRICKS - 1.to_b,
-          )
-        )
-        # West
-        create_wall_along_z(
-          **common.merge(
-            b_x: WIDTH_IN_BRICKS - 1.to_b,
-            b_from_z: 1.to_b,
-            b_to_z: WIDTH_IN_BRICKS - 1.to_b,
-          )
-        )
+        create_walls_even(common)
       else
-        # North wall
-        create_wall_along_x(
-          **common.merge(
-            b_from_x: 1.to_b,
-            b_to_x: WIDTH_IN_BRICKS - 1.to_b,
-            b_z: 0.to_b,
-          )
-        )
-        # South wall
-        create_wall_along_x(
-          **common.merge(
-            b_from_x: 1.to_b,
-            b_to_x: WIDTH_IN_BRICKS - 1.to_b,
-            b_z: WIDTH_IN_BRICKS - 1.to_b,
-          )
-        )
-        # East
-        create_wall_along_z(
-          **common.merge(
-            b_x: 0.to_b,
-            b_from_z: 0.to_b,
-            b_to_z: WIDTH_IN_BRICKS,
-          )
-        )
-        # West
-        create_wall_along_z(
-          **common.merge(
-            b_x: WIDTH_IN_BRICKS - 1.to_b,
-            b_from_z: 0.to_b,
-            b_to_z: WIDTH_IN_BRICKS,
-          )
-        )
+        create_walls_odd(common)
       end
     end
   end
 
   def create_basement
     common = {
-      m_x: @x_origin,
       m_y: @y_origin + (1.to_b * Measures::BRICK_HEIGHT),
-      m_z: @z_origin,
       color: Color::YELLOW
     }
+
+
 
     # First level
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 0.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: Brick1X3X.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 3.to_b,
+        b_x: @x_origin + 3.to_b,
         b_y: 0.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: ArchX.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 9.to_b,
+        b_x: @x_origin + 9.to_b,
         b_y: 0.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: Brick1X3X.new,
       )
     )
 
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 0.to_b,
-        b_z: 11.to_b,
+        b_z: @z_origin + 11.to_b,
         part: Brick1X3X.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 3.to_b,
+        b_x: @x_origin + 3.to_b,
         b_y: 0.to_b,
-        b_z: 11.to_b,
+        b_z: @z_origin + 11.to_b,
         part: ArchX.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 9.to_b,
+        b_x: @x_origin + 9.to_b,
         b_y: 0.to_b,
-        b_z: 11.to_b,
+        b_z: @z_origin + 11.to_b,
         part: Brick1X3X.new,
       )
     )
 
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 0.to_b,
-        b_z: 1.to_b,
+        b_z: @z_origin + 1.to_b,
         part: Brick1X2Z.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 0.to_b,
-        b_z: 3.to_b,
+        b_z: @z_origin + 3.to_b,
         part: ArchZ.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 0.to_b,
-        b_z: 9.to_b,
+        b_z: @z_origin + 9.to_b,
         part: Brick1X2Z.new,
       )
     )
 
     add_part(
       **common.merge(
-        b_x: 11.to_b,
+        b_x: @x_origin + 11.to_b,
         b_y: 0.to_b,
-        b_z: 1.to_b,
+        b_z: @z_origin + 1.to_b,
         part: Brick1X2Z.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 11.to_b,
+        b_x: @x_origin + 11.to_b,
         b_y: 0.to_b,
-        b_z: 3.to_b,
+        b_z: @z_origin + 3.to_b,
         part: ArchZ.new,
       )
     )
     add_part(
       **common.merge(
-        b_x: 11.to_b,
+        b_x: @x_origin + 11.to_b,
         b_y: 0.to_b,
-        b_z: 9.to_b,
+        b_z: @z_origin + 9.to_b,
         part: Brick1X2Z.new,
       )
     )
@@ -265,68 +271,68 @@ class Cell
     # Second level
     add_part(
       **common.merge(
-        b_x: 1.to_b,
+        b_x: @x_origin + 1.to_b,
         b_y: 1.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: Brick1X3X.new,
         )
     )
     add_part(
       **common.merge(
-        b_x: 8.to_b,
+        b_x: @x_origin + 8.to_b,
         b_y: 1.to_b,
-        b_z: 0.to_b,
-        part: Brick1X3X.new,
-        )
-    )
-
-    add_part(
-      **common.merge(
-        b_x: 1.to_b,
-        b_y: 1.to_b,
-        b_z: 11.to_b,
-        part: Brick1X3X.new,
-        )
-    )
-    add_part(
-      **common.merge(
-        b_x: 8.to_b,
-        b_y: 1.to_b,
-        b_z: 11.to_b,
+        b_z: @z_origin,
         part: Brick1X3X.new,
         )
     )
 
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin + 1.to_b,
         b_y: 1.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin + 11.to_b,
+        part: Brick1X3X.new,
+        )
+    )
+    add_part(
+      **common.merge(
+        b_x: @x_origin + 8.to_b,
+        b_y: 1.to_b,
+        b_z: @z_origin + 11.to_b,
+        part: Brick1X3X.new,
+        )
+    )
+
+    add_part(
+      **common.merge(
+        b_x: @x_origin,
+        b_y: 1.to_b,
+        b_z: @z_origin,
         part: Brick1X4Z.new,
         )
     )
     add_part(
       **common.merge(
-        b_x: 0.to_b,
+        b_x: @x_origin,
         b_y: 1.to_b,
-        b_z: 8.to_b,
+        b_z: @z_origin + 8.to_b,
         part: Brick1X4Z.new,
         )
     )
 
     add_part(
       **common.merge(
-        b_x: 11.to_b,
+        b_x: @x_origin + 11.to_b,
         b_y: 1.to_b,
-        b_z: 0.to_b,
+        b_z: @z_origin,
         part: Brick1X4Z.new,
         )
     )
     add_part(
       **common.merge(
-        b_x: 11.to_b,
+        b_x: @x_origin + 11.to_b,
         b_y: 1.to_b,
-        b_z: 8.to_b,
+        b_z: @z_origin + 8.to_b,
         part: Brick1X4Z.new,
         )
     )

@@ -16,9 +16,10 @@ class Level
       0.upto(@columns - 1) do |column|
         if @map[line][column]
           concat_result(Cell.new(
-            x_origin: (Cell::WIDTH_IN_UNIT * column),
+            x_index: column,
             y_origin: 0.to_u,
-            z_origin: (Cell::WIDTH_IN_UNIT * line),
+            z_index: line,
+            level: self,
           ).create)
         end
       end
@@ -45,5 +46,12 @@ class Level
       end
     end
     result
+  end
+
+  # @param [Integer] column
+  # @param [Integer] line
+  # @return [Boolean]
+  def filled?(column, line)
+    @map[column] ? (@map[column][line] || false) : false
   end
 end

@@ -1,17 +1,13 @@
 module WithWalls
 
-  # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
-  # @param [UnitNumber] m_z
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_z
   # @param [NumberOfBrick] b_from_x
   # @param [NumberOfBrick] b_to_x
   # @return [void]
   def create_wall_along_x(
-    m_x:,
     m_y:,
-    m_z:,
     b_y:,
     b_z:,
     b_from_x:,
@@ -28,9 +24,7 @@ module WithWalls
       current_to_x += 1.to_b
     end
     create_wall_segment_along_x(
-      m_x: m_x,
       m_y: m_y,
-      m_z: m_z,
       b_y: b_y,
       b_z: b_z,
       b_from_x: current_from_x,
@@ -38,9 +32,7 @@ module WithWalls
     )
     if current_to_x < b_to_x
       create_wall_along_x(
-        m_x: m_x,
         m_y: m_y,
-        m_z: m_z,
         b_y: b_y,
         b_z: b_z,
         b_from_x: current_to_x + 1.to_b,
@@ -49,18 +41,14 @@ module WithWalls
     end
   end
 
-  # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
-  # @param [UnitNumber] m_z
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_z
   # @param [NumberOfBrick] b_from_x
   # @param [NumberOfBrick] b_to_x
   # @return [void]
   def create_wall_segment_along_x(
-    m_x:,
     m_y:,
-    m_z:,
     b_y:,
     b_z:,
     b_from_x:,
@@ -75,9 +63,7 @@ module WithWalls
     elements.each do |element|
       part = element.part_class.new
       add_part(
-        m_x: m_x,
         m_y: m_y,
-        m_z: m_z,
         b_x: current_x,
         b_y: b_y,
         b_z: b_z,
@@ -88,18 +74,14 @@ module WithWalls
     end
   end
 
-  # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
-  # @param [UnitNumber] m_z
   # @param [NumberOfBrick] b_x
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_from_z
   # @param [NumberOfBrick] b_to_z
   # @return [void]
   def create_wall_along_z(
-    m_x:,
     m_y:,
-    m_z:,
     b_y:,
     b_x:,
     b_from_z:,
@@ -117,9 +99,7 @@ module WithWalls
       current_to_z += 1.to_b
     end
     create_wall_segment_along_z(
-      m_x: m_x,
       m_y: m_y,
-      m_z: m_z,
       b_y: b_y,
       b_x: b_x,
       b_from_z: current_from_z,
@@ -127,9 +107,7 @@ module WithWalls
     )
     if current_to_z < b_to_z
       create_wall_along_z(
-        m_x: m_x,
         m_y: m_y,
-        m_z: m_z,
         b_y: b_y,
         b_x: b_x,
         b_from_z: current_to_z + 1.to_b,
@@ -138,18 +116,14 @@ module WithWalls
     end
   end
 
-  # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
-  # @param [UnitNumber] m_z
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_x
   # @param [NumberOfBrick] b_from_z
   # @param [NumberOfBrick] b_to_z
   # @return [void]
   def create_wall_segment_along_z(
-    m_x:,
     m_y:,
-    m_z:,
     b_y:,
     b_x:,
     b_from_z:,
@@ -163,9 +137,7 @@ module WithWalls
     elements.each do |element|
       part = element.part_class.new
       add_part(
-        m_x: m_x,
         m_y: m_y,
-        m_z: m_z,
         b_x: b_x,
         b_y: b_y,
         b_z: current_z,
@@ -176,9 +148,7 @@ module WithWalls
     end
   end
 
-  # @param [UnitNumber] m_x
   # @param [UnitNumber] m_y
-  # @param [UnitNumber] m_z
   # @param [NumberOfBrick] b_x
   # @param [NumberOfBrick] b_y
   # @param [NumberOfBrick] b_z
@@ -186,9 +156,7 @@ module WithWalls
   # @param [SetPart] part
   # @return [void]
   def add_part(
-    m_x:,
     m_y:,
-    m_z:,
     b_x:,
     b_y:,
     b_z:,
@@ -198,9 +166,9 @@ module WithWalls
     concat_result(
       part.create(
         color: color,
-        x: m_x + (b_x * Measures::BRICK_WIDTH),
+        x: (b_x * Measures::BRICK_WIDTH),
         y: m_y + (b_y * Measures::BRICK_HEIGHT),
-        z: m_z + (b_z * Measures::BRICK_WIDTH),
+        z: (b_z * Measures::BRICK_WIDTH),
       )
     )
   end
