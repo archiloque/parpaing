@@ -48,10 +48,14 @@ class Level
     result
   end
 
-  # @param [Integer] column
-  # @param [Integer] line
+  # @param [Integer] x_index
+  # @param [Integer] z_index
   # @return [Boolean]
-  def filled?(column, line)
-    @map[column] ? (@map[column][line] || false) : false
+  def filled?(x_index, z_index)
+    if (z_index < 0) || (x_index < 0) || (z_index >= @lines) || (x_index >= @columns)
+      false
+    else
+      @map[z_index][x_index] || false
+    end
   end
 end
