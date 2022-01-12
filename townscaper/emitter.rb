@@ -1,4 +1,9 @@
 class Emitter
+  # @param [Color, nil] color
+  def self.patch_color(color)
+    @color = color
+  end
+
   # @param [Part] part
   # @param [String] part_code
   # @param [Color] color
@@ -17,6 +22,7 @@ class Emitter
         raise "#{k} is not a #{DrawUnit}"
       end
     end
+    color = @color || color
     #comment("#{part.name}, #{color.name}, (#{x.number}, #{y.number}, #{z.number}), #{orientation.name}") +
       "1 #{color.code} #{x.number} #{y.number} #{z.number} #{orientation.code} #{part.code}.dat\n"
   end

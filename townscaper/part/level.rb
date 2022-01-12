@@ -12,6 +12,25 @@ class Level
 
   # @return [Array<String>]
   def create
+    create_cells
+    create_water
+    result
+  end
+
+  # @param [Integer] column
+  # @param [Integer] line
+  # @return [Boolean]
+  def filled?(column, line)
+    if (line < 0) || (column < 0) || (line >= @lines) || (column >= @columns)
+      false
+    else
+      @map[line][column] || false
+    end
+  end
+
+  private
+
+  def create_cells
     0.upto(@lines - 1) do |line|
       0.upto(@columns - 1) do |column|
         if @map[line][column]
@@ -24,6 +43,9 @@ class Level
         end
       end
     end
+  end
+
+  def create_water
     line_width_in_brick = Cell::WIDTH_IN_BRICKS.number * @lines
     column_width_in_brick = Cell::WIDTH_IN_BRICKS.number * @columns
     line_number_base_plates = (line_width_in_brick.to_f / Measures::BASEPLATE_WIDTH.number).ceil
@@ -44,18 +66,6 @@ class Level
           )
         )
       end
-    end
-    result
-  end
-
-  # @param [Integer] x_index
-  # @param [Integer] z_index
-  # @return [Boolean]
-  def filled?(x_index, z_index)
-    if (z_index < 0) || (x_index < 0) || (z_index >= @lines) || (x_index >= @columns)
-      false
-    else
-      @map[z_index][x_index] || false
     end
   end
 end
