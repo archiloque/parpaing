@@ -2,6 +2,7 @@ require 'set'
 
 module Occupier
   include Common
+
   def occupied_bricks
     @occupied_bricks ||= Set.new
   end

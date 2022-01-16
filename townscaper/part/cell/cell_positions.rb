@@ -10,18 +10,13 @@ module CellPositions
   end
 
   # @return [Boolean]
-  def east_filled?
-    @level.filled?(@x_index + 1, @z_index)
-  end
-
-  # @return [Boolean]
   def west_filled?
     @level.filled?(@x_index - 1, @z_index)
   end
 
   # @return [Boolean]
-  def south_east_filled?
-    @level.filled?(@x_index + 1, @z_index + 1)
+  def east_filled?
+    @level.filled?(@x_index + 1, @z_index)
   end
 
   # @return [Boolean]
@@ -30,12 +25,17 @@ module CellPositions
   end
 
   # @return [Boolean]
-  def north_east_filled?
-    @level.filled?(@x_index + 1, @z_index - 1)
+  def south_east_filled?
+    @level.filled?(@x_index + 1, @z_index + 1)
   end
 
   # @return [Boolean]
   def north_west_filled?
     @level.filled?(@x_index - 1, @z_index - 1)
+  end
+
+  # @return [Boolean]
+  def north_east_filled?
+    @level.filled?(@x_index + 1, @z_index - 1)
   end
 end

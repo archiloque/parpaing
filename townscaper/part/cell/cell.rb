@@ -31,7 +31,7 @@ class Cell
     @z_index = z_index
     @level = level
 
-    @x_origin = WIDTH_IN_BRICKS * @x_index
+    @x_origin = -WIDTH_IN_BRICKS * @x_index
     @z_origin = WIDTH_IN_BRICKS * @z_index
   end
 

@@ -59,7 +59,7 @@ class Level
       0.upto(column_number_base_plates - 1) do |column_index|
         concat_result(
           BasePlate.new.create(
-            x: (-column_delta + (Measures::BASEPLATE_WIDTH.number * column_index)).to_b * Measures::BRICK_WIDTH,
+            x: (-column_delta - (Measures::BASEPLATE_WIDTH.number * column_index)).to_b * Measures::BRICK_WIDTH,
             z: (-line_delta + (Measures::BASEPLATE_WIDTH.number * line_index)).to_b * Measures::BRICK_WIDTH,
             y: (2.to_b * Measures::BRICK_HEIGHT) - Measures::STUD_HEIGHT,
             color: Color::BLUE,

@@ -27,7 +27,7 @@ File.open('result.ldr', 'w') do |result|
     if current_line.length > columns_number
       raise "Bad line length: [#{current_line}] #{current_line.length} vs #{columns_number}"
     else
-      current_line = current_line.ljust(columns_number, ' ').reverse
+      current_line = current_line.ljust(columns_number, ' ')
     end
     result_map << current_line.chars.map do |element|
       case element
