@@ -8,84 +8,98 @@ module CellWalls
         m_y: m_y,
         b_y: row_in_brick,
       }
-
-      if row_in_brick % 2 == 0
-        create_walls_even(common)
-      else
-        create_walls_odd(common)
-      end
+      create_walls_north(row_in_brick, common)
+      create_walls_south(row_in_brick, common)
+      create_walls_east(row_in_brick, common)
+      create_walls_west(row_in_brick, common)
     end
   end
 
   private
 
-  def create_walls_even(common)
-    # North wall
-    create_wall_along_x(
-      **common.merge(
-        b_from_x: @x_origin,
-        b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS,
-        b_z: @z_origin,
+  def create_walls_north(row_in_brick, common)
+    if row_in_brick % 2 == 0
+      create_wall_along_x(
+        **common.merge(
+          b_from_x: @x_origin,
+          b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS,
+          b_z: @z_origin,
+        )
       )
-    )
-    # South wall
-    create_wall_along_x(
-      **common.merge(
-        b_from_x: @x_origin,
-        b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS,
-        b_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+    else
+      create_wall_along_x(
+        **common.merge(
+          b_from_x: @x_origin + 1.to_b,
+          b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+          b_z: @z_origin,
+        )
       )
-    )
-    # East
-    create_wall_along_z(
-      **common.merge(
-        b_x: @x_origin,
-        b_from_z: @z_origin + 1.to_b,
-        b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-      )
-    )
-    # West
-    create_wall_along_z(
-      **common.merge(
-        b_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-        b_from_z: @z_origin + 1.to_b,
-        b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-      )
-    )
+    end
   end
 
-  def create_walls_odd(common)
-    # North wall
-    create_wall_along_x(
-      **common.merge(
-        b_from_x: @x_origin + 1.to_b,
-        b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-        b_z: @z_origin,
-      )
-    )
-    # South wall
-    create_wall_along_x(
-      **common.merge(
-        b_from_x: @x_origin + 1.to_b,
-        b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-        b_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-      )
-    )
-    # East
-    create_wall_along_z(
-      **common.merge(
-        b_x: @x_origin,
-        b_from_z: @z_origin,
-        b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS,
-      )
-    )
-    # West
-    create_wall_along_z(
-      **common.merge(
-        b_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
-        b_from_z: @z_origin,
-        b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS,
-      )
-    )
+  def create_walls_south(row_in_brick, common)
+    unless south_filled?
+      if row_in_brick % 2 == 0
+        create_wall_along_x(
+          **common.merge(
+            b_from_x: @x_origin,
+            b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS,
+            b_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+          )
+        )
+      else
+        create_wall_along_x(
+          **common.merge(
+            b_from_x: @x_origin + 1.to_b,
+            b_to_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+            b_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+          )
+        )
+      end
+    end
+  end
+
+  def create_walls_east(row_in_brick, common)
+    unless east_filled?
+      if row_in_brick % 2 == 0
+        create_wall_along_z(
+          **common.merge(
+            b_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+            b_from_z: @z_origin + 1.to_b,
+            b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+          )
+        )
+      else
+        create_wall_along_z(
+          **common.merge(
+            b_x: @x_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+            b_from_z: @z_origin,
+            b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS,
+          )
+        )
+      end
+    end
+  end
+
+  def create_walls_west(row_in_brick, common)
+    unless west_filled?
+      if row_in_brick % 2 == 0
+        create_wall_along_z(
+          **common.merge(
+            b_x: @x_origin,
+            b_from_z: @z_origin + 1.to_b,
+            b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS - 1.to_b,
+          )
+        )
+      else
+        create_wall_along_z(
+          **common.merge(
+            b_x: @x_origin,
+            b_from_z: @z_origin,
+            b_to_z: @z_origin + Cell::WIDTH_IN_BRICKS,
+          )
+        )
+      end
+    end
   end
 end

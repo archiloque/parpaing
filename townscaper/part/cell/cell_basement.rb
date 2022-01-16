@@ -15,8 +15,6 @@ module CellBasement
 
   def create_basement_north(common)
     if north_filled?
-      # X
-      # O
     else
       add_part(
         **common.merge(
@@ -33,7 +31,6 @@ module CellBasement
 
   def create_basement_south(common)
     if south_filled?
-      # Between two cells
     else
       add_part(
         **common.merge(
@@ -51,8 +48,6 @@ module CellBasement
   def create_basement_north_east(common)
     if west_filled?
       if north_west_filled?
-        #  _
-        # XO
         add_part(
           **common.merge(
             b_x: @x_origin,
@@ -71,8 +66,6 @@ module CellBasement
         )
       end
     else
-      #  _
-      # _O
       add_part(
         **common.merge(
           b_x: @x_origin,
@@ -94,11 +87,7 @@ module CellBasement
 
   def create_basement_north_west(common)
     if east_filled?
-      # _
-      # OX
       if north_east_filled?
-        # _X
-        # OX
         add_part(
           **common.merge(
             b_x: @x_origin + 9.to_b,
@@ -116,8 +105,6 @@ module CellBasement
           )
         )
       else
-        # __
-        # OX
         add_part(
           **common.merge(
             b_x: @x_origin + 9.to_b,
@@ -144,8 +131,6 @@ module CellBasement
         )
       end
     else
-      # _
-      # O_
       add_part(
         **common.merge(
           b_x: @x_origin + 9.to_b,
@@ -168,7 +153,6 @@ module CellBasement
   def create_basement_south_east(common)
     if west_filled?
       if south_west_filled?
-        # In  corner
         add_part(
           **common.merge(
             b_x: @x_origin,
@@ -187,7 +171,6 @@ module CellBasement
         )
       end
     else
-      # Standard case
       add_part(
         **common.merge(
           b_x: @x_origin,
@@ -210,7 +193,6 @@ module CellBasement
   def create_basement_south_west(common)
     if east_filled?
       if south_east_filled?
-        # In a corner
         add_part(
           **common.merge(
             b_x: @x_origin + 9.to_b,
@@ -228,7 +210,6 @@ module CellBasement
           )
         )
       else
-        # Another cell on the same side
         add_part(
           **common.merge(
             b_x: @x_origin + 9.to_b,
@@ -277,7 +258,6 @@ module CellBasement
 
   def create_basement_west(common)
     if west_filled?
-      # Between two cells
     else
       add_part(
         **common.merge(
@@ -288,7 +268,6 @@ module CellBasement
         )
       )
       if north_filled?
-        # In a corner
         if north_west_filled?
           add_part(
             **common.merge(
@@ -308,7 +287,6 @@ module CellBasement
           )
         end
       else
-        # Standard case
         add_part(
           **common.merge(
             b_x: @x_origin,
@@ -329,7 +307,6 @@ module CellBasement
 
       if south_filled?
         if south_west_filled?
-          # In a corner
           add_part(
             **common.merge(
               b_x: @x_origin,
@@ -347,7 +324,6 @@ module CellBasement
             )
           )
         else
-          # Another cell on the same side
           add_part(
             **common.merge(
               b_x: @x_origin,
@@ -374,7 +350,6 @@ module CellBasement
           )
         end
       else
-        # Standard case
         add_part(
           **common.merge(
             b_x: @x_origin,
@@ -397,7 +372,6 @@ module CellBasement
 
   def create_basement_east(common)
     if east_filled?
-      # Between two cells
     else
       add_part(
         **common.merge(
@@ -415,7 +389,6 @@ module CellBasement
   def create_basement_east_north(common)
     if north_filled?
       if north_east_filled?
-        # In a corner
         add_part(
           **common.merge(
             b_x: @x_origin + 11.to_b,
@@ -434,7 +407,6 @@ module CellBasement
         )
       end
     else
-      # Standard case
       add_part(
         **common.merge(
           b_x: @x_origin + 11.to_b,
@@ -457,7 +429,6 @@ module CellBasement
   def create_basement_east_south(common)
     if south_filled?
       if south_east_filled?
-        # In a corner
         add_part(
           **common.merge(
             b_x: @x_origin + 11.to_b,
@@ -475,7 +446,6 @@ module CellBasement
           )
         )
       else
-        # Another cell on the same side
         add_part(
           **common.merge(
             b_x: @x_origin + 11.to_b,
@@ -502,7 +472,6 @@ module CellBasement
         )
       end
     else
-      # Standard case
       add_part(
         **common.merge(
           b_x: @x_origin + 11.to_b,
