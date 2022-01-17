@@ -14,6 +14,11 @@ class NumberOfBrick
     "#{self.class} #{number}"
   end
 
+  # @param [NumberOfBrick] other
+  def ==(other)
+    number == other.number
+  end
+
   # @param [NumberOfBrick] limit
   # @yieldparam [BrickNumber]
   # @return [void]
