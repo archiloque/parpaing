@@ -1,3 +1,4 @@
+require_relative 'delta'
 require_relative 'cell_basement'
 require_relative 'cell_positions'
 require_relative 'cell_walls'
