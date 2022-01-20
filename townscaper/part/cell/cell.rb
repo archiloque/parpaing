@@ -2,6 +2,7 @@ require_relative 'delta'
 require_relative 'cell_basement'
 require_relative 'cell_positions'
 require_relative 'cell_walls'
+require_relative 'cell_roof'
 
 class Cell
   include Occupier
@@ -10,6 +11,7 @@ class Cell
   include CellBasement
   include CellWalls
   include CellPositions
+  include CellRoof
 
   WIDTH_IN_BRICKS = 12.to_b
   HEIGHT_IN_BRICKS = 6.to_b
@@ -39,7 +41,7 @@ class Cell
   def create
     create_walls
     create_floor
-    create_roof
+    create_roof_z
     create_basement
     result
   end
@@ -53,23 +55,6 @@ class Cell
       part = element.part_class.new
       add_part(
         m_y: @y_origin,
-        b_x: @x_origin + current_x,
-        b_y: 0.to_b,
-        b_z: @z_origin,
-        part: part,
-        color: Color::YELLOW
-      )
-      current_x += element.size
-    end
-  end
-
-  def create_roof
-    elements = SetPart.calculate_fit(WIDTH_IN_BRICKS, Plate::BY_SIZE)
-    current_x = 0.to_b
-    elements.each do |element|
-      part = element.part_class.new
-      add_part(
-        m_y: @y_origin - PLATE_HEIGHT - (HEIGHT_IN_BRICKS * BRICK_HEIGHT),
         b_x: @x_origin + current_x,
         b_y: 0.to_b,
         b_z: @z_origin,
