@@ -38,7 +38,7 @@ class Slope452X4East < SetPart
         x: x + 20.to_u,
         y: y - 28.to_u,
         z: z + 30.to_u,
-        ),
+      ),
     ]
   end
 end
@@ -53,7 +53,7 @@ class Slope452X4West < SetPart
         x: x,
         y: y - 28.to_u,
         z: z + 30.to_u,
-        ),
+      ),
     ]
   end
 end

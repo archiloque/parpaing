@@ -20,7 +20,7 @@ class Slope333X3South < SetPart
         part: Slope33::SLOPE_33_3_3,
         color: color,
         orientation: PartOrientation::O_180,
-        x: x + 30.to_u,
+        x: x + 20.to_u,
         y: y - 28.to_u,
         z: z,
       ),
@@ -42,3 +42,19 @@ class Slope333X3East < SetPart
     ]
   end
 end
+
+class Slope333X3West < SetPart
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part: Slope33::SLOPE_33_3_3,
+        color: color,
+        orientation: PartOrientation::O_90,
+        x: x,
+        y: y - 28.to_u,
+        z: z + 20.to_u,
+      ),
+    ]
+  end
+end
+

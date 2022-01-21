@@ -38,17 +38,18 @@ class Cell
     @z_origin = WIDTH_IN_BRICKS * @z_index
   end
 
+  # @return [Array<String>]
   def create
     create_walls
     create_floor
-    #create_roof_north_south
-    create_roof_corner_north_east
+    create_roof
     create_basement
     result
   end
 
   private
 
+  # @return [void]
   def create_floor
     elements = SetPart.calculate_fit(WIDTH_IN_BRICKS, Plate::BY_SIZE)
     current_x = 0.to_b
