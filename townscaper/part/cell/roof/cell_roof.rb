@@ -2,8 +2,8 @@ require_relative 'cell_roof_half'
 require_relative 'cell_roof_corner'
 require_relative 'cell_roof_top'
 
-require_relative 'cell_roof_east_west'
 require_relative 'cell_roof_north_south'
+require_relative 'cell_roof_east_west'
 
 require_relative 'cell_roof_corner_north_east'
 require_relative 'cell_roof_corner_north_west'
@@ -22,8 +22,8 @@ module CellRoof
   include CellRoofCorner
   include CellRoofTop
 
-  include CellRoofEastWest
   include CellRoofNorthSouth
+  include CellRoofEastWestSoon
 
   include CellRoofCornerNorthEast
   include CellRoofCornerNorthWest
@@ -62,11 +62,11 @@ module CellRoof
     elsif south_filled? && west_filled?
       create_roof_corner_north_east
     elsif east_filled?
-      create_roof_north_south
-    elsif west_filled?
-      create_roof_north_south
-    else
       create_roof_east_west
+    elsif west_filled?
+      create_roof_east_west
+    else
+      create_roof_north_south
     end
   end
 end
