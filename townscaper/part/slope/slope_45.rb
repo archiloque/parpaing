@@ -4,7 +4,7 @@ module Slope45
   SLOPE_45_2X6 = Part.new('Slope 45° 2 x 6', '23949')
 
   SLOPE_45_2X4_DOUBLE = Part.new('Slope 45° 2 x 4 Double', '3041')
-  SLOPE_45_2X1_DOUBLE = Part.new('Slope 45° 2 x 1 Double with Inside Stud Holder', '3044c')
+  SLOPE_45_2X1_DOUBLE = Part.new('Slope 45° 2 x 1 Double with Inside Stud Holder', '3044a')
 
   SLOPE_45_2_2_DOUBLE_CONVEX = Part.new('Slope 45° 2 x 2 Double Convex', '3045')
   SLOPE_45_2_2_DOUBLE_CONCAVE = Part.new('Slope 45° 2 x 2 Double Concave', '3046')
