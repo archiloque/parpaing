@@ -2,7 +2,7 @@ require_relative 'delta'
 require_relative 'cell_basement'
 require_relative 'cell_positions'
 require_relative 'cell_walls'
-require_relative 'cell_roof'
+require_relative 'roof/cell_roof'
 
 class Cell
   include Occupier
@@ -41,7 +41,8 @@ class Cell
   def create
     create_walls
     create_floor
-    create_roof_z
+    #create_roof_north_south
+    create_roof_corner_north_east
     create_basement
     result
   end

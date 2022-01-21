@@ -16,7 +16,7 @@ class Delta
     Delta.new(
       @x + delta.x,
       @z + delta.z,
-      )
+    )
   end
 
   DELTA_NORTH = Delta.new(0, -1)

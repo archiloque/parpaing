@@ -40,7 +40,7 @@ File.open('result.ldr', 'w') do |result|
       end
     end
   end
-  Level.new(columns_number, lines_number,result_map).create.each do |line|
+  Level.new(columns_number, lines_number, result_map).create.each do |line|
     result << line
   end
 end

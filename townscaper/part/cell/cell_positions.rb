@@ -29,21 +29,21 @@ module CellPositions
 
   # @return [Boolean]
   def south_west_filled?
-    filled?(Delta::DELTA_SOUTH  + Delta::DELTA_WEST)
+    filled?(Delta::DELTA_SOUTH + Delta::DELTA_WEST)
   end
 
   # @return [Boolean]
   def south_east_filled?
-    filled?(Delta::DELTA_SOUTH  + Delta::DELTA_EAST)
+    filled?(Delta::DELTA_SOUTH + Delta::DELTA_EAST)
   end
 
   # @return [Boolean]
   def north_west_filled?
-    filled?(Delta::DELTA_NORTH  + Delta::DELTA_WEST)
+    filled?(Delta::DELTA_NORTH + Delta::DELTA_WEST)
   end
 
   # @return [Boolean]
   def north_east_filled?
-    filled?(Delta::DELTA_NORTH  + Delta::DELTA_EAST)
+    filled?(Delta::DELTA_NORTH + Delta::DELTA_EAST)
   end
 end

@@ -89,7 +89,7 @@ module CellWalls
         current_wall_in_direction = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_EAST)
         number_of_cells_to_wall = current_wall_in_direction.length
 
-        added_border_north = (north_filled? && north_east_filled?) ? - 1.to_b : 0.to_b
+        added_border_north = (north_filled? && north_east_filled?) ? -1.to_b : 0.to_b
         added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
 
         if row_in_brick % 2 == 0
@@ -121,7 +121,7 @@ module CellWalls
         current_wall_in_direction = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_WEST)
         number_of_cells_to_wall = current_wall_in_direction.length
 
-        added_border_north = (north_filled? && north_west_filled?) ? - 1.to_b : 0.to_b
+        added_border_north = (north_filled? && north_west_filled?) ? -1.to_b : 0.to_b
         added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
 
         if row_in_brick % 2 == 0

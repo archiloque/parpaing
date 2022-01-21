@@ -24,7 +24,7 @@ class Emitter
     end
     color = @color || color
     #comment("#{part.name}, #{color.name}, (#{x.number}, #{y.number}, #{z.number}), #{orientation.name}") +
-      "1 #{color.code} #{x.number} #{y.number} #{z.number} #{orientation.code} #{part.code}.dat\n"
+    "1 #{color.code} #{x.number} #{y.number} #{z.number} #{orientation.code} #{part.code}.dat\n"
   end
 
   # @return [String]
