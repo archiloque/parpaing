@@ -4,20 +4,21 @@ module CellWalls
     m_y = @y_origin - PLATE_HEIGHT
 
     0.to_b.downto(-(Cell::HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
-      common = {
+      with(
         m_y: m_y,
         b_y: row_in_brick,
-      }
-      create_walls_north(row_in_brick, common)
-      create_walls_south(row_in_brick, common)
-      create_walls_east(row_in_brick, common)
-      create_walls_west(row_in_brick, common)
+      ) do
+        create_walls_north(row_in_brick)
+        create_walls_south(row_in_brick)
+        create_walls_east(row_in_brick)
+        create_walls_west(row_in_brick)
+      end
     end
   end
 
   private
 
-  def create_walls_north(row_in_brick, common)
+  def create_walls_north(row_in_brick)
     if north_filled?
     else
       if west_filled? && (!north_west_filled?)
@@ -30,26 +31,22 @@ module CellWalls
 
         if row_in_brick % 2 == 0
           create_wall_along_x(
-            **common.merge(
-              b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-              b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
-              b_z: 0.to_b,
-            )
+            b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+            b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
+            b_z: 0.to_b,
           )
         else
           create_wall_along_x(
-            **common.merge(
-              b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-              b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
-              b_z: 0.to_b,
-            )
+            b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+            b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
+            b_z: 0.to_b,
           )
         end
       end
     end
   end
 
-  def create_walls_south(row_in_brick, common)
+  def create_walls_south(row_in_brick)
     if south_filled?
     else
       if west_filled? && (!south_west_filled?)
@@ -62,26 +59,22 @@ module CellWalls
 
         if row_in_brick % 2 == 0
           create_wall_along_x(
-            **common.merge(
-              b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-              b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
-              b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
-            )
+            b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+            b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
+            b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
           )
         else
           create_wall_along_x(
-            **common.merge(
-              b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-              b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
-              b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
-            )
+            b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+            b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
+            b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
           )
         end
       end
     end
   end
 
-  def create_walls_east(row_in_brick, common)
+  def create_walls_east(row_in_brick)
     if east_filled?
     else
       if north_filled? && (!north_east_filled?)
@@ -94,26 +87,22 @@ module CellWalls
 
         if row_in_brick % 2 == 0
           create_wall_along_z(
-            **common.merge(
-              b_x: 0.to_b,
-              b_from_z: 1.to_b + added_border_north,
-              b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-            )
+            b_x: 0.to_b,
+            b_from_z: 1.to_b + added_border_north,
+            b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
           )
         else
           create_wall_along_z(
-            **common.merge(
-              b_x: 0.to_b,
-              b_from_z: added_border_north,
-              b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-            )
+            b_x: 0.to_b,
+            b_from_z: added_border_north,
+            b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
           )
         end
       end
     end
   end
 
-  def create_walls_west(row_in_brick, common)
+  def create_walls_west(row_in_brick)
     if west_filled?
     else
       if north_filled? && (!north_west_filled?)
@@ -126,19 +115,15 @@ module CellWalls
 
         if row_in_brick % 2 == 0
           create_wall_along_z(
-            **common.merge(
-              b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
-              b_from_z: 1.to_b + added_border_north,
-              b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-            )
+            b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+            b_from_z: 1.to_b + added_border_north,
+            b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
           )
         else
           create_wall_along_z(
-            **common.merge(
-              b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
-              b_from_z: added_border_north,
-              b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-            )
+            b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+            b_from_z: added_border_north,
+            b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
           )
         end
       end
