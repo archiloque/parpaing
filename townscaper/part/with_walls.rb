@@ -69,7 +69,6 @@ module WithWalls
         b_y: b_y,
         b_z: b_z,
         part: part,
-        color: Color::YELLOW,
       )
       current_x += element.size
     end
@@ -144,7 +143,6 @@ module WithWalls
         b_y: b_y,
         b_z: current_z,
         part: part,
-        color: Color::YELLOW,
       )
       current_z += element.size
     end
