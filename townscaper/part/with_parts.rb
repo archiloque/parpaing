@@ -65,7 +65,7 @@ module WithParts
       part.create(
         color: color,
         x: ((b_x + @x_origin) * Measures::BRICK_WIDTH),
-        y: m_y + (b_y * Measures::BRICK_HEIGHT),
+        y: @y_origin + m_y + (b_y * Measures::BRICK_HEIGHT),
         z: ((b_z + @z_origin) * Measures::BRICK_WIDTH),
       )
     )

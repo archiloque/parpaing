@@ -34,4 +34,9 @@ class DrawUnit
     check_type(value, Integer)
     (number * value).to_u
   end
+
+  # @return [DrawUnit]
+  def -@
+    (-number).to_u
+  end
 end
