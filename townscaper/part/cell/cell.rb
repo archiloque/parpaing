@@ -7,6 +7,7 @@ require_relative 'roof/cell_roof'
 class Cell
   include Occupier
   include WithResult
+  include WithParts
   include WithWalls
   include CellBasement
   include CellWalls
