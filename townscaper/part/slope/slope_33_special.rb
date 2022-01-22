@@ -53,7 +53,7 @@ class Slope333X3ConvexSouthWest < SetPart
         x: x,
         y: y - 28.to_u,
         z: z,
-        ),
+      ),
     ]
   end
 end

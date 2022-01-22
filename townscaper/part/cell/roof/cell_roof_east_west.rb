@@ -7,27 +7,27 @@ module CellRoofEastWestSoon
     create_roof_top_north_south
 
     add_part(
-      b_x: @x_origin,
+      b_x: 0.to_b,
       b_y: 0.to_b,
-      b_z: @z_origin + 3.to_b,
+      b_z: 3.to_b,
       part: Brick1X6Z.new,
     )
     add_part(
-      b_x: @x_origin + 11.to_b,
+      b_x: 11.to_b,
       b_y: 0.to_b,
-      b_z: @z_origin + 3.to_b,
+      b_z: 3.to_b,
       part: Brick1X6Z.new,
     )
     add_part(
-      b_x: @x_origin,
+      b_x: 0.to_b,
       b_y: -1.to_b,
-      b_z: @z_origin + 5.to_b,
+      b_z: 5.to_b,
       part: Brick1X2Z.new,
     )
     add_part(
-      b_x: @x_origin + 11.to_b,
+      b_x: 11.to_b,
       b_y: -1.to_b,
-      b_z: @z_origin + 5.to_b,
+      b_z: 5.to_b,
       part: Brick1X2Z.new,
     )
   end

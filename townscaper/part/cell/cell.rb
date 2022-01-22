@@ -58,9 +58,9 @@ class Cell
       part = element.part_class.new
       add_part(
         m_y: @y_origin,
-        b_x: @x_origin + current_x,
+        b_x: current_x,
         b_y: 0.to_b,
-        b_z: @z_origin,
+        b_z: 0.to_b,
         part: part,
         color: Color::YELLOW
       )

@@ -98,7 +98,7 @@ class Slope452X2ConvexConcaveSouthEast < SetPart
         x: x + 10.to_u,
         y: y - 28.to_u,
         z: z + 10.to_u,
-        ),
+      ),
     ]
   end
 end
@@ -113,7 +113,7 @@ class Slope452X2ConvexConcaveSouthWest < SetPart
         x: x + 10.to_u,
         y: y - 28.to_u,
         z: z + 10.to_u,
-        ),
+      ),
     ]
   end
 end

@@ -41,7 +41,7 @@ module CellRoof
     with(
       color: Color::RED,
       m_y: @y_origin - ((Cell::HEIGHT_IN_BRICKS) * BRICK_HEIGHT) - PLATE_HEIGHT,
-      ) do
+    ) do
       if north_filled? && south_filled? && east_filled? && west_filled?
         create_roof_quadruple
       elsif north_filled? && south_filled? && east_filled?

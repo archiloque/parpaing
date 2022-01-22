@@ -5,12 +5,14 @@ module WithParts
   def with(
     m_y: nil,
     color: nil
-    )
-    @default_color = color
-    @default_my = m_y
+  )
+    @contexts ||= []
+    @contexts << {
+      m_y: m_y,
+      color: color,
+    }
     yield
-    @default_color = nil
-    @default_my = nil
+    @contexts.pop
   end
 
   # @param [UnitNumber, nil] m_y
@@ -28,21 +30,35 @@ module WithParts
     part:,
     color: nil
   )
-    color = color || @default_color
+    color = color || get_context_value(:color)
     unless color
       raise "No color"
     end
-    m_y = m_y || @default_my
+    m_y = m_y || get_context_value(:m_y)
     unless m_y
       raise "No m_y"
     end
     concat_result(
       part.create(
         color: color,
-        x: (b_x * Measures::BRICK_WIDTH),
+        x: ((b_x + @x_origin) * Measures::BRICK_WIDTH),
         y: m_y + (b_y * Measures::BRICK_HEIGHT),
-        z: (b_z * Measures::BRICK_WIDTH),
+        z: ((b_z + @z_origin) * Measures::BRICK_WIDTH),
       )
     )
   end
+
+  private
+
+  # @param [Symbol] param_name
+  # @return [Object]
+  def get_context_value(param_name)
+    @contexts.reverse.each do |context|
+      if context.key?(param_name)
+        return context[param_name]
+      end
+    end
+    nil
+  end
+
 end
