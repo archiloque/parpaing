@@ -11,7 +11,6 @@ end
 require_relative 'set_part'
 require_relative 'occupier'
 require_relative 'occupying_part'
-require_relative 'with_result'
 require_relative 'with_parts'
 require_relative 'with_walls'
 

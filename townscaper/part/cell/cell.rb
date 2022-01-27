@@ -6,7 +6,6 @@ require_relative 'roof/cell_roof'
 
 class Cell
   include Occupier
-  include WithResult
   include WithParts
   include WithWalls
   include BasementCell
@@ -39,19 +38,21 @@ class Cell
     @z_origin = WIDTH_IN_BRICKS * @z_index
   end
 
-  # @return [Array<String>]
-  def create
-    if @level.level_index == 0
-      create_basement
-      unless up_filled?
-        create_floor(-7.to_b)
+  # @param [IO] output
+  # @return [void]
+  def create(output)
+    with(output: output) do
+      if @level.level_index == 0
+        create_basement
+        unless up_filled?
+          create_floor(-7.to_b)
+        end
+      else
+        create_walls
+        create_floor(0.to_b)
+        create_roof
       end
-    else
-      create_walls
-      create_floor(0.to_b)
-      create_roof
     end
-    result
   end
 
   private

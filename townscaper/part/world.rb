@@ -1,6 +1,4 @@
 class World
-  include WithResult
-
   # @return [Array<Array<Array<Boolean>>>]
   attr_reader :map
 
@@ -28,13 +26,13 @@ class World
     end
   end
 
-  # @return [Array<String>]
-  def create
-    create_water
+  # @param [IO] output
+  # @return [void]
+  def create(output)
+    create_water(output)
     @levels.each do |level|
-      concat_result(level.create)
+      level.create(output)
     end
-    result
   end
 
   # @param [Integer] level
@@ -56,7 +54,9 @@ class World
 
   private
 
-  def create_water
+  # @param [IO] output
+  # @return [nil]
+  def create_water(output)
     line_width_in_brick = Cell::WIDTH_IN_BRICKS.number * @lines_number
     column_width_in_brick = Cell::WIDTH_IN_BRICKS.number * @columns_number
     line_number_base_plates = (line_width_in_brick.to_f / Measures::BASEPLATE_WIDTH.number).ceil
@@ -68,14 +68,14 @@ class World
 
     0.upto(line_number_base_plates - 1) do |line_index|
       0.upto(column_number_base_plates - 1) do |column_index|
-        concat_result(
-          BasePlate.new.create(
-            x: (-column_delta - (Measures::BASEPLATE_WIDTH.number * column_index)).to_b * Measures::BRICK_WIDTH,
-            z: (-line_delta + (Measures::BASEPLATE_WIDTH.number * line_index)).to_b * Measures::BRICK_WIDTH,
-            y: (2.to_b * Measures::BRICK_HEIGHT) - Measures::STUD_HEIGHT,
-            color: Color::BLUE,
-            )
-        )
+        BasePlate.new.create(
+          x: (-column_delta - (Measures::BASEPLATE_WIDTH.number * column_index)).to_b * Measures::BRICK_WIDTH,
+          z: (-line_delta + (Measures::BASEPLATE_WIDTH.number * line_index)).to_b * Measures::BRICK_WIDTH,
+          y: (2.to_b * Measures::BRICK_HEIGHT) - Measures::STUD_HEIGHT,
+          color: Color::BLUE,
+        ).each do |line|
+          output << line
+        end
       end
     end
   end

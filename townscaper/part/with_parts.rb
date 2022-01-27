@@ -5,13 +5,15 @@ module WithParts
   # @param [NumberOfBrick, il] b_x
   # @param [NumberOfBrick, il] b_y
   # @param [NumberOfBrick, il] b_z
+  # @param [Io] output
   # @return [void]
   def with(
     m_y: nil,
     color: nil,
     b_x: nil,
     b_y: nil,
-    b_z: nil
+    b_z: nil,
+    output: nil
   )
     @contexts ||= []
     @contexts << {
@@ -20,6 +22,7 @@ module WithParts
       b_x: b_x,
       b_y: b_y,
       b_z: b_z,
+      output: output,
     }
     yield
     @contexts.pop
@@ -29,8 +32,9 @@ module WithParts
   # @param [NumberOfBrick, nil] b_x
   # @param [NumberOfBrick, nil] b_y
   # @param [NumberOfBrick, nil] b_z
-  # @param [Color, nil] color
   # @param [SetPart] part
+  # @param [Color, nil] color
+  # @param [Io] output
   # @return [void]
   def add_part(
     m_y: nil,
@@ -38,7 +42,8 @@ module WithParts
     b_y: nil,
     b_z: nil,
     part:,
-    color: nil
+    color: nil,
+    output: nil
   )
     color ||= get_context_value(:color)
     unless color
@@ -60,15 +65,19 @@ module WithParts
     unless b_z
       raise "No b_z"
     end
+    output ||= get_context_value(:output)
+    unless output
+      raise "No output"
+    end
 
-    concat_result(
-      part.create(
-        color: color,
-        x: ((b_x + @x_origin) * Measures::BRICK_WIDTH),
-        y: @y_origin + m_y + (b_y * Measures::BRICK_HEIGHT),
-        z: ((b_z + @z_origin) * Measures::BRICK_WIDTH),
-      )
-    )
+    part.create(
+      color: color,
+      x: ((b_x + @x_origin) * Measures::BRICK_WIDTH),
+      y: @y_origin + m_y + (b_y * Measures::BRICK_HEIGHT),
+      z: ((b_z + @z_origin) * Measures::BRICK_WIDTH),
+    ).each do |line|
+      output << line
+    end
   end
 
   private
