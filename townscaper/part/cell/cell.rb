@@ -47,6 +47,7 @@ class Cell
         unless up_filled?
           create_floor(-152.to_u)
         end
+        create_pilotis
       else
         create_walls
         create_floor(0.to_u)
@@ -58,6 +59,79 @@ class Cell
   end
 
   private
+
+  # @return [void]
+  def create_pilotis
+    height = piloti_height
+    p piloti_height
+    if height == 0
+      return
+    end
+    if @level.level_index == 0
+      0.upto(height -1) do |piloti_index|
+        if piloti_index != 0
+          with(
+            m_y: (-HEIGHT_IN_UNIT - 12.to_u) - (HEIGHT_IN_UNIT * piloti_index),
+            color: Color::YELLOW,
+            part: Plate2X2.new,
+            b_y: 0.to_b,
+          ) do
+            four_corners
+          end
+        end
+        with(
+          m_y: (-HEIGHT_IN_UNIT - 8.to_u) - (HEIGHT_IN_UNIT * piloti_index),
+          color: Color::YELLOW,
+          part: Brick2X2.new,
+        ) do
+          0.upto(5) do |index|
+            with(
+              b_y: -index.to_b,
+            ) do
+              four_corners
+            end
+          end
+        end
+      end
+    end
+  end
+
+  # @return [void]
+  def four_corners
+    add_part(
+      b_x: 0.to_b,
+      b_z: 0.to_b,
+      )
+    add_part(
+      b_x: WIDTH_IN_BRICKS - 2.to_b,
+      b_z: 0.to_b,
+      )
+    add_part(
+      b_x: 0.to_b,
+      b_z: WIDTH_IN_BRICKS - 2.to_b,
+      )
+    add_part(
+      b_x: WIDTH_IN_BRICKS - 2.to_b,
+      b_z: WIDTH_IN_BRICKS - 2.to_b,
+      )
+  end
+
+  # @return [Integer]
+  def piloti_height
+    if filled?(Delta::DELTA_UP)
+      return 0
+    end
+    current_delta = Delta::DELTA_UP
+    current_height = 1
+    until filled?(current_delta)
+      current_delta += Delta::DELTA_UP
+      current_height += 1
+      if (current_height + @level.level_index) >= @level.world.levels_number
+        return 0
+      end
+    end
+    current_height - 1
+  end
 
   # @param [DrawUnit] m_y
   # @return [void]

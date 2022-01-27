@@ -30,4 +30,5 @@ class Delta
   DELTA_EAST = Delta.new(1, 0, 0)
   DELTA_WEST = Delta.new(-1, 0, 0)
   DELTA_UP = Delta.new(0, 1, 0)
+  DELTA_DOWN = Delta.new(0, -1, 0)
 end

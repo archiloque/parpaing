@@ -4,6 +4,7 @@ class Plate < SetPart
   PLATE_4X12 = Part.new('Plate 4 x 12', '3029')
   PLATE_6X12 = Part.new('Plate 6 x 12', '3028')
 
+  PLATE_2X2 = Part.new('Plate 2 x 2', '3022')
   # @param [DrawUnit] y
   # @return [DrawUnit]
   def create_y(y)
@@ -14,6 +15,21 @@ class Plate < SetPart
   # @return [DrawUnit]
   def create_z(z)
     z + (HALF_BRICK_WIDTH * 11)
+  end
+end
+
+class Plate2X2 < Plate
+  def create(color:, x:, y:, z:)
+    [
+      Emitter.emit(
+        part: PLATE_2X2,
+        color: color,
+        orientation: PartOrientation::O_0,
+        x: x + 10.to_u,
+        y: y,
+        z: z + 10.to_u,
+        ),
+    ]
   end
 end
 

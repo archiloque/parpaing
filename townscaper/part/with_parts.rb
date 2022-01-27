@@ -2,9 +2,10 @@ module WithParts
 
   # @param [UnitNumber, nil] m_y
   # @param [Color, nil] color
-  # @param [NumberOfBrick, il] b_x
-  # @param [NumberOfBrick, il] b_y
-  # @param [NumberOfBrick, il] b_z
+  # @param [NumberOfBrick, nil] b_x
+  # @param [NumberOfBrick, nil] b_y
+  # @param [NumberOfBrick, nil] b_z
+  # @param [SetPart, nil] part
   # @param [Io] output
   # @return [void]
   def with(
@@ -13,6 +14,7 @@ module WithParts
     b_x: nil,
     b_y: nil,
     b_z: nil,
+    part: nil,
     output: nil
   )
     @contexts ||= []
@@ -22,6 +24,7 @@ module WithParts
       b_x: b_x,
       b_y: b_y,
       b_z: b_z,
+      part: part,
       output: output,
     }
     yield
@@ -32,7 +35,7 @@ module WithParts
   # @param [NumberOfBrick, nil] b_x
   # @param [NumberOfBrick, nil] b_y
   # @param [NumberOfBrick, nil] b_z
-  # @param [SetPart] part
+  # @param [SetPart, nil] part
   # @param [Color, nil] color
   # @param [Io] output
   # @return [void]
@@ -41,7 +44,7 @@ module WithParts
     b_x: nil,
     b_y: nil,
     b_z: nil,
-    part:,
+    part: nil,
     color: nil,
     output: nil
   )
@@ -68,6 +71,11 @@ module WithParts
     output ||= get_context_value(:output)
     unless output
       raise "No output"
+    end
+
+    part ||= get_context_value(:part)
+    unless part
+      raise "No part"
     end
 
     part.create(

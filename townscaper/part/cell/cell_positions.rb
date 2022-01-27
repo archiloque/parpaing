@@ -51,4 +51,8 @@ module CellPositions
   def up_filled?
     filled?(Delta::DELTA_UP)
   end
+
+  def down_filled?
+    filled?(Delta::DELTA_UP)
+  end
 end
