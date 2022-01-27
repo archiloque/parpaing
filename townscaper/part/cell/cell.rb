@@ -1,5 +1,5 @@
 require_relative 'delta'
-require_relative 'cell_basement'
+require_relative 'basement_cell'
 require_relative 'cell_positions'
 require_relative 'cell_walls'
 require_relative 'roof/cell_roof'
@@ -9,7 +9,7 @@ class Cell
   include WithResult
   include WithParts
   include WithWalls
-  include CellBasement
+  include BasementCell
   include CellWalls
   include CellPositions
   include CellRoof
@@ -41,25 +41,32 @@ class Cell
 
   # @return [Array<String>]
   def create
-    create_walls
-    create_floor
-    create_roof
-    create_basement
+    if @level.level_index == 0
+      create_basement
+      unless up_filled?
+        create_floor(-7.to_b)
+      end
+    else
+      create_walls
+      create_floor(0.to_b)
+      create_roof
+    end
     result
   end
 
   private
 
+  # @param [NumberOfBrick] b_y
   # @return [void]
-  def create_floor
+  def create_floor(b_y)
     elements = SetPart.calculate_fit(WIDTH_IN_BRICKS, Plate::BY_SIZE)
     current_x = 0.to_b
     elements.each do |element|
       part = element.part_class.new
       add_part(
-        m_y: @y_origin,
+        m_y: 0.to_u,
         b_x: current_x,
-        b_y: 0.to_b,
+        b_y: b_y,
         b_z: 0.to_b,
         part: part,
         color: Color::YELLOW

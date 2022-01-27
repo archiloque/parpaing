@@ -2,9 +2,10 @@ module CellPositions
   # @param [Delta] delta
   # @return [Boolean]
   def filled?(delta)
-    @level.filled?(
-      @x_index + delta.x,
-      @z_index + delta.z)
+    @level.world.filled?(
+      level: @level.level_index + delta.y,
+      column: @x_index + delta.x,
+      line: @z_index + delta.z)
   end
 
   # @return [Boolean]
@@ -45,5 +46,9 @@ module CellPositions
   # @return [Boolean]
   def north_east_filled?
     filled?(Delta::DELTA_NORTH + Delta::DELTA_EAST)
+  end
+
+  def up_filled?
+    filled?(Delta::DELTA_UP)
   end
 end

@@ -1,9 +1,9 @@
-module CellBasement
+module BasementCell
 
   def create_basement
     with(
       color: Color::YELLOW,
-      m_y: (1.to_b * Measures::BRICK_HEIGHT),
+      m_y: (-6.to_b * Measures::BRICK_HEIGHT),
     ) do
       create_basement_north
       create_basement_south

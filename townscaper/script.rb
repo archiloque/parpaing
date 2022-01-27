@@ -12,35 +12,65 @@ include Measures
 File.open('result.ldr', 'w') do |result|
   result << "0\n"
   source_map = File.readlines('map.txt', chomp: true)
-  parsed_dimension = /\A(?<columns>\d+)x(?<lines>\d+)\z/.match(source_map[0])
-  if parsed_dimension.nil?
-    raise "Invalid size [#{source_map[0]}]"
+
+  columns_match= /\AColumns: (?<columns>\d+)\z/.match(source_map[0])
+  if columns_match.nil?
+    raise "First line should be [Columns: XX]"
   end
-  lines_number = parsed_dimension['lines'].to_i
-  columns_number = parsed_dimension['columns'].to_i
-  unless source_map.length > lines_number
-    raise "Not enough lines: #{source_map.length - 1} vs #{lines_number}"
+  columns_number = columns_match['columns'].to_i
+
+  lines_match= /\ALines: (?<lines>\d+)\z/.match(source_map[1])
+  lines_number = lines_match['lines'].to_i
+  if lines_match.nil?
+    raise "Second line should be [Lines: XX]"
   end
-  result_map = Array.new()
-  0.upto(lines_number - 1) do |line_number|
-    current_line = source_map[line_number + 1]
-    if current_line.length > columns_number
-      raise "Bad line length: [#{current_line}] #{current_line.length} vs #{columns_number}"
-    else
-      current_line = current_line.ljust(columns_number, ' ')
+
+  levels_match= /\ALevels: (?<levels>\d+)\z/.match(source_map[2])
+  if levels_match.nil?
+    raise "Third line should be [Levels: XX]"
+  end
+  levels_number = levels_match['levels'].to_i
+
+  expected_content_lines = (levels_number * (lines_number + 1)) + 3
+  unless source_map.length == expected_content_lines
+    raise "Content is #{source_map.length} lines long but #{expected_content_lines} are expected"
+  end
+
+  # Check the separators between levels
+  0.upto(levels_number - 1) do |level_index|
+    line_index = 3 + (level_index * (lines_number + 1))
+    unless /\A(\-+)\z/.match(source_map[line_index])
+      raise "Line #{line_index} [#{source_map[line_index]}] should be only composed of [-] as it's a separator between levels"
     end
-    result_map << current_line.chars.map do |element|
-      case element
-      when ' '
-        false
-      when '#'
-        true
+  end
+
+  world_map = []
+  0.upto(levels_number - 1) do |level_index|
+    current_level_map = []
+    0.upto(lines_number - 1) do |line_number|
+      line_index_index = 4 + (level_index * (lines_number + 1)) + line_number
+      current_line = source_map[line_index_index]
+
+      if current_line.length > columns_number
+        raise "Bad line length: [#{current_line}] #{current_line.length} vs #{columns_number}"
       else
-        raise "[#{element}]"
+        current_line = current_line.ljust(columns_number, ' ')
+      end
+      current_level_map << current_line.chars.map do |element|
+        case element
+        when ' '
+          false
+        when '#'
+          true
+        else
+          raise "[#{element}] line #{line_index_index}"
+        end
       end
     end
+    world_map << current_level_map
   end
-  Level.new(columns_number, lines_number, result_map).create.each do |line|
+
+  World.new(columns_number, lines_number, levels_number, world_map).create.each do |line|
     result << line
   end
 end

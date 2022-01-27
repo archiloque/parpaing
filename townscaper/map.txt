@@ -1,4 +1,7 @@
-6x19
+Columns: 6
+Lines: 19
+Levels: 1
+---
 #  ###
    ###
 #  ###
