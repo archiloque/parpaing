@@ -1,12 +1,14 @@
 module CellRoofCorner
-
   def create_roof_north_west_corner
-    add_part(
-      b_x: 9.to_b,
-      b_y: 0.to_b,
-      b_z: 0.to_b,
-      part: Slope333X3ConcaveNorthWest.new,
-    )
+    if pillar_north_west?
+    else
+      add_part(
+        b_x: 9.to_b,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: Slope333X3ConcaveNorthWest.new,
+      )
+    end
     add_part(
       b_x: 7.to_b,
       b_y: -1.to_b,

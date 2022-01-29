@@ -21,17 +21,17 @@ module CellPillars
 
   # @return [Boolean]
   def pillar_north_west?
-    pillars_for_cell.include?(Pillar::NORTH_EAST)
+    pillars_for_cell.include?(Pillar::NORTH_WEST)
   end
 
   # @return [Boolean]
   def pillar_south_east?
-    pillars_for_cell.include?(Pillar::NORTH_EAST)
+    pillars_for_cell.include?(Pillar::SOUTH_EAST)
   end
 
   # @return [Boolean]
   def pillar_south_west?
-    pillars_for_cell.include?(Pillar::NORTH_EAST)
+    pillars_for_cell.include?(Pillar::SOUTH_WEST)
   end
 
   # @return [void]
@@ -189,7 +189,7 @@ module CellPillars
   # @return [Array<Pillar>]
   # @param [Delta] delta
   def calculate_pillars_for_cell(delta)
-    return [Pillar::NORTH_EAST]
+    return [Pillar::NORTH_WEST]
     result = []
     unless filled?(Delta::DELTA_NORTH + delta) || filled?(Delta::DELTA_EAST + delta)
       result << Pillar::NORTH_EAST

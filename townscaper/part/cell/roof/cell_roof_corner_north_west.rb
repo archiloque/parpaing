@@ -12,16 +12,29 @@ module CellRoofCornerNorthWest
 
   def create_roof_corner_north_west_level_0
     with(b_y: 0.to_b,) do
-      add_part(
-        b_x: 9.to_b,
-        b_z: 0.to_b,
-        part: Slope333X3ConvexNorthWest.new,
-      )
-      add_part(
-        b_x: 8.to_b,
-        b_z: 0.to_b,
-        part: Slope333X1North.new,
-      )
+      if pillar_north_west?
+        add_part(
+          b_x: 8.to_b,
+          b_z: 0.to_b,
+          part: Slope333X2North.new,
+        )
+        add_part(
+          b_x: 10.to_b,
+          b_z: 2.to_b,
+          part: Slope452X1West.new,
+        )
+      else
+        add_part(
+          b_x: 9.to_b,
+          b_z: 0.to_b,
+          part: Slope333X3ConvexNorthWest.new,
+        )
+        add_part(
+          b_x: 8.to_b,
+          b_z: 0.to_b,
+          part: Slope333X1North.new,
+        )
+      end
       add_part(
         b_x: 9.to_b,
         b_z: 3.to_b,
@@ -60,6 +73,13 @@ module CellRoofCornerNorthWest
 
   def create_roof_corner_north_west_level_1
     with(b_y: -1.to_b,) do
+      if pillar_north_west?
+        add_part(
+          b_x: 10.to_b,
+          b_z: 2.to_b,
+          part: Tile1X1.new,
+        )
+      end
       add_part(
         b_x: 7.to_b,
         b_z: 2.to_b,

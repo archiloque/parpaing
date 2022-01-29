@@ -1,8 +1,8 @@
 module CellRoofNorthSouth
   # @return [void]
   def create_roof_north_south
-    create_roof_half_east
     create_roof_half_west
+    create_roof_half_east
     create_roof_top_east_west
 
     add_part(

@@ -3,7 +3,7 @@ module CellWalls
   def create_walls
     0.to_b.downto(-(Cell::HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
       with(
-        m_y: - PLATE_HEIGHT,
+        m_y: -PLATE_HEIGHT,
         b_y: row_in_brick,
         color: Color::YELLOW,
       ) do

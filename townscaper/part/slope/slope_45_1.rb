@@ -52,7 +52,7 @@ class Slope452X1West < SetPart
         orientation: PartOrientation::O_90,
         x: x,
         y: y - 28.to_u,
-        z: z + 30.to_u,
+        z: z,
       ),
     ]
   end

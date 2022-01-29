@@ -34,7 +34,7 @@ class Delta
       @x * value,
       @y * value,
       @z * value,
-      )
+    )
   end
 
   DELTA_FIXED = Delta.new(0, 0, 0)

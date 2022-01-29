@@ -14,7 +14,7 @@ module CellRoofHalf
         b_y: 0.to_b,
         b_z: 2.to_b,
         part: Brick1X1.new,
-        )
+      )
     else
       add_part(
         b_x: 0.to_b,
@@ -29,12 +29,27 @@ module CellRoofHalf
       b_z: 0.to_b,
       part: Slope333X4North.new,
     )
-    add_part(
-      b_x: 8.to_b,
-      b_y: 0.to_b,
-      b_z: 0.to_b,
-      part: Slope333X4North.new,
-    )
+    if pillar_north_west?
+      add_part(
+        b_x: 8.to_b,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: Slope333X2North.new,
+      )
+      add_part(
+        b_x: 11.to_b,
+        b_y: 0.to_b,
+        b_z: 2.to_b,
+        part: Brick1X1.new,
+      )
+    else
+      add_part(
+        b_x: 8.to_b,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: Slope333X4North.new,
+      )
+    end
     0.upto(2) do |i|
       add_part(
         b_x: (4.to_b * i),
@@ -80,14 +95,42 @@ module CellRoofHalf
   end
 
   # @return [void]
-  def create_roof_half_east
-    0.upto(2) do |i|
+  def create_roof_half_west
+    if pillar_north_west?
       add_part(
         b_x: 9.to_b,
         b_y: 0.to_b,
-        b_z: (4.to_b * i),
+        b_z: 2.to_b,
+        part: Slope333X2West.new,
+      )
+      add_part(
+        b_x: 9.to_b,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
+        part: Brick1X1.new,
+      )
+    else
+      add_part(
+        b_x: 9.to_b,
+        b_y: 0.to_b,
+        b_z: 0.to_b,
         part: Slope333X4West.new,
       )
+    end
+    add_part(
+      b_x: 9.to_b,
+      b_y: 0.to_b,
+      b_z: 4.to_b,
+      part: Slope333X4West.new,
+    )
+    add_part(
+      b_x: 9.to_b,
+      b_y: 0.to_b,
+      b_z: 8.to_b,
+      part: Slope333X4West.new,
+    )
+
+    0.upto(2) do |i|
       add_part(
         b_x: 7.to_b,
         b_y: -1.to_b,
@@ -106,7 +149,7 @@ module CellRoofHalf
   end
 
   # @return [void]
-  def create_roof_half_west
+  def create_roof_half_east
     if pillar_north_east?
       add_part(
         b_x: 0.to_b,
