@@ -46,7 +46,7 @@ class Brick2X2 < Brick
       x: 2.to_b,
       y: 1.to_b,
       z: 2.to_b,
-      )
+    )
   end
 
   def create(color:, x:, y:, z:)
@@ -58,7 +58,7 @@ class Brick2X2 < Brick
         x: x + 10.to_u,
         y: create_y(y),
         z: z + 10.to_u,
-        ),
+      ),
     ]
   end
 end

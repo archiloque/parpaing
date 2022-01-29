@@ -141,12 +141,15 @@ module CellRoofCorner
   end
 
   def create_roof_south_east_corner
-    add_part(
-      b_x: 0.to_b,
-      b_y: 0.to_b,
-      b_z: 9.to_b,
-      part: Slope333X3ConcaveSouthEast.new,
-    )
+    if pillar_south_east?
+    else
+      add_part(
+        b_x: 0.to_b,
+        b_y: 0.to_b,
+        b_z: 9.to_b,
+        part: Slope333X3ConcaveSouthEast.new,
+      )
+    end
     add_part(
       b_x: 2.to_b,
       b_y: -1.to_b,

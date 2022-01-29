@@ -189,7 +189,7 @@ module CellPillars
   # @return [Array<Pillar>]
   # @param [Delta] delta
   def calculate_pillars_for_cell(delta)
-    return [Pillar::NORTH_WEST]
+    return [Pillar::SOUTH_EAST]
     result = []
     unless filled?(Delta::DELTA_NORTH + delta) || filled?(Delta::DELTA_EAST + delta)
       result << Pillar::NORTH_EAST

@@ -8,7 +8,7 @@ class Tile1X1 < SetPart
         x: x,
         y: y - 12.to_u,
         z: z,
-        ),
+      ),
     ]
   end
 end

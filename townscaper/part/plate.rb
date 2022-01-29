@@ -28,7 +28,7 @@ class Plate2X2 < Plate
         x: x + 10.to_u,
         y: y,
         z: z + 10.to_u,
-        ),
+      ),
     ]
   end
 end
