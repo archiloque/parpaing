@@ -17,6 +17,8 @@ class Delta
     @z = z
   end
 
+  # @param [Delta] delta
+  # @return [Delta]
   def +(delta)
     Delta.new(
       @x + delta.x,
@@ -24,6 +26,18 @@ class Delta
       @z + delta.z,
     )
   end
+
+  # @param [Integer] value
+  # @return [Delta]
+  def *(value)
+    Delta.new(
+      @x * value,
+      @y * value,
+      @z * value,
+      )
+  end
+
+  DELTA_FIXED = Delta.new(0, 0, 0)
 
   DELTA_NORTH = Delta.new(0, 0, -1)
   DELTA_SOUTH = Delta.new(0, 0, 1)

@@ -3,7 +3,7 @@ module CellPositions
   # @return [Boolean]
   def filled?(delta)
     @level.world.filled?(
-      level: @level.level_index + delta.y,
+      level: @level.index + delta.y,
       column: @x_index + delta.x,
       line: @z_index + delta.z)
   end
