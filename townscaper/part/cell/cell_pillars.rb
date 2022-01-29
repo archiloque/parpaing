@@ -113,7 +113,6 @@ module CellPillars
 
   # @return [Integer, nil]
   def calculate_cell_level_index_above
-    return 4
     delta = Delta::DELTA_UP
     (level.index + 1).upto(level.world.levels_number - 1) do |level_index|
       if filled?(delta)
@@ -171,12 +170,18 @@ module CellPillars
           )
         end
       end
-      add_part(
-        m_y: -(Cell::HEIGHT_IN_UNIT * level_delta),
-        b_y: 0.to_b,
-        part: Brick2X2.new,
-      )
-      unless (level.index == 0) && (level_delta == 1)
+      if (level.index == 0) && (level_delta == 1)
+        add_part(
+          m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 8.to_u,
+          b_y: 0.to_b,
+          part: Brick2X2.new,
+        )
+      else
+        add_part(
+          m_y: -(Cell::HEIGHT_IN_UNIT * level_delta),
+          b_y: 0.to_b,
+          part: Brick2X2.new,
+        )
         add_part(
           m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 12.to_u,
           b_y: -1.to_b,
@@ -189,7 +194,6 @@ module CellPillars
   # @return [Array<Pillar>]
   # @param [Delta] delta
   def calculate_pillars_for_cell(delta)
-    return [Pillar::SOUTH_EAST]
     result = []
     unless filled?(Delta::DELTA_NORTH + delta) || filled?(Delta::DELTA_EAST + delta)
       result << Pillar::NORTH_EAST

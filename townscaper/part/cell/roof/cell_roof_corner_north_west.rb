@@ -45,11 +45,19 @@ module CellRoofCornerNorthWest
         b_z: 4.to_b,
         part: Slope333X4West.new,
       )
-      add_part(
-        b_x: 9.to_b,
-        b_z: 8.to_b,
-        part: Slope333X4West.new,
-      )
+      if pillar_south_west?
+        add_part(
+          b_x: 9.to_b,
+          b_z: 8.to_b,
+          part: Slope333X2West.new,
+        )
+      else
+        add_part(
+          b_x: 9.to_b,
+          b_z: 8.to_b,
+          part: Slope333X4West.new,
+        )
+      end
       if pillar_north_east?
         add_part(
           b_x: 2.to_b,
