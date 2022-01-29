@@ -20,6 +20,8 @@ require_relative 'baseplate'
 require_relative 'arch'
 require_relative 'slope/slope_33'
 require_relative 'slope/slope_45'
+require_relative 'tile'
+
 require_relative 'cell/cell'
 require_relative 'level'
 require_relative 'world'

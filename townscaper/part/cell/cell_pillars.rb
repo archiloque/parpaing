@@ -1,4 +1,39 @@
 module CellPillars
+  # @return [Integer, nil]
+  attr_reader :cell_level_index_above
+
+  # @return [Array<CellPillars::Pillar>]
+  attr_reader :pillars_for_cell
+
+  def initialize_pillars
+    @cell_level_index_above = calculate_cell_level_index_above
+    if @cell_level_index_above
+      @pillars_for_cell = calculate_pillars_for_cell(Delta::DELTA_UP * (@cell_level_index_above - level.index))
+    else
+      @pillars_for_cell = []
+    end
+  end
+
+  # @return [Boolean]
+  def pillar_north_east?
+    pillars_for_cell.include?(Pillar::NORTH_EAST)
+  end
+
+  # @return [Boolean]
+  def pillar_north_west?
+    pillars_for_cell.include?(Pillar::NORTH_EAST)
+  end
+
+  # @return [Boolean]
+  def pillar_south_east?
+    pillars_for_cell.include?(Pillar::NORTH_EAST)
+  end
+
+  # @return [Boolean]
+  def pillar_south_west?
+    pillars_for_cell.include?(Pillar::NORTH_EAST)
+  end
+
   # @return [void]
   def create_pillars_above
     with(
@@ -78,6 +113,7 @@ module CellPillars
 
   # @return [Integer, nil]
   def calculate_cell_level_index_above
+    return 4
     delta = Delta::DELTA_UP
     (level.index + 1).upto(level.world.levels_number - 1) do |level_index|
       if filled?(delta)
@@ -129,16 +165,21 @@ module CellPillars
         m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 8.to_u,
         part: Brick2X2.new,
       ) do
-        0.upto(5) do |brick_index|
+        1.upto(5) do |brick_index|
           add_part(
             b_y: -brick_index.to_b,
           )
         end
       end
+      add_part(
+        m_y: -(Cell::HEIGHT_IN_UNIT * level_delta),
+        b_y: 0.to_b,
+        part: Brick2X2.new,
+      )
       unless (level.index == 0) && (level_delta == 1)
         add_part(
           m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 12.to_u,
-          b_y: 0.to_b,
+          b_y: -1.to_b,
           part: Plate2X2.new,
         )
       end
@@ -148,6 +189,7 @@ module CellPillars
   # @return [Array<Pillar>]
   # @param [Delta] delta
   def calculate_pillars_for_cell(delta)
+    return [Pillar::NORTH_EAST]
     result = []
     unless filled?(Delta::DELTA_NORTH + delta) || filled?(Delta::DELTA_EAST + delta)
       result << Pillar::NORTH_EAST

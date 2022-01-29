@@ -50,8 +50,8 @@ module BasementCell
         add_part(
           b_x: 0.to_b,
           b_y: 0.to_b,
-          b_z: 8.to_b,
-          part: Brick1X4Z.new,
+          b_z: 9.to_b,
+          part: Brick1X3Z.new,
         )
         add_part(
           b_x: 0.to_b,

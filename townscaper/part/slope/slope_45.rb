@@ -1,4 +1,5 @@
 module Slope45
+  SLOPE_45_2X1 = Part.new('Slope 45° 2 x 1', '3040b')
   SLOPE_45_2X2 = Part.new('Slope 45° 2 x 2', '3039')
   SLOPE_45_2X4 = Part.new('Slope 45° 2 x 4', '3037')
   SLOPE_45_2X6 = Part.new('Slope 45° 2 x 6', '23949')
@@ -14,6 +15,7 @@ module Slope45
   SLOPE_45_2_1_DOUBLE_INVERTED = Part.new('Slope 45° 2 x 1 Double / Inverted with Bottom Stud Holder', '3049d')
 end
 
+require_relative 'slope_45_1'
 require_relative 'slope_45_2'
 require_relative 'slope_45_4'
 require_relative 'slope_45_6'
