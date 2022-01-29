@@ -39,6 +39,12 @@ class Cell
   # @return [DrawUnit]
   attr_reader :z_origin
 
+  # @return [Integer, nil]
+  attr_reader :cell_level_index_above
+
+  # @return [Array<CellPillars::Pillar>]
+  attr_reader :pillars_for_cell
+
   # @param [Integer] x_index
   # @param [Integer] z_index
   # @param [DrawUnit] y_origin
@@ -61,6 +67,13 @@ class Cell
   # @param [IO] output
   # @return [void]
   def create(output)
+    @cell_level_index_above = calculate_cell_level_index_above
+    if @cell_level_index_above
+      @pillars_for_cell = calculate_pillars_for_cell(Delta::DELTA_UP * (@cell_level_index_above - level.index))
+    else
+      @pillars_for_cell = []
+    end
+
     with(output: output) do
       if level.index == 0
         create_basement

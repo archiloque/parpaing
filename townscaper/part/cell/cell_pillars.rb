@@ -1,17 +1,11 @@
 module CellPillars
-
   # @return [void]
   def create_pillars_above
-    level_index_above = cell_level_index_above
-    if level_index_above.nil?
-      return
-    end
-    pillars = pillars_for_cell(Delta::DELTA_UP * (level_index_above - level.index))
     with(
       color: Color::YELLOW,
     ) do
-      maybe_create_pillars(pillars) do
-        create_pillar_above(level_index_above)
+      iterate_on_pillars_positions(pillars_for_cell) do
+        create_pillar_above(cell_level_index_above)
       end
     end
   end
@@ -20,8 +14,8 @@ module CellPillars
   # @return[void]
   def create_pillars_under
     unless any_cell_under?
-      pillars = pillars_for_cell(Delta::DELTA_FIXED)
-      maybe_create_pillars(pillars) do
+      pillars = calculate_pillars_for_cell(Delta::DELTA_FIXED)
+      iterate_on_pillars_positions(pillars) do
         create_pillar_under
       end
     end
@@ -29,7 +23,7 @@ module CellPillars
 
   # @param [Array<Pillar>] pillars
   # @return [void]
-  def maybe_create_pillars(pillars)
+  def iterate_on_pillars_positions(pillars)
     with(
       color: Color::YELLOW,
     ) do
@@ -83,7 +77,7 @@ module CellPillars
   end
 
   # @return [Integer, nil]
-  def cell_level_index_above
+  def calculate_cell_level_index_above
     delta = Delta::DELTA_UP
     (level.index + 1).upto(level.world.levels_number - 1) do |level_index|
       if filled?(delta)
@@ -153,7 +147,7 @@ module CellPillars
 
   # @return [Array<Pillar>]
   # @param [Delta] delta
-  def pillars_for_cell(delta)
+  def calculate_pillars_for_cell(delta)
     result = []
     unless filled?(Delta::DELTA_NORTH + delta) || filled?(Delta::DELTA_EAST + delta)
       result << Pillar::NORTH_EAST
