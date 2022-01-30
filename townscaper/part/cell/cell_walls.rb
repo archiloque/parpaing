@@ -14,48 +14,46 @@ module CellWalls
     with(
       m_y: -PLATE_HEIGHT,
     ) do
-      if north_wall
-        0.upto(wall_in_north.length) do |index|
-          add_part(
-            b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
-            b_y: -2.to_b,
-            b_z: 0.to_b,
-            part: WindowsNorth.new,
-            color: Color::YELLOW,
-          )
-        end
-      end
-      if south_wall
-        0.upto(wall_in_south.length) do |index|
-          add_part(
-            b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
-            b_y: -2.to_b,
-            b_z: 11.to_b,
-            part: WindowsSouth.new,
-            color: Color::YELLOW,
+      with(
+        color: Color::BRIGHT_GREEN,
+        b_y: -2.to_b,
+      ) do
+
+        if north_wall
+          0.upto(wall_in_north.length) do |index|
+            add_part(
+              b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
+              b_z: 0.to_b,
+              part: WindowsNorth.new,
             )
+          end
         end
-      end
-      if west_wall
-        0.upto(wall_in_west.length) do |index|
-          add_part(
-            b_x: 11.to_b,
-            b_y: -2.to_b,
-            b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
-            part: WindowsWest.new,
-            color: Color::YELLOW,
-          )
-        end
-      end
-      if east_wall
-        0.upto(wall_in_east.length) do |index|
-          add_part(
-            b_x: 0.to_b,
-            b_y: -2.to_b,
-            b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
-            part: WindowsEast.new,
-            color: Color::YELLOW,
+        if south_wall
+          0.upto(wall_in_south.length) do |index|
+            add_part(
+              b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
+              b_z: 11.to_b,
+              part: WindowsSouth.new,
             )
+          end
+        end
+        if west_wall
+          0.upto(wall_in_west.length) do |index|
+            add_part(
+              b_x: 11.to_b,
+              b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
+              part: WindowsWest.new,
+            )
+          end
+        end
+        if east_wall
+          0.upto(wall_in_east.length) do |index|
+            add_part(
+              b_x: 0.to_b,
+              b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
+              part: WindowsEast.new,
+            )
+          end
         end
       end
 
