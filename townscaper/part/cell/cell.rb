@@ -81,6 +81,10 @@ class Cell
     end
   end
 
+  def to_s
+    "Cell x: #{x_index}, z: #{z_index}, level: #{level.index}"
+  end
+
   private
 
   # @param [DrawUnit] m_y

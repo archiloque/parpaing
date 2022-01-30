@@ -34,14 +34,17 @@ module Occupier
 
   # @param [NumberOfBrick] from_x
   # @param [NumberOfBrick] to_x
-  # @param [NumberOfBrick] y
+  # @param [NumberOfBrick] from_y
+  # @param [NumberOfBrick] to_y
   # @param [NumberOfBrick] from_z
   # @param [NumberOfBrick] to_z
   # @return [void]
-  def occupy_zone(from_x:, to_x:, y:, from_z:, to_z:)
+  def occupy_zone(from_x:, to_x:, from_y:, to_y:, from_z:, to_z:)
     from_x.upto(to_x) do |x|
-      from_z.upto(to_z) do |z|
-        occupied_bricks.add(occupation_key(x: x, y: y, z: z))
+      from_y.upto(to_y) do |y|
+        from_z.upto(to_z) do |z|
+          occupied_bricks.add(occupation_key(x: x, y: y, z: z))
+        end
       end
     end
   end

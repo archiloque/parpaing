@@ -1,131 +1,181 @@
 module CellWalls
 
   def create_walls
-    0.to_b.downto(-(Cell::HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
-      with(
-        m_y: -PLATE_HEIGHT,
-        b_y: row_in_brick,
-        color: Color::YELLOW,
-      ) do
-        create_walls_north(row_in_brick)
-        create_walls_south(row_in_brick)
-        create_walls_east(row_in_brick)
-        create_walls_west(row_in_brick)
+    north_wall = (!north_filled?) && (!(west_filled? && (!north_west_filled?)))
+    south_wall = (!south_filled?) && (!(west_filled? && (!south_west_filled?)))
+    west_wall = (!west_filled?) && (!(north_filled? && (!north_west_filled?)))
+    east_wall = (!east_filled?) && (!(north_filled? && (!north_east_filled?)))
+
+    wall_in_north = wall_in_direction(Delta::DELTA_EAST, Delta::DELTA_NORTH)
+    wall_in_south = wall_in_direction(Delta::DELTA_EAST, Delta::DELTA_SOUTH)
+    wall_in_west = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_WEST)
+    wall_in_east = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_EAST)
+
+    with(
+      m_y: -PLATE_HEIGHT,
+    ) do
+      if north_wall
+        0.upto(wall_in_north.length) do |index|
+          add_part(
+            b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
+            b_y: -2.to_b,
+            b_z: 0.to_b,
+            part: WindowsNorth.new,
+            color: Color::YELLOW,
+          )
+        end
+      end
+      if south_wall
+        0.upto(wall_in_south.length) do |index|
+          add_part(
+            b_x: 4.to_b - (Cell::WIDTH_IN_BRICKS * index),
+            b_y: -2.to_b,
+            b_z: 11.to_b,
+            part: WindowsSouth.new,
+            color: Color::YELLOW,
+            )
+        end
+      end
+      if west_wall
+        0.upto(wall_in_west.length) do |index|
+          add_part(
+            b_x: 11.to_b,
+            b_y: -2.to_b,
+            b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
+            part: WindowsWest.new,
+            color: Color::YELLOW,
+          )
+        end
+      end
+      if east_wall
+        0.upto(wall_in_east.length) do |index|
+          add_part(
+            b_x: 0.to_b,
+            b_y: -2.to_b,
+            b_z: 4.to_b + (Cell::WIDTH_IN_BRICKS * index),
+            part: WindowsEast.new,
+            color: Color::YELLOW,
+            )
+        end
+      end
+
+      0.to_b.downto(-(Cell::HEIGHT_IN_BRICKS - 1.to_b)) do |row_in_brick|
+        with(
+          b_y: row_in_brick,
+          color: Color::YELLOW,
+        ) do
+          if north_wall
+            create_walls_north(row_in_brick, wall_in_north)
+          end
+          if south_wall
+            create_walls_south(row_in_brick, wall_in_south)
+          end
+          if west_wall
+            create_walls_west(row_in_brick, wall_in_west)
+          end
+          if east_wall
+            create_walls_east(row_in_brick, wall_in_east)
+          end
+        end
       end
     end
   end
 
   private
 
-  def create_walls_north(row_in_brick)
-    if north_filled?
+  # @param [NumberOfBrick] row_in_brick
+  # @param [Cell::WallInDirectionResult] current_wall_in_direction
+  # @return [void]
+  def create_walls_north(row_in_brick, current_wall_in_direction)
+    number_of_cells_to_wall = current_wall_in_direction.length
+
+    added_border_west = (west_filled? && north_west_filled?) ? 1.to_b : 0.to_b
+    added_border_east = current_wall_in_direction.corner ? 1.to_b : 0.to_b
+
+    if row_in_brick % 2 == 0
+      create_wall_along_x(
+        b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+        b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
+        b_z: 0.to_b,
+      )
     else
-      if west_filled? && (!north_west_filled?)
-      else
-        current_wall_in_direction = wall_in_direction(Delta::DELTA_EAST, Delta::DELTA_NORTH)
-        number_of_cells_to_wall = current_wall_in_direction.length
-
-        added_border_west = (west_filled? && north_west_filled?) ? 1.to_b : 0.to_b
-        added_border_east = current_wall_in_direction.corner ? 1.to_b : 0.to_b
-
-        if row_in_brick % 2 == 0
-          create_wall_along_x(
-            b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-            b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
-            b_z: 0.to_b,
-          )
-        else
-          create_wall_along_x(
-            b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-            b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
-            b_z: 0.to_b,
-          )
-        end
-      end
+      create_wall_along_x(
+        b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+        b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
+        b_z: 0.to_b,
+      )
     end
   end
 
-  def create_walls_south(row_in_brick)
-    if south_filled?
+  # @param [NumberOfBrick] row_in_brick
+  # @param [Cell::WallInDirectionResult] current_wall_in_direction
+  # @return [void]
+  def create_walls_south(row_in_brick, current_wall_in_direction)
+    number_of_cells_to_wall = current_wall_in_direction.length
+
+    added_border_west = (west_filled? && south_west_filled?) ? 1.to_b : 0.to_b
+    added_border_east = current_wall_in_direction.corner ? 1.to_b : 0.to_b
+
+    if row_in_brick % 2 == 0
+      create_wall_along_x(
+        b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+        b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+      )
     else
-      if west_filled? && (!south_west_filled?)
-      else
-        current_wall_in_direction = wall_in_direction(Delta::DELTA_EAST, Delta::DELTA_SOUTH)
-        number_of_cells_to_wall = current_wall_in_direction.length
-
-        added_border_west = (west_filled? && south_west_filled?) ? 1.to_b : 0.to_b
-        added_border_east = current_wall_in_direction.corner ? 1.to_b : 0.to_b
-
-        if row_in_brick % 2 == 0
-          create_wall_along_x(
-            b_from_x: -(Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-            b_to_x: Cell::WIDTH_IN_BRICKS + added_border_west,
-            b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
-          )
-        else
-          create_wall_along_x(
-            b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
-            b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
-            b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
-          )
-        end
-      end
+      create_wall_along_x(
+        b_from_x: 1.to_b - (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) - added_border_east,
+        b_to_x: Cell::WIDTH_IN_BRICKS - 1.to_b + added_border_west,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+      )
     end
   end
 
-  def create_walls_east(row_in_brick)
-    if east_filled?
+  # @param [NumberOfBrick] row_in_brick
+  # @param [Cell::WallInDirectionResult] current_wall_in_direction
+  # @return [void]
+  def create_walls_east(row_in_brick, current_wall_in_direction)
+    number_of_cells_to_wall = current_wall_in_direction.length
+
+    added_border_north = (north_filled? && north_east_filled?) ? -1.to_b : 0.to_b
+    added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
+
+    if row_in_brick % 2 == 0
+      create_wall_along_z(
+        b_x: 0.to_b,
+        b_from_z: 1.to_b + added_border_north,
+        b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
+      )
     else
-      if north_filled? && (!north_east_filled?)
-      else
-        current_wall_in_direction = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_EAST)
-        number_of_cells_to_wall = current_wall_in_direction.length
-
-        added_border_north = (north_filled? && north_east_filled?) ? -1.to_b : 0.to_b
-        added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
-
-        if row_in_brick % 2 == 0
-          create_wall_along_z(
-            b_x: 0.to_b,
-            b_from_z: 1.to_b + added_border_north,
-            b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-          )
-        else
-          create_wall_along_z(
-            b_x: 0.to_b,
-            b_from_z: added_border_north,
-            b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-          )
-        end
-      end
+      create_wall_along_z(
+        b_x: 0.to_b,
+        b_from_z: added_border_north,
+        b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
+      )
     end
   end
 
-  def create_walls_west(row_in_brick)
-    if west_filled?
+  # @param [NumberOfBrick] row_in_brick
+  # @param [Cell::WallInDirectionResult] current_wall_in_direction
+  # @return [void]
+  def create_walls_west(row_in_brick, current_wall_in_direction)
+    number_of_cells_to_wall = current_wall_in_direction.length
+
+    added_border_north = (north_filled? && north_west_filled?) ? -1.to_b : 0.to_b
+    added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
+
+    if row_in_brick % 2 == 0
+      create_wall_along_z(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_from_z: 1.to_b + added_border_north,
+        b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
+      )
     else
-      if north_filled? && (!north_west_filled?)
-      else
-        current_wall_in_direction = wall_in_direction(Delta::DELTA_SOUTH, Delta::DELTA_WEST)
-        number_of_cells_to_wall = current_wall_in_direction.length
-
-        added_border_north = (north_filled? && north_west_filled?) ? -1.to_b : 0.to_b
-        added_border_south = current_wall_in_direction.corner ? 1.to_b : 0.to_b
-
-        if row_in_brick % 2 == 0
-          create_wall_along_z(
-            b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
-            b_from_z: 1.to_b + added_border_north,
-            b_to_z: Cell::WIDTH_IN_BRICKS - 1.to_b + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-          )
-        else
-          create_wall_along_z(
-            b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
-            b_from_z: added_border_north,
-            b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
-          )
-        end
-      end
+      create_wall_along_z(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_from_z: added_border_north,
+        b_to_z: Cell::WIDTH_IN_BRICKS + (Cell::WIDTH_IN_BRICKS * number_of_cells_to_wall) + added_border_south,
+      )
     end
   end
 
@@ -153,6 +203,10 @@ module CellWalls
     def initialize(length, corner)
       @corner = corner
       @length = length
+    end
+
+    def to_s
+      "WallInDirectionResult length: #{length}, corner: #{corner}"
     end
   end
 end

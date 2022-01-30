@@ -21,6 +21,7 @@ require_relative 'arch'
 require_relative 'slope/slope_33'
 require_relative 'slope/slope_45'
 require_relative 'tile'
+require_relative 'windows'
 
 require_relative 'cell/cell'
 require_relative 'level'

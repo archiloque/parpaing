@@ -78,6 +78,17 @@ module WithParts
       raise "No part"
     end
 
+    if part.is_a?(OccupyingPart)
+      occupy_zone(
+        from_x: b_x,
+        from_y: b_y - part.y + 1.to_b,
+        from_z: b_z,
+        to_x: b_x + part.x - 1.to_b,
+        to_y: b_y,
+        to_z: b_z + part.z - 1.to_b,
+      )
+    end
+
     part.create(
       color: color,
       x: ((b_x + x_origin) * Measures::BRICK_WIDTH),
@@ -91,7 +102,7 @@ module WithParts
   private
 
   # @param [Symbol] param_name
-  # @return [Object]
+  # @return [Object, nil]
   def get_context_value(param_name)
     @contexts.reverse.each do |context|
       if context[param_name]
