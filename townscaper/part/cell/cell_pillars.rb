@@ -39,8 +39,8 @@ module CellPillars
     with(
       color: Color::YELLOW,
     ) do
-      iterate_on_pillars_positions(pillars_for_cell) do
-        create_pillar_above(cell_level_index_above)
+      iterate_on_pillars_positions(pillars_for_cell) do |pillar|
+        create_pillar_above(cell_level_index_above, pillar)
       end
     end
   end
@@ -50,8 +50,8 @@ module CellPillars
   def create_pillars_under
     unless any_cell_under?
       pillars = calculate_pillars_for_cell(Delta::DELTA_FIXED)
-      iterate_on_pillars_positions(pillars) do
-        create_pillar_under
+      iterate_on_pillars_positions(pillars) do |pillar|
+        create_pillar_under(pillar)
       end
     end
   end
@@ -67,7 +67,7 @@ module CellPillars
           b_x: 0.to_b,
           b_z: 0.to_b,
         ) do
-          yield
+          yield(Pillar::NORTH_EAST)
         end
       end
       if pillars.include?(Pillar::NORTH_WEST)
@@ -75,7 +75,7 @@ module CellPillars
           b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
           b_z: 0.to_b,
         ) do
-          yield
+          yield(Pillar::NORTH_WEST)
         end
       end
       if pillars.include?(Pillar::SOUTH_EAST)
@@ -83,7 +83,7 @@ module CellPillars
           b_x: 0.to_b,
           b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
         ) do
-          yield
+          yield(Pillar::SOUTH_EAST)
         end
       end
       if pillars.include?(Pillar::SOUTH_WEST)
@@ -91,7 +91,7 @@ module CellPillars
           b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
           b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
         ) do
-          yield
+          yield(Pillar::SOUTH_WEST)
         end
       end
     end
@@ -123,17 +123,20 @@ module CellPillars
     nil
   end
 
+  # @param [Pillar] pillar
   # @return[void]
-  def create_pillar_under
+  def create_pillar_under(pillar)
     1.upto(level.index - 1) do |level_delta|
       with(
         m_y: (Cell::HEIGHT_IN_UNIT * level_delta) - 8.to_u,
         part: Brick2X2.new,
       ) do
         0.upto(5) do |brick_index|
-          add_part(
-            b_y: -brick_index.to_b,
-          )
+          unless (level_delta == 1) && (brick_index == 5)
+            add_part(
+              b_y: -brick_index.to_b,
+            )
+          end
         end
       end
       add_part(
@@ -154,20 +157,122 @@ module CellPillars
         b_y: 2.to_b,
       )
     end
+
+    with(
+      b_y: 1.to_b,
+      m_y: 0.to_u,
+    ) do
+      create_pillar_top(pillar)
+    end
+  end
+
+  # @param [Pillar] pillar
+  # @return [void]
+  def create_pillar_top(pillar)
+    case pillar
+    when Pillar::NORTH_WEST
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        b_z: 1.to_b,
+        part: SlopeInverted452X2DoubleConvexSouthEast.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_z: 1.to_b,
+        part: Slope452X1South.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        b_z: 0.to_b,
+        part: Slope452X1East.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_z: 0.to_b,
+        part: Brick1X1.new
+      )
+    when Pillar::NORTH_EAST
+      add_part(
+        b_x: 1.to_b,
+        b_z: 1.to_b,
+        part: SlopeInverted452X2DoubleConvexSouthWest.new
+      )
+      add_part(
+        b_x: 0.to_b,
+        b_z: 1.to_b,
+        part: Slope452X1South.new
+      )
+      add_part(
+        b_x: 1.to_b,
+        b_z: 0.to_b,
+        part: Slope452X1West.new
+      )
+      add_part(
+        b_x: 0.to_b,
+        b_z: 0.to_b,
+        part: Brick1X1.new
+      )
+    when Pillar::SOUTH_WEST
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        part: SlopeInverted452X2DoubleConvexNorthEast.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        part: Slope452X1North.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        part: Slope452X1East.new
+      )
+      add_part(
+        b_x: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        part: Brick1X1.new
+      )
+    when Pillar::SOUTH_EAST
+      add_part(
+        b_x: 1.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        part: SlopeInverted452X2DoubleConvexNorthWest.new
+      )
+      add_part(
+        b_x: 0.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 2.to_b,
+        part: Slope452X1North.new
+      )
+      add_part(
+        b_x: 1.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        part: Slope452X1West.new
+      )
+      add_part(
+        b_x: 0.to_b,
+        b_z: Cell::WIDTH_IN_BRICKS - 1.to_b,
+        part: Brick1X1.new
+      )
+    end
   end
 
   # @param [Integer] level_index_above
+  # @param [Pillar] pillar
   # @return[void]
-  def create_pillar_above(level_index_above)
+  def create_pillar_above(level_index_above, pillar)
+    p "Creating #{pillar} above #{self }"
     1.upto(level_index_above - level.index - 1) do |level_delta|
       with(
         m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 8.to_u,
         part: Brick2X2.new,
       ) do
         1.upto(5) do |brick_index|
-          add_part(
-            b_y: -brick_index.to_b,
-          )
+          unless (level_delta == (level_index_above - level.index - 1)) && (brick_index == 5)
+            add_part(
+              b_y: -brick_index.to_b,
+            )
+          end
         end
       end
       if (level.index == 0) && (level_delta == 1)
@@ -188,6 +293,12 @@ module CellPillars
           part: Plate2X2.new,
         )
       end
+    end
+    with(
+      m_y: -(Cell::HEIGHT_IN_UNIT * (level_index_above - level.index - 1)) - 8.to_u,
+      b_y: -5.to_b,
+    ) do
+      create_pillar_top(pillar)
     end
   end
 
@@ -215,7 +326,7 @@ module CellPillars
       @name = name
     end
 
-    def inspect
+    def to_s
       "Pillar #{@name}"
     end
 

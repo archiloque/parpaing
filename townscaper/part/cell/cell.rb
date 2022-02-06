@@ -74,8 +74,8 @@ class Cell
         create_floor(0.to_u)
         unless up_filled?
           create_roof
+          create_pillars_above
         end
-        create_pillars_above
         create_pillars_under
       end
     end

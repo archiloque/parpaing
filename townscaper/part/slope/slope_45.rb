@@ -13,10 +13,15 @@ module Slope45
   SLOPE_45_2_2_DOUBLE_CONVEX_DOUBLE_CONCAVE = Part.new('Slope 45° 2 x 2 Double Convex / Double Concave', '962')
 
   SLOPE_45_2_1_DOUBLE_INVERTED = Part.new('Slope 45° 2 x 1 Double / Inverted with Bottom Stud Holder', '3049d')
+
+  SLOPE_INVERTED_45_2_1 = Part.new('Slope Inverted 45° 2 x 1', '3665')
+  SLOPE_INVERTED_45_2_2_DOUBLE_CONVEX = Part.new('Slope Inverted 45° 2 x 2 Double Convex', '3676')
 end
 
 require_relative 'slope_45_1'
+require_relative 'slope_45_1_inverted'
 require_relative 'slope_45_2'
+require_relative 'slope_45_2_inverted'
 require_relative 'slope_45_4'
 require_relative 'slope_45_6'
 require_relative 'slope_45_special'
