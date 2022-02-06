@@ -68,6 +68,7 @@ class Cell
         unless up_filled?
           create_floor(-152.to_u)
           create_pillars_above
+          create_fences
         end
       else
         create_walls
@@ -103,6 +104,64 @@ class Cell
         color: Color::YELLOW
       )
       current_x += element.size
+    end
+  end
+
+  # @return [void]
+  def create_fences
+    with(
+      color: Color::BRIGHT_GREEN,
+      m_y: -160.to_u,
+      b_y: 0.to_b,
+    ) do
+      if (!north_filled?) && (!filled?(Delta::DELTA_NORTH + Delta::DELTA_UP))
+        add_part(
+          b_x: 2.to_b,
+          b_z: 0.to_b,
+          part: FenceX.new
+        )
+        add_part(
+          b_x: 6.to_b,
+          b_z: 0.to_b,
+          part: FenceX.new
+        )
+      end
+      if (!south_filled?) && (!filled?(Delta::DELTA_SOUTH + Delta::DELTA_UP))
+        add_part(
+          b_x: 2.to_b,
+          b_z: 11.to_b,
+          part: FenceX.new
+        )
+        add_part(
+          b_x: 6.to_b,
+          b_z: 11.to_b,
+          part: FenceX.new
+        )
+      end
+      if (!east_filled?) && (!filled?(Delta::DELTA_EAST + Delta::DELTA_UP))
+        add_part(
+          b_x: 0.to_b,
+          b_z: 2.to_b,
+          part: FenceY.new
+        )
+        add_part(
+          b_x: 0.to_b,
+          b_z: 6.to_b,
+          part: FenceY.new
+        )
+      end
+      if (!west_filled?) && (!filled?(Delta::DELTA_WEST + Delta::DELTA_UP))
+        add_part(
+          b_x: 11.to_b,
+          b_z: 2.to_b,
+          part: FenceY.new
+        )
+        add_part(
+          b_x: 11.to_b,
+          b_z: 6.to_b,
+          part: FenceY.new
+        )
+      end
     end
   end
 end

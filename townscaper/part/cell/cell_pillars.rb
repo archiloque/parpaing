@@ -261,7 +261,6 @@ module CellPillars
   # @param [Pillar] pillar
   # @return[void]
   def create_pillar_above(level_index_above, pillar)
-    p "Creating #{pillar} above #{self }"
     1.upto(level_index_above - level.index - 1) do |level_delta|
       with(
         m_y: -(Cell::HEIGHT_IN_UNIT * level_delta) - 8.to_u,
