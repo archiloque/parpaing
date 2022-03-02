@@ -112,56 +112,131 @@ class Cell
     with(
       color: Color::BRIGHT_GREEN,
       m_y: -160.to_u,
-      b_y: 0.to_b,
     ) do
       if (!north_filled?) && (!filled?(Delta::DELTA_NORTH + Delta::DELTA_UP))
-        add_part(
-          b_x: 2.to_b,
+        # North palissade
+        create_fence_along_x(
+          b_y: -1.to_b,
           b_z: 0.to_b,
-          part: FenceX.new
+          b_from_x: 0.to_b,
+          b_to_x: 12.to_b,
         )
-        add_part(
-          b_x: 6.to_b,
+        create_fence_along_x(
+          b_y: -2.to_b,
           b_z: 0.to_b,
-          part: FenceX.new
+          b_from_x: 0.to_b,
+          b_to_x: 12.to_b,
         )
       end
       if (!south_filled?) && (!filled?(Delta::DELTA_SOUTH + Delta::DELTA_UP))
-        add_part(
-          b_x: 2.to_b,
+        # South palissade
+        create_fence_along_x(
+          b_y: -1.to_b,
           b_z: 11.to_b,
-          part: FenceX.new
+          b_from_x: 0.to_b,
+          b_to_x: 12.to_b,
         )
-        add_part(
-          b_x: 6.to_b,
+        create_fence_along_x(
+          b_y: -2.to_b,
           b_z: 11.to_b,
-          part: FenceX.new
+          b_from_x: 0.to_b,
+          b_to_x: 12.to_b,
         )
       end
       if (!east_filled?) && (!filled?(Delta::DELTA_EAST + Delta::DELTA_UP))
-        add_part(
+        # East palissade
+        create_fence_along_z(
+          b_y: -1.to_b,
           b_x: 0.to_b,
-          b_z: 2.to_b,
-          part: FenceY.new
+          b_from_z: 0.to_b,
+          b_to_z: 12.to_b,
         )
-        add_part(
+        create_fence_along_z(
+          b_y: -2.to_b,
           b_x: 0.to_b,
-          b_z: 6.to_b,
-          part: FenceY.new
+          b_from_z: 0.to_b,
+          b_to_z: 12.to_b,
         )
       end
       if (!west_filled?) && (!filled?(Delta::DELTA_WEST + Delta::DELTA_UP))
-        add_part(
+        # West palissade
+        create_fence_along_z(
+          b_y: -1.to_b,
           b_x: 11.to_b,
-          b_z: 2.to_b,
-          part: FenceY.new
+          b_from_z: 0.to_b,
+          b_to_z: 12.to_b,
         )
-        add_part(
+        create_fence_along_z(
+          b_y: -2.to_b,
           b_x: 11.to_b,
-          b_z: 6.to_b,
-          part: FenceY.new
+          b_from_z: 0.to_b,
+          b_to_z: 12.to_b,
         )
       end
+    end
+  end
+
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_z
+  # @param [NumberOfBrick] b_from_x
+  # @param [NumberOfBrick] b_to_x
+  def create_fence_along_x(b_y:, b_z:, b_from_x:, b_to_x:)
+    current_from_x = b_from_x
+    while occupied?(x: current_from_x, y: b_y, z: b_z)
+      current_from_x += 1.to_b
+    end
+    if current_from_x >= b_to_x
+      return
+    end
+    current_to_x = current_from_x
+    while (current_to_x < b_to_x) && (!occupied?(x: current_to_x, y: b_y || get_context_value(:b_y), z: b_z))
+      current_to_x += 1.to_b
+    end
+    length = current_to_x - current_from_x
+    elements = SetPart.calculate_fit(length, Palissade::BY_SIZE_X)
+    current_x = current_from_x
+    elements.each do |element|
+      part = element.part_class.new
+      add_part(
+        b_x: current_x,
+        b_y: b_y,
+        b_z: b_z,
+        part: part,
+        m_y: -160.to_u + (1.to_b * Measures::BRICK_HEIGHT),
+      )
+      current_x += element.size
+    end
+  end
+
+  # @param [NumberOfBrick] b_y
+  # @param [NumberOfBrick] b_x
+  # @param [NumberOfBrick] b_from_z
+  # @param [NumberOfBrick] b_to_z
+  def create_fence_along_z(b_y:, b_x:, b_from_z:, b_to_z:)
+    current_from_z = b_from_z
+    while occupied?(x: b_x, y: b_y, z: current_from_z)
+      current_from_z += 1.to_b
+    end
+    if current_from_z >= b_to_z
+      return
+    end
+    current_to_z = current_from_z
+    while (current_to_z < b_to_z) && (!occupied?(x: b_x, y: b_y || get_context_value(:b_y), z: current_to_z))
+      current_to_z += 1.to_b
+    end
+    length = current_to_z - current_from_z
+    elements = SetPart.calculate_fit(length, Palissade::BY_SIZE_Z)
+    current_z = current_from_z
+    elements.each do |element|
+      part = element.part_class.new
+      add_part(
+        b_x: b_x,
+        b_y: b_y,
+        b_z: current_z,
+        part: part,
+        m_y: -160.to_u + (1.to_b * Measures::BRICK_HEIGHT),
+      )
+      current_z += element.size
     end
   end
 end

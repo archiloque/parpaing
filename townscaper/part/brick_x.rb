@@ -18,10 +18,16 @@ class Brick1X2X < BrickX
     )
   end
 
-  def create(color:, x:, y:, z:)
+  # @param [Color] color
+  # @param [UnitNumber] x
+  # @param [UnitNumber] y
+  # @param [UnitNumber] z
+  # @param [Brick::Part] part
+  # @return [Array<String>]
+  def inner_create(color:, x:, y:, z:, part:)
     [
       Emitter.emit(
-        part: BRICK_1X2,
+        part: part,
         color: color,
         orientation: PartOrientation::O_0,
         x: x + (HALF_BRICK_WIDTH * 1),
@@ -29,6 +35,16 @@ class Brick1X2X < BrickX
         z: z,
       ),
     ]
+  end
+
+  def create(color:, x:, y:, z:)
+    inner_create(
+      color: color,
+      x: x,
+      y: y,
+      z: z,
+      part: BRICK_1X2
+    )
   end
 end
 
@@ -62,10 +78,16 @@ class Brick1X4X < BrickX
     )
   end
 
-  def create(color:, x:, y:, z:)
+  # @param [Color] color
+  # @param [UnitNumber] x
+  # @param [UnitNumber] y
+  # @param [UnitNumber] z
+  # @param [Brick::Part] part
+  # @return [Array<String>]
+  def inner_create(color:, x:, y:, z:, part:)
     [
       Emitter.emit(
-        part: BRICK_1X4,
+        part: part,
         color: color,
         orientation: PartOrientation::O_0,
         x: x + (HALF_BRICK_WIDTH * 3),
@@ -73,6 +95,16 @@ class Brick1X4X < BrickX
         z: z,
       ),
     ]
+  end
+
+  def create(color:, x:, y:, z:)
+    inner_create(
+      color: color,
+      x: x,
+      y: y,
+      z: z,
+      part: BRICK_1X4
+    )
   end
 end
 

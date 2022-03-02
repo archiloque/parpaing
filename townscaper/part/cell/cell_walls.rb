@@ -204,7 +204,7 @@ module CellWalls
     end
 
     def to_s
-      "WallInDirectionResult length: #{length}, corner: #{corner}"
+      "#{self.class} length: #{length}, corner: #{corner}"
     end
   end
 end
