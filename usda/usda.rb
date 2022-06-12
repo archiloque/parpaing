@@ -95,10 +95,14 @@ class Usda
   # @param [Usda::Coordinates] position
   # @return [void]
   def create_light(position:)
+    position_x = position.x + (get_context_value(:position) ? get_context_value(:position).x : 0)
+    position_y = position.y + (get_context_value(:position) ? get_context_value(:position).y : 0)
+    position_z = position.z + (get_context_value(:position) ? get_context_value(:position).z : 0)
+
     element_name = %(Light_#{@element_index})
     write(%(def Xform "#{element_name}"))
     block do
-      write(%(matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (#{position.x}, #{position.y}, #{position.z}, 1) )))
+      write(%(matrix4d xformOp:transform = ( (1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 1, 0), (#{position_x}, #{position_y}, #{position_z}, 1) )))
       write(%(uniform token[] xformOpOrder = ["xformOp:transform"]))
       write(%(def SphereLight "#{element_name}"))
       block do
