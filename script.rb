@@ -22,49 +22,109 @@ COLORS = [
   YELLOW_MATERIAL,
 ]
 
-0.upto(20) do |x_index|
-  0.upto(20) do |y_index|
-    material = COLORS[Kernel.rand(COLORS.length)]
-    house_x = x_index * 6
-    house_y = y_index * 6
-    usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 3, y: 3, z: 1),
-      position: Usda::Coordinates.new(x: house_x, y: house_y, z: 0),
-    )
-    usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 3, y: 3, z: 1),
-      position: Usda::Coordinates.new(x: house_x, y: house_y, z: 2),
-    )
+HOUSE_COLORS = [
+  BLUE_MATERIAL,
+  WHITE_MATERIAL,
+  YELLOW_MATERIAL,
+]
+
+def random_material
+  COLORS[Kernel.rand(COLORS.length)]
+end
+
+HOUSE_WIDTH = 12
+HOUSE_HEIGHT = 6
+
+0.upto(500) do
+  house_position = Usda::Coordinates.new(
+    x: Kernel.rand(500),
+    y: Kernel.rand(500),
+    z: Kernel.rand(500),
+  )
+
+  usda.with(Usda::Context.new(
+    position: house_position,
+    material: HOUSE_COLORS[Kernel.rand(HOUSE_COLORS.length)]
+  )) do
+    usda.create_light(position: Usda::Coordinates.new(x: HOUSE_WIDTH / 2, y: HOUSE_WIDTH / 2, z: HOUSE_HEIGHT))
+    0.upto(HOUSE_HEIGHT) do |level|
+      unless [HOUSE_HEIGHT - 1, HOUSE_HEIGHT - 2].include?(level)
+        dimension_1 = Usda::Dimension.new(x: 1, y: HOUSE_WIDTH, z: 1)
+        usda.create_rectangular_cuboid(
+          dimension: dimension_1,
+          position: Usda::Coordinates.new(x: 0, y: 0, z: level + 1),
+        )
+        usda.create_rectangular_cuboid(
+          dimension: dimension_1,
+          position: Usda::Coordinates.new(x: HOUSE_WIDTH - 1, y: 0, z: level + 1),
+        )
+
+        dimension_2 = Usda::Dimension.new(x: HOUSE_WIDTH - 2, y: 1, z: 1)
+        usda.create_rectangular_cuboid(
+          dimension: dimension_2,
+          position: Usda::Coordinates.new(x: 1, y: 0, z: level + 1),
+        )
+        usda.create_rectangular_cuboid(
+          dimension: dimension_2,
+          position: Usda::Coordinates.new(x: 1, y: HOUSE_WIDTH - 1, z: level + 1),
+        )
+      end
+    end
+
+    [HOUSE_HEIGHT - 1, HOUSE_HEIGHT - 2].each do |level|
+      dimension_1 = Usda::Dimension.new(x: 1, y: (HOUSE_WIDTH / 2) - 2, z: 1)
+      usda.create_rectangular_cuboid(
+        dimension: dimension_1,
+        position: Usda::Coordinates.new(x: 0, y: 0, z: level + 1),
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension_1,
+        position: Usda::Coordinates.new(x: 0, y: (HOUSE_WIDTH / 2) + 2, z: level + 1),
+      )
+
+      usda.create_rectangular_cuboid(
+        dimension: dimension_1,
+        position: Usda::Coordinates.new(x: HOUSE_WIDTH - 1, y: 0, z: level + 1),
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension_1,
+        position: Usda::Coordinates.new(x: HOUSE_WIDTH - 1, y: (HOUSE_WIDTH / 2) + 2, z: level + 1),
+      )
+
+      dimension_2 = Usda::Dimension.new(x: ((HOUSE_WIDTH - 2) / 2) - 2, y: 1, z: 1)
+      usda.create_rectangular_cuboid(
+        dimension: dimension_2,
+        position: Usda::Coordinates.new(x: 1, y: 0, z: level + 1),
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension_2,
+        position: Usda::Coordinates.new(x: 1, y: HOUSE_WIDTH - 1, z: level + 1),
+      )
+
+      usda.create_rectangular_cuboid(
+        dimension: dimension_2,
+        position: Usda::Coordinates.new(x: 1 + (HOUSE_WIDTH / 2) + 1, y: 0, z: level + 1),
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension_2,
+        position: Usda::Coordinates.new(x: 1 + (HOUSE_WIDTH / 2) + 1, y: HOUSE_WIDTH - 1, z: level + 1),
+      )
+    end
 
     usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 1, y: 1, z: 1),
-      position: Usda::Coordinates.new(x: house_x, y: house_y, z: 1),
-    )
-    usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 1, y: 1, z: 1),
-      position: Usda::Coordinates.new(x: house_x, y: house_y + 2, z: 1),
-    )
-    usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 1, y: 1, z: 1),
-      position: Usda::Coordinates.new(x: house_x + 2, y: house_y, z: 1),
-    )
-    usda.create_rectangular_cuboid(
-      material: material,
-      dimension: Usda::Dimension.new(x: 1, y: 1, z: 1),
-      position: Usda::Coordinates.new(x: house_x + 2, y: house_y + 2, z: 1),
+      material: GREEN_MATERIAL,
+      dimension: Usda::Dimension.new(x: HOUSE_WIDTH + 4, y: HOUSE_WIDTH + 4, z: 1),
+      position: Usda::Coordinates.new(x: -2, y: -2, z: 0),
     )
 
-    if Kernel.rand() > 0.5
-      usda.create_light(
-        position: Usda::Coordinates.new(x: house_x + 1.5, y: house_y + 1.5, z: 1.5),
+    0.upto(HOUSE_WIDTH / 2).each do |roof_level|
+      width = (HOUSE_WIDTH + 2) - (roof_level * 2)
+      usda.create_rectangular_cuboid(
+        material: RED_MATERIAL,
+        dimension: Usda::Dimension.new(x: width, y: width, z: 1),
+        position: Usda::Coordinates.new(x: -1 + roof_level, y: -1 + roof_level, z: HOUSE_HEIGHT + 2 + roof_level),
       )
     end
   end
 end
-
 output.close

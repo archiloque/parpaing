@@ -15,6 +15,25 @@ class Usda
     write('')
     @element_index = 0
     @materials = Set.new
+    @contexts = []
+  end
+
+  # @param [Usda::Context] context
+  def with(context)
+    @contexts << context
+    yield
+    @contexts.pop
+  end
+
+  # @param [Symbol] param_name
+  # @return [Object, nil]
+  def get_context_value(param_name)
+    @contexts.reverse.each do |context|
+      if context.send(param_name)
+        return context.send(param_name)
+      end
+    end
+    nil
   end
 
   # @param [String] name
@@ -40,18 +59,23 @@ class Usda
     end
   end
 
-  # @param [String] material
+  # @param [String, nil] material
   # @param [Usda::Coordinates] position
   # @param [Usda::Dimension] dimension
   # @return [void]
-  def create_rectangular_cuboid(material:, position:, dimension:)
+  def create_rectangular_cuboid(material: nil, position:, dimension:)
+    material ||= get_context_value(:material)
+    position_x = position.x + (get_context_value(:position) ? get_context_value(:position).x : 0)
+    position_y = position.y + (get_context_value(:position) ? get_context_value(:position).y : 0)
+    position_z = position.z + (get_context_value(:position) ? get_context_value(:position).z : 0)
+
     unless @materials.include?(material)
       raise "Material [#{material}] is unknown"
     end
     element_name = %(Rectangular_cuboid_#{@element_index})
     write(%(def Xform "#{element_name}_xform"))
     block do
-      write(%(matrix4d xformOp:transform = ( (#{dimension.x}, 0, 0, 0), (0, #{dimension.y}, 0, 0), (0, 0, #{dimension.z}, 0), (#{position.x }, #{position.y }, #{position.z }, 1) )))
+      write(%(matrix4d xformOp:transform = ( (#{dimension.x}, 0, 0, 0), (0, #{dimension.y}, 0, 0), (0, 0, #{dimension.z}, 0), (#{position_x }, #{position_y }, #{position_z }, 1) )))
       write(%(uniform token[] xformOpOrder = ["xformOp:transform"]))
       write(%(def Mesh "#{element_name}"))
       block do
@@ -79,7 +103,7 @@ class Usda
       write(%(def SphereLight "#{element_name}"))
       block do
         write(%(color3f inputs:color = (1, 1, 1)))
-        write(%(float inputs:intensity = 250))
+        write(%(float inputs:intensity = 2000))
         write(%(float inputs:radius = 0.1))
         write(%(float inputs:specular = 1))
       end
@@ -115,3 +139,4 @@ end
 require_relative 'color'
 require_relative 'coordinates'
 require_relative 'dimension'
+require_relative 'context'
