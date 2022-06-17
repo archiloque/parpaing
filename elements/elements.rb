@@ -1,3 +1,4 @@
+require_relative 'delta'
 require_relative 'material'
 require_relative 'cell'
 require_relative 'level'
