@@ -61,7 +61,7 @@ module WorldReader
     end
     {
       columns: columns_number,
-      line: lines_number,
+      x: lines_number,
       levels: levels_number,
       map: world_map,
     }

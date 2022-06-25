@@ -2,27 +2,30 @@ class World
   # @return [Array<Array<Array<Boolean>>>]
   attr_reader :map
 
-  # @return [Integer]
-  attr_reader :columns_number
+  # @return [Array<Level>]
+  attr_reader :levels
 
   # @return [Integer]
-  attr_reader :lines_number
+  attr_reader :x_number
 
   # @return [Integer]
-  attr_reader :levels_number
+  attr_reader :y_number
 
-  # @param [Integer] columns_number
-  # @param [Integer] lines_number
-  # @param [Integer] levels_number
+  # @return [Integer]
+  attr_reader :z_number
+
+  # @param [Integer] x_number
+  # @param [Integer] y_number
+  # @param [Integer] z_number
   # @param [Array<Array<Array<Boolean>>>] map
-  def initialize(columns_number, lines_number, levels_number, map)
-    @columns_number = columns_number
-    @lines_number = lines_number
-    @levels_number = levels_number
+  def initialize(x_number, y_number, z_number, map)
+    @x_number = x_number
+    @y_number = y_number
+    @z_number = z_number
     @map = map
     @levels = []
-    0.upto(@levels_number - 1) do |level_index|
-      @levels << Level.new(self, level_index)
+    0.upto(@z_number - 1) do |z_index|
+      @levels << Level.new(self, z_index)
     end
   end
 
@@ -34,20 +37,20 @@ class World
     end
   end
 
-  # @param [Integer] level
-  # @param [Integer] column
-  # @param [Integer] line
+  # @param [Integer] x
+  # @param [Integer] y
+  # @param [Integer] z
   # @return [Boolean]
-  def filled?(column:, line:, level:)
-    if (line < 0) ||
-      (column < 0) ||
-      (level < 0) ||
-      (line >= @lines_number) ||
-      (column >= @columns_number) ||
-      (level >= @levels_number)
+  def filled?(x:, y:, z:)
+    if (x < 0) ||
+      (y < 0) ||
+      (z < 0) ||
+      (x >= @x_number) ||
+      (y >= @y_number) ||
+      (z >= @z_number)
       false
     else
-      map[level][line][column] || false
+      map[z][y][x] || false
     end
   end
 end

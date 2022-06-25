@@ -1,5 +1,10 @@
-= Lego constructions
+= Constructions
 
-This is a playground to generate LEGO constructions.
+This is a playground to generate constructions.
 
 Code is probably a mess and only intended for my own use, buyer beware!
+
+
+    +Y
+-X <  > +X
+    -Y

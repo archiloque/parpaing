@@ -3,27 +3,41 @@ class Level
   attr_reader :world
 
   # @return [Integer]
-  attr_reader :index
+  attr_reader :z
+
+  # @return [Array<Array<Cell>>]
+  attr_reader :cells
 
   # @param [World] world
-  # @param [Integer] index
-  def initialize(world, index)
-    @index = index
+  # @param [Integer] z
+  def initialize(world, z)
+    @z = z
     @world = world
+    @cells = []
+
+    0.upto(@world.y_number - 1) do |y|
+      cells_row = Array.new(@world.x_number)
+      0.upto(@world.x_number - 1) do |x|
+        if @world.map[@z][y][x]
+          cells_row[x] = Cell.new(
+            x: x,
+            y: y,
+            z: z,
+            level: self,
+            )
+        end
+      end
+      @cells << cells_row
+    end
   end
 
   # @param [Usda] usda
   #  @return [void]
   def create(usda)
-    0.upto(@world.lines_number - 1) do |line|
-      0.upto(@world.columns_number - 1) do |column|
-        if @world.map[@index][line][column]
-          Cell.new(
-            column: column,
-            line: line,
-            level_index: index,
-            level: self,
-            ).create(usda)
+    0.upto(@world.y_number - 1) do |y|
+      0.upto(@world.x_number - 1) do |x|
+        if @world.map[@z][y][x]
+          @cells[y][x].create(usda)
         end
       end
     end

@@ -3,57 +3,57 @@ module CellPositions
   # @return [Boolean]
   def filled?(delta)
     level.world.filled?(
-      level: level.index + delta.level,
-      column: column + delta.column,
-      line: line + delta.line
+      x: x + delta.x,
+      y: y + delta.y,
+      z: level.z + delta.z,
     )
   end
 
   # @return [Boolean]
-  def north_filled?
-    filled?(Delta::DELTA_NORTH)
+  def plus_x_filled?
+    filled?(Delta::DELTA_PLUS_X)
   end
 
   # @return [Boolean]
-  def south_filled?
-    filled?(Delta::DELTA_SOUTH)
+  def minus_x_filled?
+    filled?(Delta::DELTA_MINUS_X)
   end
 
   # @return [Boolean]
-  def west_filled?
-    filled?(Delta::DELTA_WEST)
+  def plus_y_filled?
+    filled?(Delta::DELTA_PLUS_Y)
   end
 
   # @return [Boolean]
-  def east_filled?
-    filled?(Delta::DELTA_EAST)
+  def minus_y_filled?
+    filled?(Delta::DELTA_MINUS_Y)
   end
 
   # @return [Boolean]
-  def south_west_filled?
-    filled?(Delta::DELTA_SOUTH + Delta::DELTA_WEST)
+  def minus_x_plus_y_filled?
+    filled?(Delta::DELTA_MINUS_X + Delta::DELTA_PLUS_Y)
   end
 
   # @return [Boolean]
-  def south_east_filled?
-    filled?(Delta::DELTA_SOUTH + Delta::DELTA_EAST)
+  def minus_x_minus_y_filled?
+    filled?(Delta::DELTA_MINUS_X + Delta::DELTA_MINUS_Y)
   end
 
   # @return [Boolean]
-  def north_west_filled?
-    filled?(Delta::DELTA_NORTH + Delta::DELTA_WEST)
+  def plus_x_plus_y_filled?
+    filled?(Delta::DELTA_PLUS_X + Delta::DELTA_PLUS_Y)
   end
 
   # @return [Boolean]
-  def north_east_filled?
-    filled?(Delta::DELTA_NORTH + Delta::DELTA_EAST)
+  def plus_x_minus_y_filled?
+    filled?(Delta::DELTA_PLUS_X + Delta::DELTA_MINUS_Y)
   end
 
-  def up_filled?
-    filled?(Delta::DELTA_UP)
+  def plus_z_filled?
+    filled?(Delta::DELTA_PLUS_Z)
   end
 
-  def down_filled?
-    filled?(Delta::DELTA_UP)
+  def minus_z_filled?
+    filled?(Delta::DELTA_MINUS_Z)
   end
 end

@@ -2,4 +2,4 @@
 
 source "https://rubygems.org"
 
-gem "standard", "~> 1.3"
+gem "minitest", "~> 5.16", :group => :development

@@ -1,29 +1,29 @@
 class Delta
   # @return [Integer]
-  attr_reader :column
+  attr_reader :x
 
   # @return [Integer]
-  attr_reader :level
+  attr_reader :y
 
   # @return [Integer]
-  attr_reader :line
+  attr_reader :z
 
-  # @param [Integer] level
-  # @param [Integer] column
-  # @param [Integer] line
-  def initialize(level, column, line)
-    @level = level
-    @column = column
-    @line = line
+  # @param [Integer] z
+  # @param [Integer] y
+  # @param [Integer] x
+  def initialize(x, y, z)
+    @x = x
+    @y = y
+    @z = z
   end
 
   # @param [Delta] delta
   # @return [Delta]
   def +(delta)
     Delta.new(
-      @column + delta.column,
-      @level + delta.level,
-      @line + delta.line,
+      @x + delta.x,
+      @y + delta.y,
+      @z + delta.z,
     )
   end
 
@@ -31,18 +31,29 @@ class Delta
   # @return [Delta]
   def *(value)
     Delta.new(
-      @column * value,
-      @level * value,
-      @line * value,
+      @x * value,
+      @y * value,
+      @z * value,
     )
+  end
+
+  # @return [Delta]
+  def -@()
+    Delta.new(
+      - @x,
+      - @y,
+      - @z,
+      )
   end
 
   DELTA_FIXED = Delta.new(0, 0, 0)
 
-  DELTA_NORTH = Delta.new(0, 1, 0)
-  DELTA_SOUTH = Delta.new(0, -1, 0)
-  DELTA_EAST = Delta.new(0, 0, 1)
-  DELTA_WEST = Delta.new(0, 0, -1)
-  DELTA_UP = Delta.new(1, 0, 0)
-  DELTA_DOWN = Delta.new(-1, 0, 0)
+  DELTA_PLUS_X = Delta.new(1, 0, 0)
+  DELTA_MINUS_X = Delta.new(-1, 0, 0)
+
+  DELTA_PLUS_Y = Delta.new(0, -1, 0)
+  DELTA_MINUS_Y = Delta.new(0, 1, 0)
+
+  DELTA_PLUS_Z = Delta.new(0, 0, 1)
+  DELTA_MINUS_Z = Delta.new(0, 0, -1)
 end

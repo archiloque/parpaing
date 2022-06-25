@@ -36,6 +36,24 @@ class Usda
     nil
   end
 
+  # @param [Array<Symbol>] call_chain
+  # @return [Float, Integer]
+  def get_context_sum(call_chain)
+    value = 0
+    @contexts.reverse.each do |context|
+      current_value = context
+      call_chain.each do |call|
+        if current_value && current_value.public_method(call)
+          current_value = current_value.send(call)
+        end
+      end
+      if current_value
+        value += current_value
+      end
+    end
+    value
+  end
+
   # @param [String] name
   # @param [Usda::Color] color
   # @return [void]
@@ -65,9 +83,9 @@ class Usda
   # @return [void]
   def create_rectangular_cuboid(material: nil, position:, dimension:)
     material ||= get_context_value(:material)
-    position_x = position.x + (get_context_value(:position) ? get_context_value(:position).x : 0)
-    position_y = position.y + (get_context_value(:position) ? get_context_value(:position).y : 0)
-    position_z = position.z + (get_context_value(:position) ? get_context_value(:position).z : 0)
+    position_x = position.x + get_context_sum([:position, :x])
+    position_y = position.y +  get_context_sum([:position, :y])
+    position_z = position.z +  get_context_sum([:position, :z])
 
     unless @materials.include?(material)
       raise "Material [#{material}] is unknown"
