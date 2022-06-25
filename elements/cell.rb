@@ -62,22 +62,15 @@ class Cell
         create_minus_y_wall(usda, wall_in_minus_y)
       end
       if @plus_x_wall
-        usda.with(
-          Usda::Context.new(
-            material: Material::GREEN
-          )) do
-          wall_in_plus_x = wall_in_direction(Delta::DELTA_PLUS_Y, Delta::DELTA_PLUS_X)
-          p("#{self} #{wall_in_plus_x}")
-          create_plus_x_wall(usda, wall_in_plus_x)
-        end
-
+        wall_in_plus_x = wall_in_direction(Delta::DELTA_PLUS_Y, Delta::DELTA_PLUS_X)
+        create_plus_x_wall(usda, wall_in_plus_x)
       end
       if @minus_x_wall
         wall_in_minus_x = wall_in_direction(Delta::DELTA_PLUS_Y, Delta::DELTA_MINUS_X)
         create_minus_x_wall(usda, wall_in_minus_x)
       end
       unless plus_z_filled?
-        #create_roof(usda)
+        create_roof(usda)
       end
     end
   end
@@ -96,10 +89,30 @@ class Cell
   end
 
   # @param [USDA] usda
-  # @param [WallInDirectionResult] wall_in_minus_y
-  def create_minus_y_wall(usda, wall_in_minus_y)
-    total_x = HOUSE_WIDTH * (wall_in_minus_y.length + 1)
+  # @param [WallInDirectionResult] wall_in
+  def create_minus_y_wall(usda, wall_in)
+    create_y_wall(usda, wall_in)
+  end
 
+  # @param [USDA] usda
+  # @param [WallInDirectionResult] wall_in
+  def create_plus_y_wall(usda, wall_in)
+    usda.with(
+      Usda::Context.new(
+        position: Usda::Coordinates.new(
+          x: 0,
+          y: HOUSE_WIDTH - 1,
+          z: 0,
+        ),
+      )) do
+      create_y_wall(usda, wall_in)
+    end
+  end
+
+  # @param [USDA] usda
+  # @param [WallInDirectionResult] wall_in
+  def create_y_wall(usda, wall_in)
+    total_x = HOUSE_WIDTH * (wall_in.length + 1)
     usda.create_rectangular_cuboid(
       dimension: Usda::Dimension.new(x: total_x, y: 1, z: 3),
       position: Usda::Coordinates.new(x: 0, y: 0, z: 1)
@@ -119,7 +132,7 @@ class Cell
       position: Usda::Coordinates.new(x: total_x - BETWEEN_WINDOWS_LENGTH, y: 0, z: 4)
     )
 
-    0.upto(wall_in_minus_y.length - 1) do |between_block|
+    0.upto(wall_in.length - 1) do |between_block|
       usda.create_rectangular_cuboid(
         dimension: Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH * 2, y: 1, z: 2),
         position: Usda::Coordinates.new(x: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), y: 0, z: 4)
@@ -128,50 +141,14 @@ class Cell
   end
 
   # @param [USDA] usda
-  # @param [WallInDirectionResult] wall_in_plus_y
-  def create_plus_y_wall(usda, wall_in_plus_y)
-    total_x = HOUSE_WIDTH * (wall_in_plus_y.length + 1)
-    usda.with(
-      Usda::Context.new(
-        position: Usda::Coordinates.new(
-          x: 0,
-          y: HOUSE_WIDTH - 1,
-          z: 0,
-        ),
-      )) do
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: total_x, y: 1, z: 3),
-        position: Usda::Coordinates.new(x: 0, y: 0, z: 1)
-      )
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: total_x, y: 1, z: 1),
-        position: Usda::Coordinates.new(x: 0, y: 0, z: 6)
-      )
-
-      dimension = Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH, y: 1, z: 2)
-      usda.create_rectangular_cuboid(
-        dimension:,
-        position: Usda::Coordinates.new(x: 0, y: 0, z: 4)
-      )
-      usda.create_rectangular_cuboid(
-        dimension:,
-        position: Usda::Coordinates.new(x: total_x - BETWEEN_WINDOWS_LENGTH, y: 0, z: 4)
-      )
-
-      0.upto(wall_in_plus_y.length - 1) do |between_block|
-        usda.create_rectangular_cuboid(
-          dimension: Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH * 2, y: 1, z: 2),
-          position: Usda::Coordinates.new(x: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), y: 0, z: 4)
-        )
-      end
-    end
+  # @param [WallInDirectionResult] wall_in
+  def create_minus_x_wall(usda, wall_in)
+    create_x_wall(usda, wall_in)
   end
 
   # @param [USDA] usda
-  # @param [WallInDirectionResult] wall_in_plus_x
-  def create_plus_x_wall(usda, wall_in_plus_x)
-    total_y = HOUSE_WIDTH * (wall_in_plus_x.length + 1) - 2 + (wall_in_plus_x.corner_begin ? 1 : 0) + (wall_in_plus_x.corner_end ? 1 : 0)
-    initial_y = wall_in_plus_x.corner_begin ? 0 : 1
+  # @param [WallInDirectionResult] wall_in
+  def create_plus_x_wall(usda, wall_in)
     usda.with(
       Usda::Context.new(
         position: Usda::Coordinates.new(
@@ -180,61 +157,40 @@ class Cell
           z: 0,
         ),
       )) do
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: 1, y: total_y, z: 3),
-        position: Usda::Coordinates.new(x: 0, y: initial_y, z: 1)
-      )
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: 1, y: total_y, z: 1),
-        position: Usda::Coordinates.new(x: 0, y: initial_y, z: 6)
-      )
-
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH - (wall_in_plus_x.corner_begin ? 0 : 1), z: 2),
-        position: Usda::Coordinates.new(x: 0, y: initial_y, z: 4)
-      )
-
-      dimension_y = BETWEEN_WINDOWS_LENGTH - (wall_in_plus_x.corner_end ? 0 : 1)
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: 1, y: dimension_y, z: 2),
-        position: Usda::Coordinates.new(x: 0, y: total_y - dimension_y + (wall_in_plus_x.corner_begin ? 0 : 1), z: 4)
-      )
-
-      0.upto(wall_in_plus_x.length - 1) do |between_block|
-        usda.create_rectangular_cuboid(
-          dimension: Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH * 2, z: 2),
-          position: Usda::Coordinates.new(x: 0, y: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), z: 4)
-        )
-      end
+      create_x_wall(usda, wall_in)
     end
   end
 
   # @param [USDA] usda
-  # @param [WallInDirectionResult] wall_in_minus_x
-  def create_minus_x_wall(usda, wall_in_minus_x)
-    total_y = HOUSE_WIDTH * (wall_in_minus_x.length + 1) - 2
-
+  # @param [WallInDirectionResult] wall_in
+  def create_x_wall(usda, wall_in)
+    total_y =
+      (HOUSE_WIDTH * (wall_in.length + 1)) - 2 +
+        (wall_in.corner_begin ? 2 : 0) +
+        (wall_in.corner_end ? 2 : 0)
+    initial_y = wall_in.corner_begin ? -1 : 1
     usda.create_rectangular_cuboid(
       dimension: Usda::Dimension.new(x: 1, y: total_y, z: 3),
-      position: Usda::Coordinates.new(x: 0, y: 1, z: 1)
+      position: Usda::Coordinates.new(x: 0, y: initial_y, z: 1)
     )
-
     usda.create_rectangular_cuboid(
       dimension: Usda::Dimension.new(x: 1, y: total_y, z: 1),
-      position: Usda::Coordinates.new(x: 0, y: 1, z: 6)
+      position: Usda::Coordinates.new(x: 0, y: initial_y, z: 6)
     )
 
-    dimension = Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH - 1, z: 2)
+    dimension_y = BETWEEN_WINDOWS_LENGTH - (wall_in.corner_begin ? 0 : 2)
     usda.create_rectangular_cuboid(
-      dimension:,
-      position: Usda::Coordinates.new(x: 0, y: 1, z: 4)
-    )
-    usda.create_rectangular_cuboid(
-      dimension:,
-      position: Usda::Coordinates.new(x: 0, y: total_y - BETWEEN_WINDOWS_LENGTH + 2, z: 4)
+      dimension: Usda::Dimension.new(x: 1, y: dimension_y, z: 2),
+      position: Usda::Coordinates.new(x: 0, y: initial_y, z: 4)
     )
 
-    0.upto(wall_in_minus_x.length - 1) do |between_block|
+    dimension_y = BETWEEN_WINDOWS_LENGTH - (wall_in.corner_end ? 0 : 2)
+    usda.create_rectangular_cuboid(
+      dimension: Usda::Dimension.new(x: 1, y: dimension_y, z: 2),
+      position: Usda::Coordinates.new(x: 0, y: total_y - dimension_y - 1 + (wall_in.corner_begin ? 0 : 2), z: 4)
+    )
+
+    0.upto(wall_in.length - 1) do |between_block|
       usda.create_rectangular_cuboid(
         dimension: Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH * 2, z: 2),
         position: Usda::Coordinates.new(x: 0, y: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), z: 4)
