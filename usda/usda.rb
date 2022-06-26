@@ -90,7 +90,10 @@ class Usda
     unless @materials.include?(material)
       raise "Material [#{material}] is unknown"
     end
-    element_name = %(Rectangular_cuboid_#{@element_index})
+    if (dimension.x == 0) || (dimension.y == 0) || (dimension.z == 0)
+      raise "Invalid dimension [#{dimension}]"
+    end
+      element_name = %(Rectangular_cuboid_#{@element_index})
     write(%(def Xform "#{element_name}_xform"))
     block do
       write(%(matrix4d xformOp:transform = ( (#{dimension.x}, 0, 0, 0), (0, #{dimension.y}, 0, 0), (0, 0, #{dimension.z}, 0), (#{position_x }, #{position_y }, #{position_z }, 1) )))
