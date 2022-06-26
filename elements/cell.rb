@@ -75,6 +75,10 @@ class Cell
     end
   end
 
+  def to_s
+    "#{self.class} (#{x}, #{y}, #{z})"
+  end
+
   private
 
   def create_roof(usda)
@@ -106,37 +110,6 @@ class Cell
         ),
       )) do
       create_y_wall(usda, wall_in)
-    end
-  end
-
-  # @param [USDA] usda
-  # @param [WallInDirectionResult] wall_in
-  def create_y_wall(usda, wall_in)
-    total_x = HOUSE_WIDTH * (wall_in.length + 1)
-    usda.create_rectangular_cuboid(
-      dimension: Usda::Dimension.new(x: total_x, y: 1, z: 3),
-      position: Usda::Coordinates.new(x: 0, y: 0, z: 1)
-    )
-    usda.create_rectangular_cuboid(
-      dimension: Usda::Dimension.new(x: total_x, y: 1, z: 1),
-      position: Usda::Coordinates.new(x: 0, y: 0, z: 6)
-    )
-
-    dimension = Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH, y: 1, z: 2)
-    usda.create_rectangular_cuboid(
-      dimension:,
-      position: Usda::Coordinates.new(x: 0, y: 0, z: 4)
-    )
-    usda.create_rectangular_cuboid(
-      dimension:,
-      position: Usda::Coordinates.new(x: total_x - BETWEEN_WINDOWS_LENGTH, y: 0, z: 4)
-    )
-
-    0.upto(wall_in.length - 1) do |between_block|
-      usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH * 2, y: 1, z: 2),
-        position: Usda::Coordinates.new(x: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), y: 0, z: 4)
-      )
     end
   end
 
@@ -192,8 +165,39 @@ class Cell
 
     0.upto(wall_in.length - 1) do |between_block|
       usda.create_rectangular_cuboid(
-        dimension: Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH * 2, z: 2),
-        position: Usda::Coordinates.new(x: 0, y: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), z: 4)
+        dimension: Usda::Dimension.new(x: 1, y: BETWEEN_WINDOWS_LENGTH * 2 - 2, z: 2),
+        position: Usda::Coordinates.new(x: 0, y: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block) + 1 , z: 4)
+      )
+    end
+  end
+
+  # @param [USDA] usda
+  # @param [WallInDirectionResult] wall_in
+  def create_y_wall(usda, wall_in)
+    total_x = HOUSE_WIDTH * (wall_in.length + 1)
+    usda.create_rectangular_cuboid(
+      dimension: Usda::Dimension.new(x: total_x, y: 1, z: 3),
+      position: Usda::Coordinates.new(x: 0, y: 0, z: 1)
+    )
+    usda.create_rectangular_cuboid(
+      dimension: Usda::Dimension.new(x: total_x, y: 1, z: 1),
+      position: Usda::Coordinates.new(x: 0, y: 0, z: 6)
+    )
+
+    dimension = Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH - 1, y: 1, z: 2)
+    usda.create_rectangular_cuboid(
+      dimension:,
+      position: Usda::Coordinates.new(x: 0, y: 0, z: 4)
+    )
+    usda.create_rectangular_cuboid(
+      dimension:,
+      position: Usda::Coordinates.new(x: total_x - BETWEEN_WINDOWS_LENGTH + 1, y: 0, z: 4)
+    )
+
+    0.upto(wall_in.length - 1) do |between_block|
+      usda.create_rectangular_cuboid(
+        dimension: Usda::Dimension.new(x: BETWEEN_WINDOWS_LENGTH * 2 - 2, y: 1, z: 2),
+        position: Usda::Coordinates.new(x: (HOUSE_WIDTH - BETWEEN_WINDOWS_LENGTH) + (HOUSE_WIDTH * between_block), y: 0, z: 4)
       )
     end
   end
@@ -213,10 +217,6 @@ class Cell
       filled?(-direction_to_move),
       filled?(delta) && filled?(delta + direction_to_check)
     )
-  end
-
-  def to_s
-    "#{self.class} (#{x}, #{y}, #{z})"
   end
 
   class WallInDirectionResult
