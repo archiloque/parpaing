@@ -9,4 +9,8 @@ class Usda::Dimension
     @y = y
     @z = z
   end
+
+  def to_s
+    "#{self.class} x: #{x}, y: #{y}, z: #{z}"
+  end
 end

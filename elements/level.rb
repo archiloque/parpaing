@@ -24,7 +24,7 @@ class Level
             y: y,
             z: z,
             level: self,
-            )
+          )
         end
       end
       @cells << cells_row

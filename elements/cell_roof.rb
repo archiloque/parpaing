@@ -6,9 +6,7 @@ module CellRoof
   # @return [void]
   def create_roof(usda)
     usda.with(
-      Usda::Context.new(
-        material: Material::RED
-      )
+      material: Material::RED,
     ) do
       create_roof_single(usda)
       if minus_x_filled?

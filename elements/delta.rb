@@ -40,10 +40,10 @@ class Delta
   # @return [Delta]
   def -@()
     Delta.new(
-      - @x,
-      - @y,
-      - @z,
-      )
+      -@x,
+      -@y,
+      -@z,
+    )
   end
 
   DELTA_FIXED = Delta.new(0, 0, 0)

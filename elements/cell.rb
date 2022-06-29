@@ -41,9 +41,7 @@ class Cell
     )
 
     usda.with(
-      Usda::Context.new(
-        position: house_position,
-      )
+      position: house_position,
     ) do
       usda.create_light(position: Usda::Coordinates.new(x: HOUSE_WIDTH / 2, y: HOUSE_WIDTH / 2, z: 6))
       create_walls(usda)

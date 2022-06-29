@@ -18,9 +18,16 @@ class Usda
     @contexts = []
   end
 
-  # @param [Usda::Context] context
-  def with(context)
-    @contexts << context
+  # @param [Usda::Dimension, nil] dimension
+  # @param [String, nil] material
+  # @param [Usda::Coordinates, nil] position
+  # @return [void]
+  def with(dimension: nil, material: nil, position: nil)
+    @contexts << Usda::Context.new(
+      dimension: dimension,
+      material: material,
+      position: position,
+    )
     yield
     @contexts.pop
   end
@@ -77,15 +84,16 @@ class Usda
     end
   end
 
+  # @param [Usda::Dimension, nil] dimension
   # @param [String, nil] material
   # @param [Usda::Coordinates] position
-  # @param [Usda::Dimension] dimension
   # @return [void]
-  def create_rectangular_cuboid(material: nil, position:, dimension:)
+  def create_rectangular_cuboid(dimension: nil, material: nil, position:)
+    dimension ||= get_context_value(:dimension)
     material ||= get_context_value(:material)
     position_x = position.x + get_context_sum([:position, :x])
-    position_y = position.y +  get_context_sum([:position, :y])
-    position_z = position.z +  get_context_sum([:position, :z])
+    position_y = position.y + get_context_sum([:position, :y])
+    position_z = position.z + get_context_sum([:position, :z])
 
     unless @materials.include?(material)
       raise "Material [#{material}] is unknown"
@@ -93,7 +101,7 @@ class Usda
     if (dimension.x == 0) || (dimension.y == 0) || (dimension.z == 0)
       raise "Invalid dimension [#{dimension}]"
     end
-      element_name = %(Rectangular_cuboid_#{@element_index})
+    element_name = %(Rectangular_cuboid_#{@element_index})
     write(%(def Xform "#{element_name}_xform"))
     block do
       write(%(matrix4d xformOp:transform = ( (#{dimension.x}, 0, 0, 0), (0, #{dimension.y}, 0, 0), (0, 0, #{dimension.z}, 0), (#{position_x }, #{position_y }, #{position_z }, 1) )))
