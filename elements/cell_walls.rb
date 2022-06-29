@@ -43,12 +43,14 @@ module CellWalls
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
+  # @return [void]
   def create_minus_y_wall(usda, wall_in)
-    create_y_wall(usda, wall_in)
+    create_y_wall(usda, wall_in, 0.0)
   end
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
+  # @return [void]
   def create_plus_y_wall(usda, wall_in)
     usda.with(
       Usda::Context.new(
@@ -58,18 +60,20 @@ module CellWalls
           z: 0,
         ),
       )) do
-      create_y_wall(usda, wall_in)
+      create_y_wall(usda, wall_in, 1 - WINDOW_WITH)
     end
   end
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
+  # @return [void]
   def create_minus_x_wall(usda, wall_in)
-    create_x_wall(usda, wall_in)
+    create_x_wall(usda, wall_in, 0.0)
   end
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
+  # @return [void]
   def create_plus_x_wall(usda, wall_in)
     usda.with(
       Usda::Context.new(
@@ -79,13 +83,15 @@ module CellWalls
           z: 0,
         ),
       )) do
-      create_x_wall(usda, wall_in)
+      create_x_wall(usda, wall_in, 1 - WINDOW_WITH)
     end
   end
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
-  def create_x_wall(usda, wall_in)
+  # @param [Float] windows_delta
+  # @return [void]
+  def create_x_wall(usda, wall_in, windows_delta)
     total_y =
       (Cell::HOUSE_WIDTH * (wall_in.length + 1)) - 2 +
         (wall_in.corner_begin ? 2 : 0) +
@@ -112,17 +118,23 @@ module CellWalls
       position: Usda::Coordinates.new(x: 0, y: total_y - dimension_y - 1 + (wall_in.corner_begin ? 0 : 2), z: 4)
     )
 
+    create_x_axis_window(usda, windows_delta, initial_y + dimension_y)
+
     0.upto(wall_in.length - 1) do |between_block|
+      y = (Cell::HOUSE_WIDTH - Cell::BETWEEN_WINDOWS_LENGTH) + (Cell::HOUSE_WIDTH * between_block) + 1
       usda.create_rectangular_cuboid(
         dimension: Usda::Dimension.new(x: 1, y: Cell::BETWEEN_WINDOWS_LENGTH * 2 - 2, z: 2),
-        position: Usda::Coordinates.new(x: 0, y: (Cell::HOUSE_WIDTH - Cell::BETWEEN_WINDOWS_LENGTH) + (Cell::HOUSE_WIDTH * between_block) + 1, z: 4)
+        position: Usda::Coordinates.new(x: 0, y: y, z: 4)
       )
+      create_x_axis_window(usda, windows_delta, y + 6)
     end
   end
 
   # @param [USDA] usda
   # @param [WallInDirectionResult] wall_in
-  def create_y_wall(usda, wall_in)
+  # @param [Float] windows_delta
+  # @return [void]
+  def create_y_wall(usda, wall_in, windows_delta)
     total_x = Cell::HOUSE_WIDTH * (wall_in.length + 1)
     usda.create_rectangular_cuboid(
       dimension: Usda::Dimension.new(x: total_x, y: 1, z: 3),
@@ -143,10 +155,88 @@ module CellWalls
       position: Usda::Coordinates.new(x: total_x - Cell::BETWEEN_WINDOWS_LENGTH + 1, y: 0, z: 4)
     )
 
+    create_y_axis_window(usda, windows_delta, Cell::BETWEEN_WINDOWS_LENGTH - 1)
+
     0.upto(wall_in.length - 1) do |between_block|
+      x = (Cell::HOUSE_WIDTH - Cell::BETWEEN_WINDOWS_LENGTH) + (Cell::HOUSE_WIDTH * between_block) + 1
       usda.create_rectangular_cuboid(
         dimension: Usda::Dimension.new(x: Cell::BETWEEN_WINDOWS_LENGTH * 2 - 2, y: 1, z: 2),
-        position: Usda::Coordinates.new(x: (Cell::HOUSE_WIDTH - Cell::BETWEEN_WINDOWS_LENGTH) + (Cell::HOUSE_WIDTH * between_block), y: 0, z: 4)
+        position: Usda::Coordinates.new(x: x, y: 0, z: 4)
+      )
+      create_y_axis_window(usda, windows_delta, x + 6)
+    end
+  end
+
+  WINDOW_WITH = 0.2
+
+  # @param [USDA] usda
+  # @param [Float] windows_delta
+  # @param [Integer] y
+  # @return [void]
+  def create_x_axis_window(usda, windows_delta, y)
+    usda.with(
+      Usda::Context.new(
+        material: Material::GREEN,
+      ),
+    ) do
+      dimension = Usda::Dimension.new(x: WINDOW_WITH, y: 6, z: WINDOW_WITH)
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: windows_delta, y: y, z: 4)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: windows_delta, y: y, z: 6 - WINDOW_WITH)
+      )
+
+      dimension = Usda::Dimension.new(x: WINDOW_WITH, y: WINDOW_WITH, z: 2 - (2 * WINDOW_WITH))
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: windows_delta, y: y, z: 4 + WINDOW_WITH)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: windows_delta, y: y + 3 - (WINDOW_WITH / 2), z: 4 + WINDOW_WITH)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: windows_delta, y: y + 6 - WINDOW_WITH, z: 4 + WINDOW_WITH)
+      )
+    end
+  end
+
+  # @param [USDA] usda
+  # @param [Float] windows_delta
+  # @param [Integer] x
+  # @return [void]
+  def create_y_axis_window(usda, windows_delta, x)
+    usda.with(
+      Usda::Context.new(
+        material: Material::GREEN,
+      ),
+    ) do
+      dimension = Usda::Dimension.new(x: 6, y: WINDOW_WITH, z: WINDOW_WITH)
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: x, y: windows_delta, z: 4)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: x, y: windows_delta, z: 6 - WINDOW_WITH)
+      )
+
+      dimension = Usda::Dimension.new(x: WINDOW_WITH, y: WINDOW_WITH, z: 2 - (2 * WINDOW_WITH))
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: x, y: windows_delta, z: 4 + WINDOW_WITH)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: x + 3 - (WINDOW_WITH / 2), y: windows_delta, z: 4 + WINDOW_WITH)
+      )
+      usda.create_rectangular_cuboid(
+        dimension: dimension,
+        position: Usda::Coordinates.new(x: x + 6 - WINDOW_WITH, y: windows_delta, z: 4 + WINDOW_WITH)
       )
     end
   end
