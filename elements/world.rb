@@ -1,4 +1,6 @@
 class World
+  WORLD_BOTTOM = 1
+
   # @return [Array<Array<Array<Boolean>>>]
   attr_reader :map
 
@@ -32,9 +34,29 @@ class World
   # @param [Usda] usda
   # @return [void]
   def create(usda)
+    create_sea(usda)
     @levels.each do |level|
       level.create(usda)
     end
+  end
+
+  SEA_DELTA = 5
+
+  # @param [Usda] usda
+  def create_sea(usda)
+    usda.create_rectangular_cuboid(
+      position: Usda::Coordinates.new(
+        x: -SEA_DELTA,
+        y: - (y_number * Cell::HOUSE_WIDTH) + SEA_DELTA,
+        z: 0
+      ),
+      dimension: Usda::Dimension.new(
+        x: (x_number * Cell::HOUSE_WIDTH) + (SEA_DELTA * 2),
+        y: (y_number * Cell::HOUSE_WIDTH) + (SEA_DELTA * 2),
+        z: 1
+      ),
+      material: Material::BLUE
+    )
   end
 
   # @param [Integer] x
